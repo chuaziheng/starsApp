@@ -24,10 +24,9 @@ public class PasswordHashController {
 		return stringToEncrypt;
 	}
 	
-	public static boolean checkUsernameAndPassword(String username, String passHash) {
-		try {
-			//Student student = read.retrieve(username);
-	    } catch (Exception e) {System.out.println("pass err");}
+	public static boolean checkUsernameAndPassword(String studentID, String passHash) {
+		Student s = Utils.getStudentFromStuID(studentID);
+		if (s.getPasswordHash().equals(passHash)) return true;
 		return false;
 	}
 }

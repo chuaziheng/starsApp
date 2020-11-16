@@ -19,6 +19,7 @@ public class StudentApp {
 			System.out.println("Enter choice: ");
 				
 			choice = sc.nextInt();
+			sc.nextLine();
 
 			switch (choice) {
 				case 1:
@@ -39,15 +40,11 @@ public class StudentApp {
 				case 6:
 					me.printModules();
 					break;
-//				case 7:
-//					System.out.println("System terminating...");
 			}
 			Utils.save("index");
 			Utils.save("student");
 			Utils.prettyPrint();
 		} while (choice < 7);
-//	sc.close();
+	System.out.println("Logging out of student");
 	}
 }
-
-

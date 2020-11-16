@@ -25,20 +25,20 @@ public class Index extends Course { // Serializable inherited from Course
 	// functions ------------------------------
 	public void appendToStuList(String studentID) {
 		stuList.add(studentID);
-		System.out.println("vacancy before appendToStuList " + VACANCY);
+		// System.out.println("vacancy before appendToStuList " + VACANCY);
 		if (VACANCY == 0) System.out.println("appendToStuList trying to make VACANCY == -1");
 		VACANCY--;
-		System.out.println("vacancy after appendToStuList " + VACANCY);
+		// System.out.println("vacancy after appendToStuList " + VACANCY);
 	}
 	public void appendToWaitList(String studentID) {
 		waitList.add(studentID);
-		System.out.printf("%s added to waitlist in index %s\n", studentID, indexNo);
+		// System.out.printf("%s added to waitlist in index %s\n", studentID, indexNo);
 	}
 	public void dropStud(String studentID) {
 		stuList.remove(studentID);
-		System.out.printf("vacancy before dropStud: %d, adding... \n", VACANCY);
+		// System.out.printf("vacancy before dropStud: %d, adding... \n", VACANCY);
 		VACANCY++;
-		System.out.printf("vacancy after dropStud: %d, adding... \n", VACANCY);
+		// System.out.printf("vacancy after dropStud: %d, adding... \n", VACANCY);
 	}
 	public void printStuListInfo() {
 		System.out.println("Printing Student List in Index " + indexNo);
@@ -57,9 +57,9 @@ public class Index extends Course { // Serializable inherited from Course
 		if (VACANCY>0 && waitList.size()>0) {
 			stuList.set(0, waitList.get(0));
 			waitList.remove(0);
-			System.out.printf("vacancy before popWaitListedStud: %d, adding... \n", VACANCY);
+			// System.out.printf("vacancy before popWaitListedStud: %d, adding... \n", VACANCY);
 			VACANCY--;
-			System.out.printf("vacancy after popWaitListedStud: %d, adding... \n", VACANCY);
+			// System.out.printf("vacancy after popWaitListedStud: %d, adding... \n", VACANCY);
 			System.out.printf("Student added to index %s successfully\n", this.indexNo);
 		}
 	}
