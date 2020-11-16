@@ -1,5 +1,3 @@
-package project2;
-
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Scanner;
@@ -31,6 +29,10 @@ public class Admin implements Serializable {
 	public void setAdminID(String adminID) {
 		this.adminID = adminID;
 	}
+	public String getAdminPassword() {
+		return adminPasswordHash;
+	}
+
 	
 	// ********************************************************case 1**********************************************************
 	public static void addStudent() {
@@ -131,9 +133,11 @@ public class Admin implements Serializable {
 		
 		System.out.println("Number of AUs: "); 
 		int acadUnit = sc.nextInt(); 
+		sc.nextLine();
 
 		System.out.print("Number of indices: ");
 		int noOfIndices = sc.nextInt(); 
+		sc.nextLine();
 		
 		// updating this shld update DB list
 		ArrayList<Index> indexList = Utils.getIndexList();
@@ -158,14 +162,13 @@ public class Admin implements Serializable {
 	
 	// ********************************************************case 4 or 6**********************************************************
 	public static void deleteIndexOrCourse(boolean byIndex) {
+		System.out.println("Enter the course code to be deleted: ");
+		courseCode = sc.next();
+		ArrayList<String> indexNums = Utils.getIndexNumsFromCourseCode(courseCode); // list of all index numbers in courseCode
 		
 		// !byIndex means remove all index in this courseCode
 		// otherwise remove specific one
 		if (!byIndex){
-			System.out.println("Enter the course code to be deleted: ");
-			courseCode = sc.next();
-			ArrayList<String> indexNums = Utils.getIndexNumsFromCourseCode(courseCode); // list of all index numbers in courseCode
-			
 			for (String indexNum : indexNums) {
 				Index index = Utils.getIndexFromIndexNum(indexNum);
 				Utils.getIndexList().remove(index);
@@ -173,8 +176,8 @@ public class Admin implements Serializable {
 					int count1 = 0;
 					  for (String[] str: s.getModules()) {
 					   if (index.getIndexNo().equals(str[1])) {
-					    s.getModules().remove(count1);
-					    break;
+							s.getModules().remove(count1);
+							break;
 					   }
 					   count1++;
 					  }
@@ -182,29 +185,20 @@ public class Admin implements Serializable {
 			}
 		}
 		else{
-			printCourseIndexList(); 
-			   
-			   System.out.println("Enter index number to be deleted: ");
-			   String temp4 = sc.nextLine(); 
-			   
-			   while(!Utils.checkExistingIndex(temp4)) {
-			    System.out.println("Please enter valid index number!"); 
-			    temp4 = sc.nextLine(); 
-			   }
-			   
-			   Index removeIndex = Utils.getIndexFromIndexNum(temp4);
-			   Utils.getIndexList().remove(removeIndex);
-			   for (Student s : Utils.getStuList()) {
-			    int count1 = 0;
-			      for (String[] str: s.getModules()) {
-			       if (removeIndex.getIndexNo().equals(str[1])) {
-			        s.getModules().remove(count1);
-			        break;
-			       }
-			       count1++;
-			      }
-			   }
-			   System.out.println("Successfully removed!");
+			int counter = 1;
+			System.out.println("Select option of which index number to be deleted: ");
+			for (String indexNum : indexNums) {
+				System.out.printf("\t(%d) courseCode: %s\tindex: %s\n", counter, courseCode, indexNum);
+				counter++;
+			}
+			int option = sc.nextInt();
+			sc.nextLine();
+			option--;
+			Index removeIndex = Utils.getIndexFromIndexNum(indexNums.get(option));
+			Utils.getIndexList().remove(removeIndex);
+			for (Student s : Utils.getStuList()) {
+				s.getModules().remove(new String[]{courseCode, indexNums.get(option)});
+			}
 		}
 	}
 	
@@ -218,7 +212,7 @@ public class Admin implements Serializable {
 			counter++;
 		}
 		int option = sc.nextInt();
-		sc.nextLine(); //v12
+		sc.nextLine();
 		option--;
 		int i = 0;
 		for (String cc : courseCodes) {
@@ -234,17 +228,11 @@ public class Admin implements Serializable {
 			System.out.println("\t" + indexNum);
 		}
 		System.out.printf("Enter index number to be added to course %s: \n", courseCode);
-		String temp3 = sc.nextLine(); 
-	    while (Utils.checkExistingIndex(temp3)){
-	     System.out.println("Please enter a new index number!"); 
-	     temp3 = sc.nextLine();
-	    }
-	    String newIndexNum = temp3; 
-
+		String newIndexNum = sc.nextLine();
 
 		System.out.println("Enter vacancy for this index: "); 
 		int vacancy = sc.nextInt(); 
-		sc.nextLine(); //v12
+		sc.nextLine();
 		
 		Index anExistingIndex = Utils.getIndexFromIndexNum(indexNums.get(0));
 		Index newIndex = new Index(courseCode, anExistingIndex.getSchool(), anExistingIndex.getAcadUnit(), newIndexNum, addLesson(), vacancy);
@@ -272,7 +260,7 @@ public class Admin implements Serializable {
 		   System.out.printf("Class end time (24H): "); 
 		   String endTime = sc.nextLine(); 
 		   
-		   System.out.println("Enter 1 day of the week: ");
+		   System.out.println("Enter 1 day of the week (MON/TUES/...): ");
 		   String day = sc.next();
 		   sc.nextLine();
 		   
