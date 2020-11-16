@@ -1,4 +1,4 @@
-package project2.starsApp;
+package project2;
 
 import java.util.*;
 import java.io.Serializable;

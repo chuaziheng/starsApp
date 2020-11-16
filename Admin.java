@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 
 package project2.starsApp;
+=======
+package project2;
+>>>>>>> parent of 57ffb64... package change
 
 import java.io.Serializable;
 import java.util.Calendar;
