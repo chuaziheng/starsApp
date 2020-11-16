@@ -1,4 +1,5 @@
-package project2;
+package project2.starsApp;
+
 
 import java.util.Scanner;
 
