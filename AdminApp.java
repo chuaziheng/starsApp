@@ -1,4 +1,4 @@
-package project2.starsApp;
+package project2;
 
 import java.util.Scanner;
 
@@ -18,8 +18,7 @@ public class AdminApp {
 			System.out.println("5: Add index groups"); 
 			System.out.println("6: Delete index groups"); 
 			System.out.println("7: Print list of course and index ");
-			//System.out.println("7: Add lessons"); // is it ok to remove this?
-			System.out.println("8: Check vacancy for an existing index group"); // same as Student option 5?
+			System.out.println("8: Check vacancy for an existing index group"); 
 			System.out.println("9: Edit student access periods");
 			System.out.println("10: Print list of all students");
 			System.out.println("11: Print list of students by course");
@@ -53,15 +52,7 @@ public class AdminApp {
 				case 7:
 					Admin.printCourseIndexList();
 					break;
-				//case 7: // is it ok to remove?
-					//System.out.println("Enter Index No: "); 	//assume all courses have different index so here we dont ask for coursecode
-					//String indexNum1 = sc.nextLine();
-					//Index index1 = read.retrieve(indexNum1);
-					//ArrayList<Lesson> lessons = Admin.addLesson();
-					//index1.lessons.addAll(lessons);
-					//IO.save(newIndex);
-					//break;
-				case 8: //Check vacancy for an existing index group
+				case 8: 
 					Utils.checkVacancy();
 					break;
 				case 9:

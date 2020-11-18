@@ -1,8 +1,6 @@
-package project2.starsApp;
+package project2;
 
 import java.util.*;
-
-import com.sun.org.apache.xpath.internal.operations.String;
 
 import java.io.Serializable;
 
@@ -77,9 +75,12 @@ public class Student implements Serializable {
 
 			ErrorHandling.checkAcadUnit(this);
 
-			System.out.println("Enter course code to add: ");
+			System.out.println("\nEnter course code to add: ");
 			courseCode = sc.next();
-			courseCode.toUpperCase();
+			courseCode = courseCode.toUpperCase();
+
+			ErrorHandling.checkIfStudentHasExistingCourse(courseCode);
+
 			indexNums = Utils.getIndexNumsFromCourseCode(courseCode);
 
 			ErrorHandling.checkAcadUnit(this, Utils.getIndexFromIndexNum(indexNums.get(0)));
@@ -115,8 +116,10 @@ public class Student implements Serializable {
 			if (promptToJoinWaitList(indexToAdd)) {} // true means no vacancy
 			else { // success so add module
 				doAddModule(indexToAdd);
+				System.out.printf("\nCourse %s, index %s is successfuly added!\n", indexToAdd.getCourseCode(), indexToAdd.getIndexNo());
 			}
 		} catch (Exception e){
+			System.out.println(e.getMessage());
 			return;
 		}
 	}
@@ -130,7 +133,7 @@ public class Student implements Serializable {
 	// case 1 --------------------------------------------------------------------------------------------------------
 
 	// case 2 --------------------------------------------------------------------------------------------------------
-	public String[] askDropModule(boolean drop){
+	public String[] askDropModule(boolean drop) throws Exception{
 		try{
 			ErrorHandling.isEmpty(this.modules);
 
@@ -146,24 +149,28 @@ public class Student implements Serializable {
 				removeChoice--;
 
 				result = ErrorHandling.isReasonableChoice(this.modules.size(), removeChoice);
+
 			} while(!result);
 
 			if (drop) {
 				mod = doDropModule(removeChoice);
-				System.out.printf("course %s, index %s successfully dropped\n", mod[0], mod[1]);
+				System.out.printf("\nCourse %s, index %s successfully dropped\n", mod[0], mod[1]);
 			}
 			else mod = modules.get(removeChoice);
 			return mod;
 		} catch (Exception e){
+			sc.nextLine();
+			System.out.println("Please enter a number!");
 			return new String[]{"", ""};
 		}
 	}
-	public String[] doDropModule(int removeChoice){
+	public String[] doDropModule(int removeChoice) throws Exception{
 		String[] mod = new String[2];
 		mod = modules.remove(removeChoice);
 
 		//Remove student from Index (Remove from courseList DB)
 		Utils.getIndexFromIndexNum(mod[1]).dropStud(studentID);
+		System.out.println("HERE!");
 		Utils.getIndexFromIndexNum(mod[1]).popWaitListedStud();
 		return mod;
 	}
@@ -310,10 +317,13 @@ public class Student implements Serializable {
 		//System.out.println("---------------------------------");
 
 		if (x.after(fixedStart.getTime()) && x.before(fixedEnd.getTime())) {
-			System.out.println("Welcome!");
+			System.out.println("\nWelcome, " + this.getStudentID() + "!");
 			return true;
 		}
-		System.out.println("Not within access period");
+		System.out.println("Not within access period!");
+		System.out.println("Please log in during your access period!");
+		System.out.println("Your access period is " + getStartTime().getTime() + " to " + getEndTime().getTime());
+		System.out.println();
 		return false;
 	}
 
@@ -383,6 +393,27 @@ public class Student implements Serializable {
 		}
 		return false;
 	}
+	public void printTimetable() throws Exception {
+		try{
+			ErrorHandling.isEmpty(this.modules);
+			for (String[] m: getModules()) {
+				System.out.println("--------------------------TIMETABLE--------------------------"); 
+				System.out.printf("%-8s %-8s %-8s %-8s %-10s", "COURSE", "INDEX", "CLASS", "DAY", "TIME");
+				System.out.println(); 
+				   
+				
+				for (Lesson l: Utils.getIndexFromIndexNum(m[1]).getLesson()) {
+				  String timing = l.getStartTime() + " - "  + l.getEndTime();
+				  System.out.format("%-8s %-8s %-8s %-8s %-10s", m[0], m[1], l.getClassType(), l.getDay(), timing); 
+				  System.out.println(); 
+				}
+			}
+		}
+		catch (Exception e) {
+			System.out.println(e.getMessage());
+			return;
+		}
+	   }
 
 	// getters -------------------------------------------------------
 	public String getStudentID() {	return studentID; }
@@ -392,7 +423,7 @@ public class Student implements Serializable {
 	public String getNationality() { return nationality; }
 	public char getGender() { return gender; }
 	public String getSchoolName() { return schoolName; }
-	public int getAcadUnit() {
+	public int getAcadUnit() throws Exception {
 		acadUnit = 0;
 		for (String[] mod: modules){
 			Index index = Utils.getIndexFromIndexNum(mod[1]);
@@ -403,7 +434,7 @@ public class Student implements Serializable {
 	public Index getIndexFromCourseCode(String courseCode) throws Exception{
 		for (String[] mod: modules){
 			if (mod[0].equals(courseCode)){
-				return Utils.getIndexFromIndexNum(mod[-1]);
+				return Utils.getIndexFromIndexNum(mod[1]);
 			}
 		}
 		throw new Exception("\nStudent has no index in course " + courseCode);

@@ -1,8 +1,6 @@
-package project2.starsApp;
-
+package project2;
 
 import java.io.Serializable;
-
 
 public abstract class Course implements Serializable {
 	final static long serialVersionUID = 123;

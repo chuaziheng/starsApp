@@ -1,4 +1,4 @@
-package project2.starsApp;
+package project2;
 
 import java.util.ArrayList;
 
@@ -126,6 +126,20 @@ public class ErrorHandling {
 			return false; 
 		}
 		return true; 
+    }
+    public static void checkIfStudentHasExistingCourse(String courseCode) throws Exception{
+
+        int count = 0;
+        for (String course : Utils.getAllCourseCodes()){
+            if (course.equals(courseCode)){
+                break;
+            } else {
+                count += 1;
+            }
+        }
+        if (count == Utils.getAllCourseCodes().size()) {
+			throw new Exception("\nYou are already registered for this course!");
+		}
 	}
 	public static void checkAcadUnit(Student s) throws Exception{
 		if (s.getAcadUnit() >= 21) {

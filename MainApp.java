@@ -1,9 +1,7 @@
-package project2.starsApp;
+package project2;
 
 
 import java.util.*;
-
-import com.sun.swing.internal.plaf.synth.resources.synth_sv;
 
 import java.io.Console;
 import java.io.Serializable;
@@ -13,7 +11,7 @@ public class MainApp implements Serializable{
 	final static long serialVersionUID = 123;
 	public static void main(String[] args) throws Exception{
 		
-		int choice;
+		int choice = 1;
 		
 		Console cons = System.console();
 		Admin admin = new Admin();
@@ -24,70 +22,78 @@ public class MainApp implements Serializable{
 		
 		Scanner sc = new Scanner(System.in);
 		do {
-			System.out.println("**********Welcome to NTU STARS Planner!**********");
-			System.out.println("Please select option.");
-			System.out.println("1: Student");
-			System.out.println("2: Admin");
-			System.out.println("3: Exit");
-			System.out.println("Enter choice: ");
-			
-			choice = sc.nextInt();
-			sc.nextLine();
-			
-			switch (choice){
-				case 1:
-					if(cons == null) {
-						System.out.println("console is null");
-					}
-					System.out.println("Enter studentID: ");										//user will enter both username and password during login
-					String studentID = sc.next();
-					
-						char[] studentPassword = cons.readPassword("Please enter your password: ");
-						String studentPasswordStr = String.valueOf(studentPassword);
-						String studentPasswordHash = PasswordHashController.hash(studentPasswordStr);
-						
-					// returns a boolean ie. checks if the username and password matches
-					if (PasswordHashController.checkUsernameAndPassword(studentID,"student", studentPasswordHash)) {
+			try{
+				System.out.println("**********Welcome to NTU STARS Planner!**********");
+				System.out.println("Please select option.");
+				System.out.println("1: Student");
+				System.out.println("2: Admin");
+				System.out.println("3: Exit");
+				System.out.println("Enter choice: ");
+				
+				choice = sc.nextInt();
+				sc.nextLine();
+				
+				switch (choice){
+					case 1:
+						if(cons == null) {
+							System.out.println("console is null");
+						}
+						System.out.println("Enter studentID: ");										//user will enter both username and password during login
+						String studentID = sc.next();
 						student = Utils.getStudentFromStuID(studentID);
-						// check if student is accessing during his own access time, nothing happens if during access time, if not during access time, print message, then return to main menu/terminate	
-						if (student.checkAccessTime()) {
-							StudentApp.StudentMenu(student);
-						}
-					
-					} else {
-							System.out.println("Invalid studentID or password!\n");
-						}
-					break;
-					
-				case 2:
-					System.out.println("Enter adminID: ");
-					String adminID = sc.next();
-					
-					char[] adminPassword = cons.readPassword("Please enter your password: ");
-					String adminPasswordStr = String.valueOf(adminPassword);
-					String adminPasswordHash = PasswordHashController.hash(adminPasswordStr);
-					
-					if (PasswordHashController.checkUsernameAndPassword(adminID,"admin", adminPasswordHash)) {
-						for (Admin a: Utils.getAdminList()) {
-							if (a.getAdminID().equals(adminID)) {
-								admin = a;
-								break;
+						
+							char[] studentPassword = cons.readPassword("Please enter your password: ");
+							String studentPasswordStr = String.valueOf(studentPassword);
+							String studentPasswordHash = PasswordHashController.hash(studentPasswordStr);
+							
+						// returns a boolean ie. checks if the username and password matches
+						if (PasswordHashController.checkUsernameAndPassword(student.getStudentID(),"student", studentPasswordHash)) {
+							// student = Utils.getStudentFromStuID(studentID);
+							// check if student is accessing during his own access time, nothing happens if during access time, if not during access time, print message, then return to main menu/terminate	
+							if (student.checkAccessTime()) {
+								StudentApp.StudentMenu(student);
 							}
-						}		
-						AdminApp.AdminMenu(admin);
-					} else {
-						System.out.println("Invalid adminID or password!\n");
-					}
-					break;
+						
+						} else {
+								System.out.println("\nInvalid password!\n");
+							}
+						break;
+						
+					case 2:
+						System.out.println("Enter adminID: ");
+						String adminID = sc.next();
+						
+						char[] adminPassword = cons.readPassword("Please enter your password: ");
+						String adminPasswordStr = String.valueOf(adminPassword);
+						String adminPasswordHash = PasswordHashController.hash(adminPasswordStr);
+						
+						if (PasswordHashController.checkUsernameAndPassword(adminID,"admin", adminPasswordHash)) {
+							for (Admin a: Utils.getAdminList()) {
+								if (a.getAdminID().equals(adminID)) {
+									admin = a;
+									break;
+								}
+							}		
+							AdminApp.AdminMenu(admin);
+						} else {
+							System.out.println("Invalid adminID or password!\n");
+						}
+						break;
 
-				case 3:
-					System.out.println("System terminating...");
-					System.exit(0);
-					break;
+					case 3:
+						System.out.println("System terminating...");
+						System.exit(0);
+						break;
 
-				default:
-					System.out.println("Invalid Input! Please choose either 1 or 2!");
+					default:
+						System.out.println("Invalid Input! Please choose either 1 or 2 or 3!");
+				}
 			}
-		} while(choice < 3);
-	}
+			catch (Exception e) {
+				sc.nextLine();
+				System.out.println("Invalid Input! Please choose either 1 or 2 or 3! ");
+				continue;
+			}
+		} while(choice != 3);
+	}		
 }

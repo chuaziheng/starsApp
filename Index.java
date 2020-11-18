@@ -1,4 +1,4 @@
-package project2.starsApp;
+package project2;
 
 
 import java.util.*;
@@ -56,11 +56,13 @@ public class Index extends Course { // Serializable inherited from Course
 	public void popWaitListedStud() {
 		//add student to index if there is a vacancy and waitlist > 0
 		if (VACANCY>0 && waitList.size()>0) {
-			stuList.set(0, waitList.get(0));
+			String sid = waitList.get(0);
+			Student cindy = Utils.getStudentFromStuID(sid);
+			stuList.add(sid);
 			waitList.remove(0);
 			// System.out.printf("vacancy before popWaitListedStud: %d, adding... \n", VACANCY);
-			VACANCY--;
 			// System.out.printf("vacancy after popWaitListedStud: %d, adding... \n", VACANCY);
+			cindy.doAddModule(this);
 			System.out.printf("Student added to index %s successfully\n", this.indexNo);
 		}
 	}

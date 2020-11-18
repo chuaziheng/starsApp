@@ -1,4 +1,4 @@
-package project2.starsApp;
+package project2;
 
 import java.io.IOException;
 import java.io.FileInputStream;
@@ -42,7 +42,7 @@ public class Utils implements Serializable
 				indexNums.add(i.getIndexNo());
 			}
 		}
-		if (indexNums.equals(new ArrayList<String>())){
+		if (indexNums.isEmpty()){
 			throw new Exception(String.format("\nCourse %s does not exist!\n", courseCode));
 		}
 		return indexNums;
@@ -98,12 +98,18 @@ public class Utils implements Serializable
 	}
 
 	// utility methods --------------------------------------------------------------
-	public static void checkVacancy() throws Exception{
-		System.out.println("Enter course code of course to view its vacancies: ");
+	public static void checkVacancy() {
+		System.out.println("Enter course code to view its vacancies: ");
 		String courseCode = sc.next();
-		courseCode.toUpperCase();
-		int totalVacancy = Utils.getTotalVacancyForACourse(courseCode);
-		System.out.printf("Total vacancies in course with course code %s: %d\n", courseCode, totalVacancy);
+		courseCode = courseCode.toUpperCase();
+		try {
+			int totalVacancy = Utils.getTotalVacancyForACourse(courseCode);
+			System.out.printf("Total vacancies in course with course code %s: %d\n", courseCode, totalVacancy);
+		} 
+		catch (Exception e) {
+			System.out.printf("Course %s does not exist!", courseCode.toUpperCase());
+		}
+		
 	}
 
 	public static boolean checkExistingStudent(String studentID) {
@@ -113,7 +119,7 @@ public class Utils implements Serializable
 				return true; 
 			}
 		}
-		System.out.println("no existing student");
+		System.out.println("Invalid StudentID");
 		return false;
 	}
 	public static boolean checkExistingIndex(String indexNo) {
@@ -123,7 +129,7 @@ public class Utils implements Serializable
 				return true; 
 			}
 		}
-		System.out.println("no existing index");
+		System.out.println("No existing index");
 		return false;
 	}
 
@@ -290,7 +296,7 @@ public class Utils implements Serializable
 		//cz2001 vacancy set to zero to check waitlist logic 
 		ArrayList<Lesson> lessons4 = new ArrayList<Lesson>();
 		lessons4.add(l7);
-		Index i5 = new Index("CZ2001", "SCSE", 3, "1238", lessons4, 0); 
+		Index i5 = new Index("CZ2001", "SCSE", 3, "1238", lessons4, 1); 
 
 		String[] mod = {i1.getCourseCode(), i1.getIndexNo()};
 		ArrayList<String[]> modules = new ArrayList<String[]>();
@@ -300,8 +306,8 @@ public class Utils implements Serializable
 		ArrayList<String[]> modules2 = new ArrayList<String[]>();
 		modules2.add(mod2);
 
-		Student s1 = new Student("a", PasswordHashController.hash("a"), "ADAM", "U1823498E", "Singaporean", 'M', "SCBE", modules, "16:00", "23:59", "16/11/2020"); // init
-		Student s2 = new Student("c", PasswordHashController.hash("c"), "CINDY", "U1876839K", "Singaporean", 'F'," SCSE", modules2, "19:00", "22:30", "10/11/2020");
+		Student s1 = new Student("a", PasswordHashController.hash("a"), "ADAM", "U1823498E", "Singaporean", 'M', "SCBE", modules, "16:00", "23:59", "18/11/2020"); // init
+		Student s2 = new Student("c", PasswordHashController.hash("c"), "CINDY", "U1876839K", "Singaporean", 'F'," SCSE", modules2, "19:00", "23:30", "18/11/2020");
 		//Student s3 = new Student("d","d","David","U1742694E", "American",'M',"6598765432","NBS", modules,defaultAU, "17:00", "18:30", "10/11/2020");
 		Admin a1 = new Admin("d", PasswordHashController.hash("d"));
 
