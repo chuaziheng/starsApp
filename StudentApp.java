@@ -1,5 +1,4 @@
 package project2.starsApp;
-
 import java.util.Scanner;
 
 public class StudentApp {

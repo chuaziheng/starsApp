@@ -1,9 +1,8 @@
 package project2.starsApp;
 
-import java.util.ArrayList;
+
 import java.io.Serializable;
-import java.util.Iterator;
-import java.util.Scanner;
+
 
 public abstract class Course implements Serializable {
 	final static long serialVersionUID = 123;

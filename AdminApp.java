@@ -1,12 +1,10 @@
 package project2.starsApp;
 
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Scanner;
 
 public class AdminApp {
 	
-	public static void AdminMenu(Admin admin) throws Exception{
+	public static void AdminMenu(Admin admin) throws Exception {
 		
 		int choice;
 		Scanner sc = new Scanner(System.in);
@@ -30,17 +28,18 @@ public class AdminApp {
 			System.out.println("Please choose one of the options above.");
 			
 			choice = sc.nextInt();
-			sc.nextLine();
 			
 			switch (choice) {
 				case 1:
 					Admin.addStudent();
+					Admin.printStuList("all");
 					break;
 				case 2:
 					Admin.deleteStudent();
 					break;
 				case 3:
 					Admin.addModule();
+					Admin.printCourseIndexList();
 					break;
 				case 4:
 					Admin.deleteIndexOrCourse(false);
