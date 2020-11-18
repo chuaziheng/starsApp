@@ -25,7 +25,7 @@ public class StudentApp {
 					me.askAddModule();
 					break;
 				case 2:
-					me.dropModule(true);
+					me.askDropModule(true);
 					break;
 				case 3:
 					me.swapIndex();

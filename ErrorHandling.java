@@ -1,5 +1,7 @@
 package project2.starsApp;
 
+import java.util.ArrayList;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -144,7 +146,7 @@ public class ErrorHandling {
 	}
 	public static void checkStuExistingMod(ArrayList<String[]> modules, Index indexToAdd) throws Exception{
 		for (String[] mod : modules) {
-			if (mod[1].equals(indexToAdd.getIndexNo())){
+			if (mod[0].equals(indexToAdd.getCourseCode())){
 				throw new Exception("Sorry, you are already registered for this index");
 			}
 		}
@@ -152,6 +154,11 @@ public class ErrorHandling {
 	public static void isEmpty(ArrayList<String[]> modules) throws Exception{
 		if (modules.isEmpty()){
 			throw new Exception("You have no existing modules!");
+		}
+	}
+	public static void sameIndexCannotSwap(Index myIndex, Index sIndex) throws Exception{
+		if (myIndex.getIndexNo().equals(sIndex.getIndexNo())){
+			throw new Exception("Student has same index as you, cannot swap");
 		}
 	}
 }

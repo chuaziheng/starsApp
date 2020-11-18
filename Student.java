@@ -1,7 +1,8 @@
 package project2.starsApp;
+
 import java.util.*;
 
-//import com.sun.org.apache.xpath.internal.operations.String;
+import com.sun.org.apache.xpath.internal.operations.String;
 
 import java.io.Serializable;
 
@@ -78,6 +79,7 @@ public class Student implements Serializable {
 
 			System.out.println("Enter course code to add: ");
 			courseCode = sc.next();
+			courseCode.toUpperCase();
 			indexNums = Utils.getIndexNumsFromCourseCode(courseCode);
 
 			ErrorHandling.checkAcadUnit(this, Utils.getIndexFromIndexNum(indexNums.get(0)));
@@ -92,15 +94,16 @@ public class Student implements Serializable {
 				counter++;
 			}
 			// user selection of index
-			int idxChoice = -1;
+			int idxChoice;
+			boolean result;
 			do {
 				System.out.println("Enter option (1/2/...): ");
 				idxChoice = sc.nextInt();
 				idxChoice--;
 				sc.nextLine();
 
-				ErrorHandling.isReasonableChoice(indexNums.size(), idxChoice);
-			} while (!ErrorHandling.isReasonableChoice(indexNums.size(), idxChoice));
+				result = ErrorHandling.isReasonableChoice(indexNums.size(), idxChoice);
+			} while (!result);
 
 			// get the respective index object
 			Index indexToAdd = Utils.getIndexFromIndexNum(indexNums.get(idxChoice));
@@ -127,129 +130,153 @@ public class Student implements Serializable {
 	// case 1 --------------------------------------------------------------------------------------------------------
 
 	// case 2 --------------------------------------------------------------------------------------------------------
-	public String[] dropModule(boolean drop)throws Exception{
-		ErrorHandling.isEmpty(this.modules);
+	public String[] askDropModule(boolean drop){
+		try{
+			ErrorHandling.isEmpty(this.modules);
 
-		int removeChoice;
-		String[] mod = new String[2];
-		printModules();
+			int removeChoice;
+			boolean result;
+			String[] mod = new String[2];
+			printModules();
 
-		System.out.println("Enter choice of course code to drop(1/2/...): ");
-		removeChoice = sc.nextInt();
-		sc.nextLine();
-		removeChoice--;
+			do{
+				System.out.println("Enter choice of course code to drop(1/2/...): ");
+				removeChoice = sc.nextInt();
+				sc.nextLine();
+				removeChoice--;
 
-		if (!ErrorHandling.isReasonableChoice(this.modules.size(), removeChoice)) return new String[]{"", ""};
+				result = ErrorHandling.isReasonableChoice(this.modules.size(), removeChoice);
+			} while(!result);
 
-		if (drop) {
-			doDropModule(removeChoice);
-			System.out.printf("course %s, index %s successfully dropped\n", mod[0], mod[1]);
+			if (drop) {
+				mod = doDropModule(removeChoice);
+				System.out.printf("course %s, index %s successfully dropped\n", mod[0], mod[1]);
+			}
+			else mod = modules.get(removeChoice);
+			return mod;
+		} catch (Exception e){
+			return new String[]{"", ""};
 		}
-		else mod = modules.get(removeChoice);
-		return mod;
 	}
-	public void doDropModule(int removeChoice) throws Exception{
+	public String[] doDropModule(int removeChoice){
 		String[] mod = new String[2];
 		mod = modules.remove(removeChoice);
 
 		//Remove student from Index (Remove from courseList DB)
 		Utils.getIndexFromIndexNum(mod[1]).dropStud(studentID);
 		Utils.getIndexFromIndexNum(mod[1]).popWaitListedStud();
+		return mod;
 	}
 	// case 2 --------------------------------------------------------------------------------------------------------
 
-	public int swapIndex()throws Exception{
-		ErrorHandling.isEmpty(this.modules);
+	// case 3 ---------------------------------------------------------------------------------------------------------
+	public void swapIndex(){
+		try{
+			ErrorHandling.isEmpty(this.modules);
 
-		String[] mod = dropModule(false);
+			String[] mod = askDropModule(false);
 
-		if (mod==new String[]{"", ""})throw new Exception("u got no index to swap");
+			if (mod==new String[]{"", ""}) throw new Exception();
 
-		System.out.println("Enter username of student to swap index with: ");
-		String username = sc.next();
-		Student s = Utils.getStudentFromStuID(username);
+			System.out.println("Enter username of student to swap index with: ");
+			String username = sc.next();
+			username.toUpperCase();
+			Student s = Utils.getStudentFromStuID(username);
+			
+			// get my details
+			String myCourseCode = mod[0];
+			String myIndexNum = mod[1];
+			Index myIndex = getIndexFromCourseCode(myCourseCode);
 
-		// get my details
-		String myCourseCode = mod[0];
-		String myIndexNum = mod[1];
-		Index myIndex = getIndexFromCourseCode(myCourseCode);
+			// myCourseCode is shared between me and s
+			// if cannot find, go back to App
+			Index sIndex = s.getIndexFromCourseCode(myCourseCode);
+			ErrorHandling.sameIndexCannotSwap(myIndex, sIndex);
 
-		// myCourseCode is shared between me and s
-		Index sIndex = s.getIndexFromCourseCode(myCourseCode);
+			// swap the Index in DB
+			myIndex.dropStud(studentID);
+			sIndex.dropStud(s.getStudentID());
+			myIndex.appendToStuList(s.getStudentID());
+			sIndex.appendToStuList(studentID);
 
-		// swap the Index in DB
-		myIndex.dropStud(studentID);
-		sIndex.dropStud(s.getStudentID());
-		myIndex.appendToStuList(s.getStudentID());
-		sIndex.appendToStuList(studentID);
+			//editing my modules
+			modules.remove(mod);
+			mod[1] = sIndex.getIndexNo();
+			modules.add(mod);
 
-		//editing my modules
-		modules.remove(mod);
-		mod[1] = sIndex.getIndexNo();
-		modules.add(mod);
+			// Remove old module pair from s module arrayList
+			s.removeMyModuleByIdxNum(sIndex.getIndexNo());
+			s.getModules().add(new String[]{myCourseCode, myIndexNum});
 
-		// Remove old module pair from s module arrayList
-		s.removeMyModuleByIdxNum(sIndex.getIndexNo());
-		s.getModules().add(new String[]{myCourseCode, myIndexNum});
-
-		System.out.printf("successfully swapped course %s, index %s with %s course %s, index %s\n", myCourseCode, myIndexNum, s.getStudentID(), myCourseCode, sIndex.getIndexNo());
-		return 1;
-	}
-
-	public int changeIndex() throws Exception{
-		ErrorHandling.isEmpty(this.modules);
-
-		int removeChoice;
-		String courseCode;
-		printModules();
-
-		// get choice of course to change index
-		System.out.println("Enter choice of course code to change index(1/2/...): ");
-		removeChoice = sc.nextInt();
-		sc.nextLine();
-		removeChoice--;
-		String[] oldMod = modules.get(removeChoice);
-		courseCode = oldMod[0];
-
-		// print indices:
-		System.out.printf("Avaliable indices for course code %s are: \n", courseCode);
-
-		// list vacancy for each index in selected course
-		int count = 1;
-		ArrayList<String> indexNums = Utils.getIndexNumsFromCourseCode(courseCode);
-		for (String indexNum: indexNums){
-			Index index = Utils.getIndexFromIndexNum(indexNum);
-			System.out.printf("(%d) index number: %s vacancy: %d\n", count, index.getIndexNo(), index.getVacancy());
-			count++;
+			System.out.printf("successfully swapped course %s, index %s with %s course %s, index %s\n", myCourseCode, myIndexNum, s.getStudentID(), myCourseCode, sIndex.getIndexNo());
+		} catch (Exception e){
+			return;
 		}
-
-		// get index to change to
-		int idxChoice;
-		System.out.println("Enter choice of index number to change to(1/2/...): ");
-		idxChoice = sc.nextInt();
-		idxChoice--;
-		sc.nextLine();
-
-		ErrorHandling.isReasonableChoice(indexNums.size(), idxChoice);
-
-		// get the respective index object
-		Index indexToAdd = Utils.getIndexFromIndexNum(indexNums.get(idxChoice));
-
-		ErrorHandling.checkStuExistingMod(this.modules, indexToAdd);
-
-		this.isOverlappingSchedule(indexToAdd);
-
-		if (promptToJoinWaitList(indexToAdd)) {}
-
-		else { // success so add module
-			modules.remove(oldMod);
-			modules.add(new String[]{oldMod[0], indexToAdd.getIndexNo()});
-			Utils.getIndexFromIndexNum(oldMod[1]).dropStud(studentID);
-			indexToAdd.appendToStuList(studentID);
-			System.out.printf("successfully changed course %s, index %s with course %s, index %s\n", oldMod[0], oldMod[1], oldMod[0], indexToAdd.getIndexNo());
-		}
-		return 1;
 	}
+	// case 3 ---------------------------------------------------------------------------------------------------------
+
+	// case 4 --------------------------------------------------------------------------------------------------------
+	public void changeIndex() {
+		try{
+			ErrorHandling.isEmpty(this.modules);
+
+			int removeChoice;
+			String courseCode;
+			printModules();
+
+			// get choice of course to change index
+			System.out.println("Enter choice of course code to change index(1/2/...): ");
+			removeChoice = sc.nextInt();
+			sc.nextLine();
+			removeChoice--;
+
+			ErrorHandling.isReasonableChoice(this.modules.size(), removeChoice);
+
+			String[] oldMod = modules.get(removeChoice);
+			courseCode = oldMod[0];
+
+			// print indices:
+			System.out.printf("Avaliable indices for course code %s are: \n", courseCode);
+
+			// list vacancy for each index in selected course
+			int count = 1;
+			ArrayList<String> indexNums = Utils.getIndexNumsFromCourseCode(courseCode);
+			for (String indexNum: indexNums){
+				Index index = Utils.getIndexFromIndexNum(indexNum);
+				System.out.printf("(%d) index number: %s vacancy: %d\n", count, index.getIndexNo(), index.getVacancy());
+				count++;
+			}
+
+			// get index to change to
+			int idxChoice;
+			System.out.println("Enter choice of index number to change to(1/2/...): ");
+			idxChoice = sc.nextInt();
+			idxChoice--;
+			sc.nextLine();
+
+			ErrorHandling.isReasonableChoice(indexNums.size(), idxChoice);
+
+			// get the respective index object
+			Index indexToAdd = Utils.getIndexFromIndexNum(indexNums.get(idxChoice));
+
+			ErrorHandling.checkStuExistingMod(this.modules, indexToAdd);
+
+			this.isOverlappingSchedule(indexToAdd);
+
+			if (promptToJoinWaitList(indexToAdd)) {}
+
+			else { // success so add module
+				modules.remove(oldMod);
+				modules.add(new String[]{oldMod[0], indexToAdd.getIndexNo()});
+				Utils.getIndexFromIndexNum(oldMod[1]).dropStud(studentID);
+				indexToAdd.appendToStuList(studentID);
+				System.out.printf("successfully changed course %s, index %s with course %s, index %s\n", oldMod[0], oldMod[1], oldMod[0], indexToAdd.getIndexNo());
+			}
+		} catch(Exception e){
+			return;
+		}
+	}
+	// case 4 --------------------------------------------------------------------------------------------------------
 
 	public void printModules(){
 		System.out.println("Current enrolled modules and respective indices are: ");
@@ -365,7 +392,7 @@ public class Student implements Serializable {
 	public String getNationality() { return nationality; }
 	public char getGender() { return gender; }
 	public String getSchoolName() { return schoolName; }
-	public int getAcadUnit() throws Exception {
+	public int getAcadUnit() {
 		acadUnit = 0;
 		for (String[] mod: modules){
 			Index index = Utils.getIndexFromIndexNum(mod[1]);
@@ -376,11 +403,10 @@ public class Student implements Serializable {
 	public Index getIndexFromCourseCode(String courseCode) throws Exception{
 		for (String[] mod: modules){
 			if (mod[0].equals(courseCode)){
-				return Utils.getIndexFromIndexNum(mod[1]);
+				return Utils.getIndexFromIndexNum(mod[-1]);
 			}
 		}
-		System.out.println("\nstudent.getIndexFromCourseCode(String courseCode):\n\tindex with that courseCode cannot be found in student");
-		return null;
+		throw new Exception("\nStudent has no index in course " + courseCode);
 	}
 	public ArrayList<String[]> getModules() {
 		return this.modules;

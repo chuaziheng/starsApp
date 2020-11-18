@@ -1,4 +1,5 @@
 package project2.starsApp;
+
 import java.io.IOException;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -34,6 +35,7 @@ public class Utils implements Serializable
 
 	// special getters ---------------------------------------
 	public static ArrayList<String> getIndexNumsFromCourseCode(String courseCode) throws Exception{
+		courseCode.toUpperCase();
 		ArrayList<String> indexNums = new ArrayList<String>();
 		for (Index i: indexList){
 			if (i.getCourseCode().equals(courseCode)){
@@ -41,7 +43,7 @@ public class Utils implements Serializable
 			}
 		}
 		if (indexNums.equals(new ArrayList<String>())){
-			throw new Exception(String.format("\nCourse %s does not have any indices!\n", courseCode));
+			throw new Exception(String.format("\nCourse %s does not exist!\n", courseCode));
 		}
 		return indexNums;
 	}
@@ -63,21 +65,17 @@ public class Utils implements Serializable
 		return courseCodes;
 	}
 
-	public static Student getStudentFromStuID(String studentID) throws Exception {
-
+	public static Student getStudentFromStuID(String studentID){
 		while (!checkExistingStudent(studentID)) {
 			System.out.println("Please enter valid student ID!: ");
 			String temp = sc.nextLine();
 			studentID = temp;
 		}
-
 		for (Student s: getStuList()) {
 			if (s.getStudentID().equals(studentID)) {
 				return s;
 			}
-		}
-		System.out.printf("\nUtils.getStudentFromStuID(String StudentID):\n\tstudentID: %s not found\n", studentID);
-		throw new Exception("no student with that stuID");
+		} return null; // will never be executed
 	}
 	public static Admin getAdminFromAdminID(String adminID) throws Exception{
 		for(Admin a: getAdminList()) {
@@ -100,17 +98,11 @@ public class Utils implements Serializable
 	}
 
 	// utility methods --------------------------------------------------------------
-	public static void checkVacancy() {
+	public static void checkVacancy() throws Exception{
 		System.out.println("Enter course code of course to view its vacancies: ");
 		String courseCode = sc.next();
-		int totalVacancy;
-		try {
-			totalVacancy = Utils.getTotalVacancyForACourse(courseCode);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			System.out.println("Course does not exist");
-			return;
-		}
+		courseCode.toUpperCase();
+		int totalVacancy = Utils.getTotalVacancyForACourse(courseCode);
 		System.out.printf("Total vacancies in course with course code %s: %d\n", courseCode, totalVacancy);
 	}
 
@@ -308,8 +300,8 @@ public class Utils implements Serializable
 		ArrayList<String[]> modules2 = new ArrayList<String[]>();
 		modules2.add(mod2);
 
-		Student s1 = new Student("a", PasswordHashController.hash("a"), "Adam", "U1823498E", "Singaporean", 'M', "SCBE", modules, "16:00", "23:59", "16/11/2020"); // init
-		Student s2 = new Student("c", PasswordHashController.hash("c"), "Cindy", "U1876839K", "Singaporean", 'F'," SCSE", modules2, "19:00", "22:30", "10/11/2020");
+		Student s1 = new Student("a", PasswordHashController.hash("a"), "ADAM", "U1823498E", "Singaporean", 'M', "SCBE", modules, "16:00", "23:59", "16/11/2020"); // init
+		Student s2 = new Student("c", PasswordHashController.hash("c"), "CINDY", "U1876839K", "Singaporean", 'F'," SCSE", modules2, "19:00", "22:30", "10/11/2020");
 		//Student s3 = new Student("d","d","David","U1742694E", "American",'M',"6598765432","NBS", modules,defaultAU, "17:00", "18:30", "10/11/2020");
 		Admin a1 = new Admin("d", PasswordHashController.hash("d"));
 
@@ -344,4 +336,3 @@ public class Utils implements Serializable
 		System.out.println();
 	}
 }
-
