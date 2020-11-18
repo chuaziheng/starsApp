@@ -1,4 +1,4 @@
-package project2;
+// package project2;
 
 import java.util.ArrayList;
 
@@ -20,7 +20,7 @@ public class ErrorHandling {
 			}
 			else {
 				System.out.println("Enter M or F only: ");
-				gender = sc.nextLine().charAt(0);
+				gender = Character.toLowerCase(sc.nextLine().charAt(0));
 			}
 		}while (!done);
 		return gender;

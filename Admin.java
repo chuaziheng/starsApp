@@ -1,4 +1,4 @@
-package project2;
+// package project2.starsApp;
 
 import java.io.Serializable;
 import java.util.Calendar;
@@ -116,9 +116,10 @@ public class Admin implements Serializable {
 			Index index = Utils.getIndexFromIndexNum(mod[1]);
 			index.dropStud(studentID);
 		}
-
+//exception: stulist empty
 		// drop student
 		Utils.getStuList().remove(student);
+		
 	}
 	
 	// ********************************************************case 3**********************************************************

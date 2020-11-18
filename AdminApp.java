@@ -1,4 +1,4 @@
-package project2;
+// package project2;
 
 import java.util.Scanner;
 
@@ -35,6 +35,7 @@ public class AdminApp {
 					break;
 				case 2:
 					Admin.deleteStudent();
+					Admin.printStuList("all");
 					break;
 				case 3:
 					Admin.addModule();

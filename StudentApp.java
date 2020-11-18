@@ -1,4 +1,4 @@
-package project2.starsApp;
+//package project3;
 import java.util.Scanner;
 
 public class StudentApp {
