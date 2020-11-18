@@ -1,12 +1,11 @@
-
-package project2.starsApp;
+package project2;
 
 import java.io.Serializable;
 import java.util.Calendar;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.Set;
-
 
 public class Admin implements Serializable {
 	
@@ -35,7 +34,6 @@ public class Admin implements Serializable {
 	public String getAdminPassword() {
 		return adminPasswordHash;
 	}
-
 	
 	// ********************************************************case 1**********************************************************
 	public static void addStudent() {
@@ -57,27 +55,29 @@ public class Admin implements Serializable {
 			String nationality = sc.nextLine();
 
 			System.out.println("Enter the new student's gender (M/F): ");
-			char gender = sc.nextLine().charAt(0);
+			char gender = ErrorHandling.checkGender(Character.toLowerCase(sc.nextLine().charAt(0)));
+			
 
 			System.out.println("Enter the new student's school (eg. SCSE): ");
-			String schoolName = sc.nextLine();
+			String schoolName = sc.nextLine(); //.toLowerCase();
 
 			System.out.println("Enter the new student's access date (in DD/MM/YYYY): ");
-			String accessDate = sc.nextLine();
-			String[] accessDateList = accessDate.split("/");
+			String date = ErrorHandling.checkDateFormat(sc.nextLine());
+			
+			System.out.print("Enter the new student's access start time in 24H format HH:MM: ");
+			String startTime = ErrorHandling.checkTimeFormat(sc.nextLine()); 
 
-			System.out.print("Enter the new student's access start time in 24H format HH:MM ");
-			String startTime = sc.nextLine(); 
-			String[] startList = startTime.split(":");
+			System.out.print("Enter the new student's access end time in format HH:MM: ");
+			String endTime = ErrorHandling.checkTimeFormat(sc.nextLine());
+			
+			while (!ErrorHandling.checkTimePeriod(startTime, endTime, date)) {
+				System.out.println("Start time after end time. Please try again!");
+				System.out.print("Enter the new student's access start time in 24H format HH:MM: ");
+				startTime = ErrorHandling.checkTimeFormat(sc.nextLine()); 
 
-			System.out.print("End time in format HH:MM: ");
-			String endTime = sc.nextLine(); 
-			String[] endList = endTime.split(":");
-			Calendar start = Calendar.getInstance();
-			start.set(Integer.parseInt(accessDateList[2]), Integer.parseInt(accessDateList[1]), Integer.parseInt(accessDateList[0]), Integer.parseInt(startList[0]), Integer.parseInt(startList[1]));
-			Calendar end = Calendar.getInstance();
-			end.set(Integer.parseInt(accessDateList[2]), Integer.parseInt(accessDateList[1]), Integer.parseInt(accessDateList[0]), Integer.parseInt(endList[0]), Integer.parseInt(endList[1]));
-
+				System.out.print("Enter the new student's access end time in format HH:MM: ");
+				endTime = ErrorHandling.checkTimeFormat(sc.nextLine());
+			}
 			System.out.println("Confirm to add student " + name + " (Y/N): ");
 			char option = sc.next().charAt(0);
 		
@@ -106,8 +106,8 @@ public class Admin implements Serializable {
 	}
 	
 	// ********************************************************case 2**********************************************************
-	public static void deleteStudent() {
-		System.out.println("Enter the username of the student to be deleted: ");
+	public static void deleteStudent() throws Exception {
+		System.out.println("Enter the ID of the student to be deleted: ");
 		String studentID = sc.next();
 		Student student = Utils.getStudentFromStuID(studentID);
 
@@ -134,13 +134,13 @@ public class Admin implements Serializable {
 		System.out.println("School (eg. SCSE): "); 
 		String school = sc.nextLine(); 
 		
-		System.out.println("Number of AUs: "); 
-		int acadUnit = sc.nextInt(); 
-		sc.nextLine();
 
+    	System.out.println("Number of AUs: "); 
+
+    	int acadUnit = ErrorHandling.checkInteger(sc.nextLine());
+    	
 		System.out.print("Number of indices: ");
 		int noOfIndices = sc.nextInt(); 
-		sc.nextLine();
 		
 		// updating this shld update DB list
 		ArrayList<Index> indexList = Utils.getIndexList();
@@ -153,7 +153,7 @@ public class Admin implements Serializable {
 		    System.out.printf("Index number %d: ", (i+1)); 
 		    String temp2 = sc.nextLine(); 
 		    while (Utils.checkExistingIndex(temp2)){
-		     System.out.println("Please enter a new index number!"); 
+		     System.out.println("Index exists. Please enter a new index number!"); 
 		     temp2 = sc.nextLine();
 		    }
 		    String indexNo = temp2; 
@@ -164,14 +164,15 @@ public class Admin implements Serializable {
 		}
 	
 	// ********************************************************case 4 or 6**********************************************************
-	public static void deleteIndexOrCourse(boolean byIndex) {
-		System.out.println("Enter the course code to be deleted: ");
-		courseCode = sc.next();
-		ArrayList<String> indexNums = Utils.getIndexNumsFromCourseCode(courseCode); // list of all index numbers in courseCode
+	public static void deleteIndexOrCourse(boolean byIndex) throws Exception {
 		
 		// !byIndex means remove all index in this courseCode
 		// otherwise remove specific one
 		if (!byIndex){
+			System.out.println("Enter the course code to be deleted: ");
+			courseCode = sc.next();
+			ArrayList<String> indexNums = Utils.getIndexNumsFromCourseCode(courseCode); // list of all index numbers in courseCode
+			
 			for (String indexNum : indexNums) {
 				Index index = Utils.getIndexFromIndexNum(indexNum);
 				Utils.getIndexList().remove(index);
@@ -179,8 +180,8 @@ public class Admin implements Serializable {
 					int count1 = 0;
 					  for (String[] str: s.getModules()) {
 					   if (index.getIndexNo().equals(str[1])) {
-							s.getModules().remove(count1);
-							break;
+					    s.getModules().remove(count1);
+					    break;
 					   }
 					   count1++;
 					  }
@@ -188,25 +189,34 @@ public class Admin implements Serializable {
 			}
 		}
 		else{
-			int counter = 1;
-			System.out.println("Select option of which index number to be deleted: ");
-			for (String indexNum : indexNums) {
-				System.out.printf("\t(%d) courseCode: %s\tindex: %s\n", counter, courseCode, indexNum);
-				counter++;
-			}
-			int option = sc.nextInt();
-			sc.nextLine();
-			option--;
-			Index removeIndex = Utils.getIndexFromIndexNum(indexNums.get(option));
-			Utils.getIndexList().remove(removeIndex);
-			for (Student s : Utils.getStuList()) {
-				s.getModules().remove(new String[]{courseCode, indexNums.get(option)});
-			}
+			printCourseIndexList(); 
+			   
+			   System.out.println("Enter index number to be deleted: ");
+			   String temp4 = sc.nextLine(); 
+			   
+			   while(!Utils.checkExistingIndex(temp4)) {
+			    System.out.println("Please enter valid index number!"); 
+			    temp4 = sc.nextLine(); 
+			   }
+			   
+			   Index removeIndex = Utils.getIndexFromIndexNum(temp4);
+			   Utils.getIndexList().remove(removeIndex);
+			   for (Student s : Utils.getStuList()) {
+			    int count1 = 0;
+			      for (String[] str: s.getModules()) {
+			       if (removeIndex.getIndexNo().equals(str[1])) {
+			        s.getModules().remove(count1);
+			        break;
+			       }
+			       count1++;
+			      }
+			   }
+			   System.out.println("Successfully removed!");
 		}
 	}
 	
 	// ********************************************************case 5**********************************************************
-	public static void addIndex() {
+	public static void addIndex() throws Exception {
 		System.out.println("Enter option of existing course: ");
 		int counter = 1;
 		Set<String> courseCodes = Utils.getAllCourseCodes();
@@ -215,7 +225,7 @@ public class Admin implements Serializable {
 			counter++;
 		}
 		int option = sc.nextInt();
-		sc.nextLine();
+		sc.nextLine(); //v12
 		option--;
 		int i = 0;
 		for (String cc : courseCodes) {
@@ -231,11 +241,17 @@ public class Admin implements Serializable {
 			System.out.println("\t" + indexNum);
 		}
 		System.out.printf("Enter index number to be added to course %s: \n", courseCode);
-		String newIndexNum = sc.nextLine();
+		String temp3 = sc.nextLine(); 
+	    while (Utils.checkExistingIndex(temp3)){
+	     System.out.println("Please enter a new index number!"); 
+	     temp3 = sc.nextLine();
+	    }
+	    String newIndexNum = temp3; 
+
 
 		System.out.println("Enter vacancy for this index: "); 
 		int vacancy = sc.nextInt(); 
-		sc.nextLine();
+		sc.nextLine(); //v12
 		
 		Index anExistingIndex = Utils.getIndexFromIndexNum(indexNums.get(0));
 		Index newIndex = new Index(courseCode, anExistingIndex.getSchool(), anExistingIndex.getAcadUnit(), newIndexNum, addLesson(), vacancy);
@@ -243,7 +259,7 @@ public class Admin implements Serializable {
 	}
 	// ********************************************************case 7**********************************************************
 	public static ArrayList<Lesson> addLesson() { 
-		  System.out.print("Number of Lessons for this index: ");
+		System.out.print("Number of Lessons for this index: ");
 		  int noOfLessons = sc.nextInt(); 
 		  sc.nextLine();
 		  
@@ -257,13 +273,23 @@ public class Admin implements Serializable {
 		   System.out.printf("Class location: "); 
 		   String location = sc.nextLine(); 
 		   
-		   System.out.printf("Class start time (24H): "); 
-		   String startTime = sc.nextLine();
+		   System.out.print("Start time in 24H format HH:MM: ");
+		   String startTime = ErrorHandling.checkTimeFormat(sc.nextLine()); 
+			
+		   System.out.print("End time in 24H format HH:MM: ");
+		   String endTime = ErrorHandling.checkTimeFormat(sc.nextLine());
 		   
-		   System.out.printf("Class end time (24H): "); 
-		   String endTime = sc.nextLine(); 
+		   String date = "01/01/2000";
+		   while (!ErrorHandling.checkTimePeriod(startTime, endTime, date)) {
+				System.out.println("Start time after end time. Please try again!");
+				System.out.print("Start time in 24H format HH:MM: ");
+				startTime = ErrorHandling.checkTimeFormat(sc.nextLine()); 
+
+				System.out.print("End time in 24H format HH:MM: ");
+				endTime = ErrorHandling.checkTimeFormat(sc.nextLine());
+			}
 		   
-		   System.out.println("Enter 1 day of the week (MON/TUES/...): ");
+		   System.out.println("Enter 1 day of the week: ");
 		   String day = sc.next();
 		   sc.nextLine();
 		   
@@ -278,13 +304,22 @@ public class Admin implements Serializable {
 	public static void studentAccessPeriod(Student s) {
 		
 		System.out.print("Date in format DD/MM/YYYY: ");
-		String date = sc.nextLine(); 
+		String date = ErrorHandling.checkDateFormat(sc.nextLine()); 
 		
 		System.out.print("Start time in 24H format HH:MM: ");
-		String startTime = sc.nextLine(); 
+		String startTime = ErrorHandling.checkTimeFormat(sc.nextLine()); 
 		
 		System.out.print("End time in 24H format HH:MM: ");
-		String endTime = sc.nextLine(); 
+		String endTime = ErrorHandling.checkTimeFormat(sc.nextLine());
+		
+		while (!ErrorHandling.checkTimePeriod(startTime, endTime, date)) {
+			System.out.println("Start time after end time. Please try again!");
+			System.out.print("Start time in 24H format HH:MM: ");
+			startTime = ErrorHandling.checkTimeFormat(sc.nextLine()); 
+
+			System.out.print("End time in 24H format HH:MM: ");
+			endTime = ErrorHandling.checkTimeFormat(sc.nextLine());
+		}
 		
 		s.setStartTime(startTime);
 		s.setEndTime(endTime);
@@ -303,7 +338,7 @@ public class Admin implements Serializable {
 	    }
 	    System.out.println("-----------------------------------------------------------------------------");
 	}
-	public static void printStuList(String byWhat){
+	public static void printStuList(String byWhat) throws Exception{
 		switch (byWhat) {
 			case "all":
 				System.out.println("List of all current students: ");
