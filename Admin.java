@@ -1,3 +1,5 @@
+package project2.starsApp;
+
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Scanner;

@@ -1,3 +1,5 @@
+package project2.starsApp;
+
 import java.util.*;
 
 import com.sun.swing.internal.plaf.synth.resources.synth_sv;

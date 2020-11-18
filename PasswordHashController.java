@@ -1,3 +1,5 @@
+package project2.starsApp;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 

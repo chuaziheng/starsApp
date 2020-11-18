@@ -1,3 +1,5 @@
+package project2.starsApp;
+
 import java.util.*;
 
 public class Index extends Course { // Serializable inherited from Course

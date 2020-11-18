@@ -1,3 +1,5 @@
+package project2.starsApp;
+
 import java.util.ArrayList;
 
 public class ErrorHandling{
