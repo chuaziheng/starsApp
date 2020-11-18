@@ -1,12 +1,10 @@
-package project2.starsApp;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Scanner;
 
 public class AdminApp {
 	
-	public static void AdminMenu(Admin admin) {
+	public static void AdminMenu(Admin admin) throws Exception{
 		
 		int choice;
 		Scanner sc = new Scanner(System.in);

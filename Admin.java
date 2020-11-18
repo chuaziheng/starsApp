@@ -1,5 +1,3 @@
-package project2.starsApp;
-
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Scanner;
@@ -105,7 +103,7 @@ public class Admin implements Serializable {
 	}
 	
 	// ********************************************************case 2**********************************************************
-	public static void deleteStudent() {
+	public static void deleteStudent() throws Exception{
 		System.out.println("Enter the username of the student to be deleted: ");
 		String studentID = sc.next();
 		Student student = Utils.getStudentFromStuID(studentID);
@@ -163,7 +161,7 @@ public class Admin implements Serializable {
 		}
 	
 	// ********************************************************case 4 or 6**********************************************************
-	public static void deleteIndexOrCourse(boolean byIndex) {
+	public static void deleteIndexOrCourse(boolean byIndex) throws Exception{
 		System.out.println("Enter the course code to be deleted: ");
 		courseCode = sc.next();
 		ArrayList<String> indexNums = Utils.getIndexNumsFromCourseCode(courseCode); // list of all index numbers in courseCode
@@ -205,7 +203,7 @@ public class Admin implements Serializable {
 	}
 	
 	// ********************************************************case 5**********************************************************
-	public static void addIndex() {
+	public static void addIndex() throws Exception{
 		System.out.println("Enter option of existing course: ");
 		int counter = 1;
 		Set<String> courseCodes = Utils.getAllCourseCodes();

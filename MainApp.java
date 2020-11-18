@@ -1,6 +1,7 @@
-package project2.starsApp;
-
 import java.util.*;
+
+import com.sun.swing.internal.plaf.synth.resources.synth_sv;
+
 import java.io.Console;
 import java.io.Serializable;
 
@@ -43,7 +44,7 @@ public class MainApp implements Serializable{
 						String studentPasswordHash = PasswordHashController.hash(studentPasswordStr);
 						
 					// returns a boolean ie. checks if the username and password matches
-					if (PasswordHashController.checkUsernameAndPassword(studentID, studentPasswordHash)) {
+					if (PasswordHashController.checkUsernameAndPassword(studentID, "student", studentPasswordHash)) {
 						student = Utils.getStudentFromStuID(studentID);
 						// check if student is accessing during his own access time, nothing happens if during access time, if not during access time, print message, then return to main menu/terminate	
 						if (student.checkAccessTime()) {
@@ -63,7 +64,7 @@ public class MainApp implements Serializable{
 					String adminPasswordStr = String.valueOf(adminPassword);
 					String adminPasswordHash = PasswordHashController.hash(adminPasswordStr);
 					
-					if (PasswordHashController.checkUsernameAndPassword(adminID, adminPasswordHash)) {
+					if (PasswordHashController.checkUsernameAndPassword(adminID, "admin", adminPasswordHash)) {
 						for (Admin a: Utils.getAdminList()) {
 							if (a.getAdminID().equals(adminID)) {
 								admin = a;
@@ -74,16 +75,11 @@ public class MainApp implements Serializable{
 					} else {
 						System.out.println("Invalid adminID or password!\n");
 					}
-					// admin can access anytime
-					if (true) { 
-						admin = Utils.getAdminFromAdminID(adminID);
-						// NEW: Check by school												//check if student is accessing during his own access time, nothing happens if during access time, if not during access time, print message, then return to main menu/terminate	
-						if (student.checkAccessTime()) {
-							AdminApp.AdminMenu(admin);
-						}
-					} else {
-							System.out.println("Invalid AdminID or password!\n");
-						}
+					break;
+
+				case 3:
+					System.out.println("System terminating...");
+					System.exit(0);
 					break;
 
 				default:
