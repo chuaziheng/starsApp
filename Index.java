@@ -1,5 +1,6 @@
 package project2;
 
+
 import java.util.*;
 
 public class Index extends Course { // Serializable inherited from Course
