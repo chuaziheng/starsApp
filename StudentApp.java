@@ -1,6 +1,4 @@
 package project2.starsApp;
-
-
 import java.util.Scanner;
 
 public class StudentApp {
@@ -24,7 +22,7 @@ public class StudentApp {
 
 			switch (choice) {
 				case 1:
-					me.addModule();
+					me.askAddModule();
 					break;
 				case 2:
 					me.dropModule(true);

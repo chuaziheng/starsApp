@@ -41,7 +41,7 @@ public class Index extends Course { // Serializable inherited from Course
 		VACANCY++;
 		// System.out.printf("vacancy after dropStud: %d, adding... \n", VACANCY);
 	}
-	public void printStuListInfo() {
+	public void printStuListInfo() throws Exception {
 		System.out.println("Printing Student List in Index " + indexNo);
 		System.out.println("-----------------------------------------------------------------------------");
 	    System.out.printf("%-15s %-8s %-15s", "NAME", "GENDER", "NATIONALITY");

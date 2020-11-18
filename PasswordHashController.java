@@ -1,6 +1,5 @@
 package project2.starsApp;
 
-
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -25,9 +24,15 @@ public class PasswordHashController {
 		return stringToEncrypt;
 	}
 	
-	public static boolean checkUsernameAndPassword(String studentID, String passHash) {
-		Student s = Utils.getStudentFromStuID(studentID);
-		if (s.getPasswordHash().equals(passHash)) return true;
-		return false;
-	}
+	public static boolean checkUsernameAndPassword(String id, String type, String passHash) throws Exception{
+	    if (type.equals("student")){
+	      Student s = Utils.getStudentFromStuID(id);
+	      if (s.getPasswordHash().equals(passHash)) return true;
+	    }
+	    else if (type.equals("admin")){
+	      Admin a = Utils.getAdminFromAdminID(id);
+	      if (a.getAdminPassword().equals(passHash)) return true;
+	    }
+	    return false;
+	  }
 }

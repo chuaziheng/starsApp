@@ -1,6 +1,4 @@
 package project2.starsApp;
-
-
 import java.io.IOException;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -43,8 +41,7 @@ public class Utils implements Serializable
 			}
 		}
 		if (indexNums.equals(new ArrayList<String>())){
-			System.out.println("\nUtils.getIndexNumsFromCourseCode(String courseCode)\n\tno index with that courseCode");
-			throw new Exception("no index num with that coursecode");
+			throw new Exception(String.format("\nCourse %s does not have any indices!\n", courseCode));
 		}
 		return indexNums;
 	}
@@ -55,8 +52,7 @@ public class Utils implements Serializable
 				return index;
 			}
 		}
-		System.out.println("\nUtils.getIndexFromIndexNum(String indexNum):\n\tno index with indexNum: " + indexNum);
-		throw new Exception("no index with that index num");
+		throw new Exception(String.format("\nNo index with index number: " + indexNum));
 	}
 
 	public static Set<String> getAllCourseCodes(){
@@ -104,10 +100,17 @@ public class Utils implements Serializable
 	}
 
 	// utility methods --------------------------------------------------------------
-	public static void checkVacancy() throws Exception{
+	public static void checkVacancy() {
 		System.out.println("Enter course code of course to view its vacancies: ");
 		String courseCode = sc.next();
-		int totalVacancy = Utils.getTotalVacancyForACourse(courseCode);
+		int totalVacancy;
+		try {
+			totalVacancy = Utils.getTotalVacancyForACourse(courseCode);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			System.out.println("Course does not exist");
+			return;
+		}
 		System.out.printf("Total vacancies in course with course code %s: %d\n", courseCode, totalVacancy);
 	}
 
