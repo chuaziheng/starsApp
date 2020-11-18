@@ -33,67 +33,67 @@ public class Utils implements Serializable
 	public static ArrayList<Admin> getAdminList() {
 		return adminList;
 	}
-	
+
 	// special getters ---------------------------------------
-	public static ArrayList<String> getIndexNumsFromCourseCode(String courseCode){
+	public static ArrayList<String> getIndexNumsFromCourseCode(String courseCode) throws Exception{
 		ArrayList<String> indexNums = new ArrayList<String>();
 		for (Index i: indexList){
 			if (i.getCourseCode().equals(courseCode)){
 				indexNums.add(i.getIndexNo());
 			}
 		}
-		if (indexNums.equals(new ArrayList<String>())) { System.out.println("\nUtils.getIndexNumsFromCourseCode(String courseCode)\n\tno index with that courseCode"); }
+		if (indexNums.equals(new ArrayList<String>())){
+			System.out.println("\nUtils.getIndexNumsFromCourseCode(String courseCode)\n\tno index with that courseCode");
+			throw new Exception("no index num with that coursecode");
+		}
 		return indexNums;
 	}
 
-	public static Index getIndexFromIndexNum(String indexNum){
+	public static Index getIndexFromIndexNum(String indexNum) throws Exception{
 		for (Index index: indexList){
 			if (index.getIndexNo().equals(indexNum)){
 				return index;
 			}
 		}
 		System.out.println("\nUtils.getIndexFromIndexNum(String indexNum):\n\tno index with indexNum: " + indexNum);
-		return null;
+		throw new Exception("no index with that index num");
 	}
-	
+
 	public static Set<String> getAllCourseCodes(){
 		Set<String> courseCodes = new HashSet<String>();
 		for (Index index: indexList){
-				courseCodes.add(index.getCourseCode());
+			courseCodes.add(index.getCourseCode());
 		}
 		return courseCodes;
 	}
 
-	public static Student getStudentFromStuID(String studentID) {
-		
+	public static Student getStudentFromStuID(String studentID) throws Exception {
+
 		while (!checkExistingStudent(studentID)) {
 			System.out.println("Please enter valid student ID!: ");
 			String temp = sc.nextLine();
 			studentID = temp;
 		}
-		
+
 		for (Student s: getStuList()) {
 			if (s.getStudentID().equals(studentID)) {
 				return s;
 			}
-	}
-		
-
-
+		}
 		System.out.printf("\nUtils.getStudentFromStuID(String StudentID):\n\tstudentID: %s not found\n", studentID);
-		return null;
+		throw new Exception("no student with that stuID");
 	}
-	public static Admin getAdminFromAdminID(String adminID) {
+	public static Admin getAdminFromAdminID(String adminID) throws Exception{
 		for(Admin a: getAdminList()) {
 			if(a.getAdminID().equals(adminID)){
 				return a;
 			}
 		}
 		System.out.printf("\nUtils.getAdminFromAdminID(String adminID):\n\tadminID: %s not found\n", adminID);
-		return null;
+		throw new Exception("no admin with that id");
 	}
 
-	public static int getTotalVacancyForACourse(String courseCode){
+	public static int getTotalVacancyForACourse(String courseCode) throws Exception{
 		ArrayList<String> indexNums = getIndexNumsFromCourseCode(courseCode);
 
 		int totalVacancy = 0;
@@ -104,7 +104,7 @@ public class Utils implements Serializable
 	}
 
 	// utility methods --------------------------------------------------------------
-	public static void checkVacancy(){
+	public static void checkVacancy() throws Exception{
 		System.out.println("Enter course code of course to view its vacancies: ");
 		String courseCode = sc.next();
 		int totalVacancy = Utils.getTotalVacancyForACourse(courseCode);
@@ -122,29 +122,29 @@ public class Utils implements Serializable
 		return false;
 	}
 	public static boolean checkExistingIndex(String indexNo) {
-		  ArrayList<Index> indexList = Utils.getIndexList();
-		  for (Index index : indexList){
-		   if (index.getIndexNo().equals(indexNo)){
-		    return true; 
-		   }
-		  }
-		  System.out.println("no existing index");
-		  return false;
-		 }
-		 
-		 public static boolean checkExistingCourse(String course) {
-		  for (String c : getAllCourseCodes()){
-		   if (c.equals (course)){
-		    return true; 
-		   }
-		  }
-		  System.out.println("no existing course");
-		  return false;
-		 }
-	
-	
+		ArrayList<Index> indexList = Utils.getIndexList();
+		for (Index index : indexList){
+			if (index.getIndexNo().equals(indexNo)){
+				return true; 
+			}
+		}
+		System.out.println("no existing index");
+		return false;
+	}
+
+	public static boolean checkExistingCourse(String course) {
+		for (String c : getAllCourseCodes()){
+			if (c.equals (course)){
+				return true; 
+			}
+		}
+		System.out.println("no existing course");
+		return false;
+	}
+
+
 	// pretty print DB ---------------------------------------
-	public static void prettyPrint(){
+	public static void prettyPrint() throws Exception{
 		// courses -----------
 		System.out.println("\n\nUtils.prettyPrint()------------");
 		for (String courseCode: getAllCourseCodes()){
@@ -181,7 +181,7 @@ public class Utils implements Serializable
 	}
 	@SuppressWarnings("unchecked")
 	public static void load(String choice) throws Exception{
-		
+
 		FileInputStream fis = null;
 		ObjectInputStream in = null;
 		choice += ".dat";
@@ -207,8 +207,8 @@ public class Utils implements Serializable
 			}
 			fis.close();
 			in.close();
-			System.out.println("after loading " + choice);
-			System.out.println();
+			//System.out.println("after loading " + choice);
+			//System.out.println();
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		} catch (ClassNotFoundException ex) {
@@ -219,7 +219,7 @@ public class Utils implements Serializable
 		try {
 			// write to file
 			choice += ".dat";
-			System.out.println("before saving " + choice);
+			//System.out.println("before saving " + choice);
 			FileOutputStream fos = new FileOutputStream(choice);
 			ObjectOutputStream out = new ObjectOutputStream(fos);
 
@@ -240,13 +240,13 @@ public class Utils implements Serializable
 			}
 			out.close();
 			fos.close();
-			System.out.println("after saving " + choice);
-			System.out.println();
-	}  catch (IOException ex) {
-		ex.printStackTrace();
-	}
+			//System.out.println("after saving " + choice);
+			//System.out.println();
+		}  catch (IOException ex) {
+			ex.printStackTrace();
+		}
 		catch ( Exception e ) {
-				System.out.println( "Exception >> " + e.getMessage() );
+			System.out.println( "Exception >> " + e.getMessage() );
 		}
 	}
 	public static LocalDateTime convertDate  (String s) {
@@ -263,93 +263,82 @@ public class Utils implements Serializable
 	}
 	// use this to generate some input
 	public static void populate() throws Exception {
-	    int defaultAU = 0;
-	    
-	    //create lessons 
-	    Lesson l1 = new Lesson("ARC", "10:30", "11:59", "Monday", "LECT");
-	    Lesson l2 = new Lesson("HIVE", "15:30", "17:29", "Tuesday", "TUT");
-	    Lesson l3 = new Lesson("TR29", "11:00", "13:29", "Monday", "SEM");
-	    Lesson l4 = new Lesson("ARC", "10:30", "11:59", "Thursday", "LECT");
-	    Lesson l5 = new Lesson("HIVE", "13:30", "15:29", "Tuesday", "TUT");
-	    Lesson l6 = new Lesson("TR26", "11:30", "12:29", "Thursday", "SEM"); //l6&l4 timing clash
-	    Lesson l7 = new Lesson("LT2", "14:00", "16:29", "Friday", "LECT");
-	   
-	    //cz2002 2 indices vacancy = 70
-	    ArrayList<Lesson> lessons = new ArrayList<Lesson>(); //for cz2002 i1
-	    lessons.add(l1);
-	    lessons.add(l3);
-	    ArrayList<Lesson> lessons1 = new ArrayList<Lesson>(); //for cz2002 i2
-	    lessons1.add(l2);
-	    Index i1 = new Index("CZ2002", "SCSE", 3, "1234", lessons, 35); // init
-	    Index i2 = new Index("CZ2002", "SCSE", 3, "1235", lessons1, 35);
-	    
-	    //hw0128 hw0128&cz2001 clash 
-	    ArrayList<Lesson> lessons2 = new ArrayList<Lesson>();
-	    lessons2.add(l4);
-	    lessons2.add(l5);
-	    Index i3 = new Index("HW0128", "SCSE", 3, "1236", lessons2, 35);
-	    ArrayList<Lesson> lessons3 = new ArrayList<Lesson>();
-	    lessons3.add(l6);
-	    Index i4 = new Index("HW0128", "SCSE", 3, "1237", lessons3, 35);
-	    
-	    //cz2001 vacancy set to zero to check waitlist logic 
-	    ArrayList<Lesson> lessons4 = new ArrayList<Lesson>();
-	    lessons4.add(l7);
-	    Index i5 = new Index("CZ2001", "SCSE", 3, "1238", lessons4, 0); 
+		int defaultAU = 0;
+
+		//create lessons 
+		Lesson l1 = new Lesson("ARC", "10:30", "11:59", "Monday", "LECT");
+		Lesson l2 = new Lesson("HIVE", "15:30", "17:29", "Tuesday", "TUT");
+		Lesson l3 = new Lesson("TR29", "11:00", "13:29", "Monday", "SEM");
+		Lesson l4 = new Lesson("ARC", "10:30", "11:59", "Thursday", "LECT");
+		Lesson l5 = new Lesson("HIVE", "13:30", "15:29", "Tuesday", "TUT");
+		Lesson l6 = new Lesson("TR26", "11:30", "12:29", "Thursday", "SEM"); //l6&l4 timing clash
+		Lesson l7 = new Lesson("LT2", "14:00", "16:29", "Friday", "LECT");
+
+		//cz2002 2 indices vacancy = 70
+		ArrayList<Lesson> lessons = new ArrayList<Lesson>(); //for cz2002 i1
+		lessons.add(l1);
+		lessons.add(l3);
+		ArrayList<Lesson> lessons1 = new ArrayList<Lesson>(); //for cz2002 i2
+		lessons1.add(l2);
+		Index i1 = new Index("CZ2002", "SCSE", 3, "1234", lessons, 35); // init
+		Index i2 = new Index("CZ2002", "SCSE", 3, "1235", lessons1, 35);
+
+		//hw0128 hw0128&cz2001 clash 
+		ArrayList<Lesson> lessons2 = new ArrayList<Lesson>();
+		lessons2.add(l4);
+		lessons2.add(l5);
+		Index i3 = new Index("HW0128", "SCSE", 3, "1236", lessons2, 35);
+		ArrayList<Lesson> lessons3 = new ArrayList<Lesson>();
+		lessons3.add(l6);
+		Index i4 = new Index("HW0128", "SCSE", 3, "1237", lessons3, 35);
+
+		//cz2001 vacancy set to zero to check waitlist logic 
+		ArrayList<Lesson> lessons4 = new ArrayList<Lesson>();
+		lessons4.add(l7);
+		Index i5 = new Index("CZ2001", "SCSE", 3, "1238", lessons4, 0); 
 
 		String[] mod = {i1.getCourseCode(), i1.getIndexNo()};
-	    ArrayList<String[]> modules = new ArrayList<String[]>();
-	    modules.add(mod);
-	    
-	    String[] mod2 = {i3.getCourseCode(), i3.getIndexNo()};
-	    ArrayList<String[]> modules2 = new ArrayList<String[]>();
-	    modules2.add(mod2);
+		ArrayList<String[]> modules = new ArrayList<String[]>();
+		modules.add(mod);
 
-	    Student s1 = new Student("a", "a", "Adam", "U1823498E", "Singaporean", 'M', "SCBE", modules, "16:00", "20:30", "11/11/2020"); // init
-	    Student s2 = new Student("c", "c", "Cindy", "U1876839K", "Singaporean", 'F'," SCSE", modules2, "19:00", "22:30", "10/11/2020");
+		String[] mod2 = {i3.getCourseCode(), i3.getIndexNo()};
+		ArrayList<String[]> modules2 = new ArrayList<String[]>();
+		modules2.add(mod2);
+
+		Student s1 = new Student("a", PasswordHashController.hash("a"), "Adam", "U1823498E", "Singaporean", 'M', "SCBE", modules, "16:00", "23:59", "16/11/2020"); // init
+		Student s2 = new Student("c", PasswordHashController.hash("c"), "Cindy", "U1876839K", "Singaporean", 'F'," SCSE", modules2, "19:00", "22:30", "10/11/2020");
 		//Student s3 = new Student("d","d","David","U1742694E", "American",'M',"6598765432","NBS", modules,defaultAU, "17:00", "18:30", "10/11/2020");
-	    Admin a1 = new Admin("d", "d");
+		Admin a1 = new Admin("d", PasswordHashController.hash("d"));
 
 		indexList = new ArrayList<Index>();
 		stuList = new ArrayList<Student>();
 		adminList = new ArrayList<Admin>();
-		
-	    indexList.add(i1);
-	    indexList.add(i2);
-	    indexList.add(i3);
-	    indexList.add(i4);
-	    indexList.add(i5);
+
+		indexList.add(i1);
+		indexList.add(i2);
+		indexList.add(i3);
+		indexList.add(i4);
+		indexList.add(i5);
 		// sav in DB
-	    save("index");
-	    load("index");
+		save("index");
+		load("index");
 
 		// call by reference from DB
 		// shld update indexList
-		s1.getIndexFromCourseCode(i1.getCourseCode()).vacancyMinusMinus();
-		s2.getIndexFromCourseCode(i3.getCourseCode()).vacancyMinusMinus();
+		s1.getIndexFromCourseCode(i1.getCourseCode()).appendToStuList(s1.getStudentID());
+		s2.getIndexFromCourseCode(i3.getCourseCode()).appendToStuList(s2.getStudentID());
 
-	    stuList.add(s1);
-	    stuList.add(s2);
-	    adminList.add(a1);
-	    
-	    for (Student stud: getStuList()) {
-    		for (String[] mod1: stud.getModules()) {
-    			Index ii = Utils.getIndexFromIndexNum(mod1[1]);
-    			for (Index ind: getIndexList()) {
-    				if (ii.getIndexNo().equals(ind.getIndexNo())) {
-    					ind.getStudList().add(stud.getStudentID());
-	    			}
-	    			
-	    		}
-	    	}
-	    }
+		stuList.add(s1);
+		stuList.add(s2);
+		adminList.add(a1);
+
 		// save both to DB again
 		// we save("index") to update the file
-	    save("student");
-	    load("student");
-	    save("index");
-	    load("index");
-	    System.out.println();
-	  }
+		save("student");
+		load("student");
+		save("index");
+		load("index");
+		System.out.println();
 	}
+}
 

@@ -31,6 +31,7 @@ public class AdminApp {
 			System.out.println("Please choose one of the options above.");
 			
 			choice = sc.nextInt();
+			sc.nextLine();
 			
 			switch (choice) {
 				case 1:
