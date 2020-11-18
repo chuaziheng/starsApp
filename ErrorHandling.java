@@ -127,20 +127,7 @@ public class ErrorHandling {
 		}
 		return true; 
     }
-    public static void checkIfStudentHasExistingCourse(String courseCode) throws Exception{
-
-        int count = 0;
-        for (String course : Utils.getAllCourseCodes()){
-            if (course.equals(courseCode)){
-                break;
-            } else {
-                count += 1;
-            }
-        }
-        if (count == Utils.getAllCourseCodes().size()) {
-			throw new Exception("\nYou are already registered for this course!");
-		}
-	}
+   
 	public static void checkAcadUnit(Student s) throws Exception{
 		if (s.getAcadUnit() >= 21) {
 			throw new Exception("\nMaximum academic units of 21 allocated. Not allowed to add courses!");
@@ -161,10 +148,34 @@ public class ErrorHandling {
 	public static void checkStuExistingMod(ArrayList<String[]> modules, Index indexToAdd) throws Exception{
 		for (String[] mod : modules) {
 			if (mod[0].equals(indexToAdd.getCourseCode())){
-				throw new Exception("Sorry, you are already registered for this index");
+				throw new Exception("Sorry, you are already registered for this course!");
 			}
 		}
 	}
+
+	public static void checkStuExistingCourse(Student s, String courseCode) throws Exception{
+		for (String[] mod : s.getModules()) {
+			if (mod[1].equals(courseCode)){
+				throw new Exception("You are already registered for this index");
+			}
+		}
+	}
+
+	 // public static boolean checkIfStudentHasExistingCourse(Student s, String courseCode) throws Exception{
+	// 	for ()
+    //     int count = 0;
+    //     for (String course : Utils.getAllCourseCodes()){
+    //         if (course.equals(courseCode)){
+    //             break;
+    //         } else {
+    //             count += 1;
+    //         }
+    //     }
+    //     if (count == Utils.getAllCourseCodes().size()) {
+	// 		throw new Exception("\nYou are already registered for this course!");
+	// 	}
+	// }
+
 	public static void isEmpty(ArrayList<String[]> modules) throws Exception{
 		if (modules.isEmpty()){
 			throw new Exception("You have no existing modules!");

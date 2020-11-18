@@ -79,9 +79,9 @@ public class Student implements Serializable {
 			courseCode = sc.next();
 			courseCode = courseCode.toUpperCase();
 
-			ErrorHandling.checkIfStudentHasExistingCourse(courseCode);
-
-			indexNums = Utils.getIndexNumsFromCourseCode(courseCode);
+			ErrorHandling.checkStuExistingCourse(this, courseCode);
+			
+			indexNums = Utils.getIndexNumsFromCourseCode(courseCode);			
 
 			ErrorHandling.checkAcadUnit(this, Utils.getIndexFromIndexNum(indexNums.get(0)));
 
