@@ -1,5 +1,3 @@
-package project2;
-
 import java.util.*;
 
 public class Index extends Course { // Serializable inherited from Course
@@ -63,6 +61,7 @@ public class Index extends Course { // Serializable inherited from Course
 			// System.out.printf("vacancy after popWaitListedStud: %d, adding... \n", VACANCY);
 			cindy.doAddModule(this);
 			System.out.printf("Student added to index %s successfully\n", this.indexNo);
+			//SendMailTLS.sendEmail(String.format("You have been added to index %s of course %s successfully\n", this.indexNo, this.courseCode));
 		}
 	}
 	//getters and setters//

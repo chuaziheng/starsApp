@@ -1,5 +1,3 @@
-package project2;
-
 import java.io.Serializable;
 
 public abstract class Course implements Serializable {

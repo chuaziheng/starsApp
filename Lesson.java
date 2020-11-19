@@ -1,5 +1,3 @@
-package project2;
-
 import java.io.Serializable;
 import java.util.Calendar;
 
