@@ -386,21 +386,21 @@ public class Utils implements Serializable
 		
 		//NOTE: 6 students taking mod 3
 		
-		Student s1 = new Student("aa01", PasswordHashController.hash("aa01"), "Adam", "U1823498E", "Singaporean", 'M', "SCSE", modA, "08:30", "23:59", "19/11/2020");
-		Student s2 = new Student("bb01", PasswordHashController.hash("bb01"), "Benny", "U1827392Y", "Malaysian", 'M', "SPMS", modB, "14:30", "23:30", "19/11/2020"); 
-		Student s3 = new Student("cc01", PasswordHashController.hash("cc01"), "Cindy", "U1928372F", "Malaysian", 'F', "SPMS", modC, "14:30", "23:30", "19/11/2020");
-		Student s4 = new Student("dd01", PasswordHashController.hash("dd01"), "David", "U1720394B", "Singaporean", 'M',"SCSE", modD, "14:30", "23:30", "19/11/2020");
-		Student s5 = new Student("ee01", PasswordHashController.hash("ee01"), "Evelyn", "U1817294C", "American", 'F'," EEE", modE, "10:00", "23:00", "19/11/2020");
-		Student s6 = new Student("ff01", PasswordHashController.hash("ff01"), "Frankie", "U1790390L", "Singaporean", 'M', "SCBE", modF, "12:30", "23:30", "19/11/2020");
-		Student s7 = new Student("gg01", PasswordHashController.hash("gg01"), "Gwen", "U1892038P", "Singaporean", 'F'," MAE", modG, "09:00", "23:30", "19/11/2020");
-		Student s8 = new Student("hh01", PasswordHashController.hash("hh01"), "Harry", "U1864537H", "Malaysian", 'M', "WKW", modH, "13:00", "23:00", "19/11/2020"); 
-		Student s9 = new Student("ii01", PasswordHashController.hash("ii01"), "Ivan", "U1728394N", "Singaporean", 'M',"SCSE", modI, "14:30", "23:30", "19/11/2020");
-		Student s10 = new Student("jj01", PasswordHashController.hash("jj01"), "Jennie", "U1983744J", "Singaporean", 'F',"ADM", modJ, "11:00", "23:00", "19/11/2020");
-		Student s11 = new Student("kk01", PasswordHashController.hash("kk01"), "Katie", "U1709903T", "Indonesian", 'F', "EEE", modK, "10:00", "23:00", "19/11/2020"); 
-		Student s12 = new Student("ll01", PasswordHashController.hash("ll01"), "Lisa", "U1938822R", "Singaporean", 'F',"SCSE", modL, "14:30", "23:30", "19/11/2020");
-		Student s13 = new Student("mm01", PasswordHashController.hash("mm01"), "Mandy", "U1827263Y", "Malaysian", 'F', "ADM", modM, "11:00", "23:00", "19/11/2020"); 
-		Student s14 = new Student("nn01", PasswordHashController.hash("nn01"), "Nigel", "U1822113N", "Singaporean", 'M',"MAE", modN, "09:00", "23:30", "19/11/2020");
-		Student s15 = new Student("oo01", PasswordHashController.hash("oo01"), "Oscar", "U1899773D", "American", 'M'," SCSE", modO, "14:30", "23:30", "19/11/2020");
+		Student s1 = new Student("aa01", PasswordHashController.hash("aa01"), "Adam", "U1823498E", "Singaporean", 'M', "SCSE", modA, "12:30", "23:30", "18/11/2020");
+		Student s2 = new Student("bb01", PasswordHashController.hash("b01"), "Benny", "U1827392Y", "Malaysian", 'M', "SPMS", modB, "14:30", "16:30", "20/11/2020"); 
+		Student s3 = new Student("cc01", PasswordHashController.hash("cc01"), "Cindy", "U1928372F", "Malaysian", 'F', "SPMS", modC, "14:30", "16:30", "20/11/2020");
+		Student s4 = new Student("dd01", PasswordHashController.hash("dd01"), "David", "U1720394B", "Singaporean", 'M',"SCSE", modD, "14:30", "16:30", "20/11/2020");
+		Student s5 = new Student("ee01", PasswordHashController.hash("ee01"), "Evelyn", "U1817294C", "American", 'F'," EEE", modE, "10:00", "12:00", "19/11/2020");
+		Student s6 = new Student("ff01", PasswordHashController.hash("ff01"), "Frankie", "U1790390L", "Singaporean", 'M', "SCBE", modF, "12:30", "14:30", "22/11/2020");
+		Student s7 = new Student("gg01", PasswordHashController.hash("gg01"), "Gwen", "U1892038P", "Singaporean", 'F'," MAE", modG, "09:00", "11:30", "13/11/2020");
+		Student s8 = new Student("hh01", PasswordHashController.hash("hh01"), "Harry", "U1864537H", "Malaysian", 'M', "WKW", modH, "13:00", "15:00", "18/11/2020"); 
+		Student s9 = new Student("ii01", PasswordHashController.hash("ii01"), "Ivan", "U1728394N", "Singaporean", 'M',"SCSE", modI, "14:30", "16:30", "20/11/2020");
+		Student s10 = new Student("jj01", PasswordHashController.hash("jj01"), "Jennie", "U1983744J", "Singaporean", 'F',"ADM", modJ, "11:00", "23:00", "18/11/2020");
+		Student s11 = new Student("kk01", PasswordHashController.hash("kk01"), "Katie", "U1709903T", "Indonesian", 'F', "EEE", modK, "10:00", "12:00", "19/11/2020"); 
+		Student s12 = new Student("ll01", PasswordHashController.hash("ll01"), "Lisa", "U1938822R", "Singaporean", 'F',"SCSE", modL, "14:30", "16:30", "20/11/2020");
+		Student s13 = new Student("mm01", PasswordHashController.hash("mm01"), "Mandy", "U1827263Y", "Malaysian", 'F', "ADM", modM, "11:00", "13:00", "21/11/2020"); 
+		Student s14 = new Student("nn01", PasswordHashController.hash("nn01"), "Nigel", "U1822113N", "Singaporean", 'M',"MAE", modN, "09:00", "11:30", "13/11/2020");
+		Student s15 = new Student("oo01", PasswordHashController.hash("oo01"), "Oscar", "U1899773D", "American", 'M'," SCSE", modO, "14:30", "16:30", "20/11/2020");
 		Admin a1 = new Admin("d", PasswordHashController.hash("d"));
 
 		indexList = new ArrayList<Index>();
