@@ -32,27 +32,27 @@ public class Utils implements Serializable
 	}
 
 	// special getters ---------------------------------------
-	public static ArrayList<String> getIndexNumsFromCourseCode(String courseCode) throws Exception{
+	public static ArrayList<String> getIndexNumsFromCourseCode(String courseCode) {
 		courseCode.toUpperCase();
-		ArrayList<String> indexNums = new ArrayList<String>();
-		for (Index i: indexList){
-			if (i.getCourseCode().equals(courseCode)){
-				indexNums.add(i.getIndexNo());
+		if (checkExistingCourse(courseCode, false)){
+			ArrayList<String> indexNums = new ArrayList<String>();
+			for (Index i: indexList){
+				if (i.getCourseCode().equals(courseCode)){
+					indexNums.add(i.getIndexNo());
+				}
 			}
+			return indexNums;
 		}
-		if (indexNums.equals(new ArrayList<String>())){
-			throw new Exception(String.format("\nCourse %s does not exist!\n", courseCode));
-		}
-		return indexNums;
+		else return null;
 	}
 
-	public static Index getIndexFromIndexNum(String indexNum) throws Exception{
+	public static Index getIndexFromIndexNum(String indexNum) {
 		for (Index index: indexList){
 			if (index.getIndexNo().equals(indexNum)){
 				return index;
 			}
 		}
-		throw new Exception(String.format("\nNo index with index number: " + indexNum));
+		return null;
 	}
 
 	public static Set<String> getAllCourseCodes(){
@@ -64,10 +64,9 @@ public class Utils implements Serializable
 	}
 
 	public static Student getStudentFromStuID(String studentID){
-		while (!checkExistingStudent(studentID, true)) {
+		while (!checkExistingStudent(studentID, false)) {
 			System.out.println("Please enter valid student ID!: ");
-			String temp = sc.nextLine();
-			studentID = temp;
+			studentID = sc.nextLine();
 		}
 		for (Student s: getStuList()) {
 			if (s.getStudentID().equals(studentID)) {
@@ -75,39 +74,31 @@ public class Utils implements Serializable
 			}
 		} return null; // will never be executed
 	}
-	public static Admin getAdminFromAdminID(String adminID) throws Exception{
+	public static Admin getAdminFromAdminID(String adminID) {
 		for(Admin a: getAdminList()) {
 			if(a.getAdminID().equals(adminID)){
 				return a;
 			}
 		}
-		System.out.printf("\nUtils.getAdminFromAdminID(String adminID):\n\tadminID: %s not found\n", adminID);
-		throw new Exception("no admin with that id");
-	}
-
-	public static int getTotalVacancyForACourse(String courseCode) throws Exception{
-		ArrayList<String> indexNums = getIndexNumsFromCourseCode(courseCode);
-
-		int totalVacancy = 0;
-		for (String indexNum: indexNums){
-			totalVacancy += Utils.getIndexFromIndexNum(indexNum).getVacancy();
-		}
-		return totalVacancy;
+		return null;
 	}
 
 	// utility methods --------------------------------------------------------------
 	public static void checkVacancy() {
 		System.out.println("Enter course code to view its vacancies: ");
-		String courseCode = sc.next();
+		String courseCode = sc.nextLine();
 		courseCode = courseCode.toUpperCase();
-		try {
-			int totalVacancy = Utils.getTotalVacancyForACourse(courseCode);
+
+		if (checkExistingCourse(courseCode, true)){
+			ArrayList<String> indexNums = getIndexNumsFromCourseCode(courseCode);
+
+			int totalVacancy = 0;
+			for (String indexNum: indexNums){
+				totalVacancy += Utils.getIndexFromIndexNum(indexNum).getVacancy();
+			}
+			
 			System.out.printf("Total vacancies in course with course code %s: %d\n", courseCode, totalVacancy);
-		} 
-		catch (Exception e) {
-			System.out.printf("Course %s does not exist!", courseCode.toUpperCase());
 		}
-		
 	}
 
 	public static boolean checkExistingStudent(String studentID, boolean printError) {
