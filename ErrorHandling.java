@@ -10,20 +10,6 @@ import java.util.Scanner;
 public class ErrorHandling {
 	transient static Scanner sc = new Scanner(System.in);
 	
-	//public static char checkGender(char gender) {
-		//boolean done = false;
-		//System.out.println(gender + ' ' + gender=='m');
-		//do {
-			//if (gender=='m' ||gender == 'f') {
-				//done = true;
-			//}
-			//else {
-				//System.out.println("Enter M or F only: ");
-				//gender = Character.toLowerCase(sc.nextLine().charAt(0));
-			//}
-		//}while (!done);
-		//return gender;
-	//}
 	public static char checkGender(char gender) {
 		boolean done = false;
 		do {

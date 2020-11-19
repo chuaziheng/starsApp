@@ -45,8 +45,6 @@ public class MainApp implements Serializable{
 							
 						// returns a boolean ie. checks if the username and password matches
 						if (PasswordHashController.checkUsernameAndPassword(student.getStudentID(),"student", studentPasswordHash)) {
-							// student = Utils.getStudentFromStuID(studentID);
-							// check if student is accessing during his own access time, nothing happens if during access time, if not during access time, print message, then return to main menu/terminate	
 							if (student.checkAccessTime()) {
 								StudentApp.StudentMenu(student);
 							}
