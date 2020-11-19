@@ -195,9 +195,9 @@ public class Admin implements Serializable {
 			   System.out.println("Enter index number to be deleted: ");
 			   String temp4 = sc.nextLine(); 
 			   
-			   while(!Utils.checkExistingIndex(temp4, true)) {
-			    System.out.println("Please enter valid index number!"); 
-			    temp4 = sc.nextLine(); 
+			   while(!Utils.checkExistingIndex(temp4, false)) {
+				   System.out.println("Please enter valid index number!");
+					temp4 = sc.nextLine(); 
 			   }
 			   
 			   Index removeIndex = Utils.getIndexFromIndexNum(temp4);
