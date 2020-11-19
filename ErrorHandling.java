@@ -15,7 +15,7 @@ public class ErrorHandling {
 	public static char checkGender(char gender) {
 		boolean done = false;
 		do {
-			if (gender=='M' ||gender == 'F') {
+			if (gender=='m' ||gender == 'f' ) {
 				done = true;
 			}
 			else {
@@ -155,7 +155,7 @@ public class ErrorHandling {
 
 	public static void checkStuExistingCourse(Student s, String courseCode) throws Exception{
 		for (String[] mod : s.getModules()) {
-			if (mod[1].equals(courseCode)){
+			if (mod[0].equals(courseCode)){
 				throw new Exception("You are already registered for this index");
 			}
 		}
@@ -185,5 +185,77 @@ public class ErrorHandling {
 		if (myIndex.getIndexNo().equals(sIndex.getIndexNo())){
 			throw new Exception("Student has same index as you, cannot swap");
 		}
+	}
+
+	public static String checkClassType(String classType) {
+
+		String temp = classType.toLowerCase();
+		boolean x = false; 
+		do{
+			switch(temp){
+				case "lec":
+				case "lecture":
+					classType = "LEC";
+					x = true; 
+					break;
+				case "tut":
+				case "tutorial":
+					classType = "TUT";
+					x = true; 
+					break;
+				case "sem":
+				case "seminar":
+					classType = "SEM";
+					x = true; 
+					break;
+				case "lab":
+					classType = "LAB"; 
+					x = true; 
+					break;
+				default: 
+					System.out.println("Invalid input! Please type LEC/TUT/SEM/LAB only: ");
+					temp = sc.next();
+					break;
+			}
+		} while (!x);
+		return classType;
+	}
+
+	public static String checkClassDay(String classDay) {
+	
+		String temp = classDay.toLowerCase();
+		boolean x = false; 
+		switch(temp){
+			case "mon":
+			case "monday":
+				classDay = "Monday"; 
+				x = true; 
+				break; 
+			case "tue":
+			case "tuesday":
+				classDay = "Tuesday"; 
+				x = true; 
+				break; 
+			case "wed":
+			case "wednesday":
+				classDay = "Wednesday"; 
+				x = true; 
+				break;
+			case "thu":
+			case "thursday":
+				classDay = "Thursday"; 
+				x = true; 
+				break;
+			case "fri":
+			case "friday":
+				classDay = "Friday"; 
+				x = true; 
+				break; 
+			default: 
+				System.out.println("Invalid input! Please type MON/TUE/WED/THU/FRI: ");
+				temp = sc.next();
+				break; 
+		}
+		return classDay; 
 	}
 }
