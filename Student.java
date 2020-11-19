@@ -1,8 +1,8 @@
-// package project2;
-
 import java.util.*;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 
 public class Student implements Serializable {
 	final static long serialVersionUID = 123;
@@ -76,12 +76,12 @@ public class Student implements Serializable {
 			ErrorHandling.checkAcadUnit(this);
 
 			System.out.println("\nEnter course code to add: ");
-			courseCode = sc.next();
+			courseCode = sc.nextLine();
 			courseCode = courseCode.toUpperCase();
 
-			ErrorHandling.checkStuExistingCourse(this, courseCode);
-			
-			indexNums = Utils.getIndexNumsFromCourseCode(courseCode);			
+			ErrorHandling.checkIfStudentHasExistingCourse(courseCode, this.getModules());
+
+			indexNums = Utils.getIndexNumsFromCourseCode(courseCode);
 
 			ErrorHandling.checkAcadUnit(this, Utils.getIndexFromIndexNum(indexNums.get(0)));
 
@@ -96,14 +96,15 @@ public class Student implements Serializable {
 			}
 			// user selection of index
 			int idxChoice = -1;
+			boolean result;
 			do {
 				System.out.println("Enter option (1/2/...): ");
-				idxChoice = sc.nextInt();
+				String tmp = sc.nextLine();
+				idxChoice = ErrorHandling.convertToInt(tmp);
 				idxChoice--;
-				sc.nextLine();
 
-				ErrorHandling.isReasonableChoice(indexNums.size(), idxChoice);
-			} while (!ErrorHandling.isReasonableChoice(indexNums.size(), idxChoice));
+				result = ErrorHandling.isReasonableChoice(indexNums.size(), idxChoice);
+			} while (!result);
 
 			// get the respective index object
 			Index indexToAdd = Utils.getIndexFromIndexNum(indexNums.get(idxChoice));
@@ -142,8 +143,8 @@ public class Student implements Serializable {
 		printModules();
 		do{
 			System.out.println("Enter choice of course code to drop(1/2/...): ");
-			removeChoice = sc.nextInt();
-			sc.nextLine();
+			String tmp = sc.nextLine();
+			removeChoice = ErrorHandling.convertToInt(tmp);
 			removeChoice--;
 
 			result = ErrorHandling.isReasonableChoice(this.modules.size(), removeChoice);
@@ -157,8 +158,7 @@ public class Student implements Serializable {
 			else mod = modules.get(removeChoice);
 			return mod;
 		} catch (Exception e){
-			sc.nextLine();
-			System.out.println("Please enter a number!");
+			System.out.println(e.getMessage());
 			return new String[]{"", ""};
 		}
 	}
@@ -169,7 +169,6 @@ public class Student implements Serializable {
 
 		//Remove student from Index (Remove from courseList DB)
 		Utils.getIndexFromIndexNum(mod[1]).dropStud(studentID);
-		System.out.println("HERE!");
 		Utils.getIndexFromIndexNum(mod[1]).popWaitListedStud();
 		return mod;
 	}
@@ -183,7 +182,7 @@ public class Student implements Serializable {
 		if (mod==new String[]{"", ""})throw new Exception("u got no index to swap");
 
 		System.out.println("Enter username of student to swap index with: ");
-		String username = sc.next();
+		String username = sc.nextLine();
 		Student s = Utils.getStudentFromStuID(username);
 
 		// get my details
@@ -222,8 +221,8 @@ public class Student implements Serializable {
 
 		// get choice of course to change index
 		System.out.println("Enter choice of course code to change index(1/2/...): ");
-		removeChoice = sc.nextInt();
-		sc.nextLine();
+		String tmp = sc.nextLine();
+		removeChoice = ErrorHandling.convertToInt(tmp);
 		removeChoice--;
 		String[] oldMod = modules.get(removeChoice);
 		courseCode = oldMod[0];
@@ -242,12 +241,15 @@ public class Student implements Serializable {
 
 		// get index to change to
 		int idxChoice;
-		System.out.println("Enter choice of index number to change to(1/2/...): ");
-		idxChoice = sc.nextInt();
-		idxChoice--;
-		sc.nextLine();
+		boolean result;
 
-		ErrorHandling.isReasonableChoice(indexNums.size(), idxChoice);
+		do{
+			System.out.println("Enter choice of index number to change to(1/2/...): ");
+			tmp = sc.nextLine();
+			idxChoice = ErrorHandling.convertToInt(tmp);
+			idxChoice--;
+			result = ErrorHandling.isReasonableChoice(indexNums.size(), idxChoice);
+		} while(!result);
 
 		// get the respective index object
 		Index indexToAdd = Utils.getIndexFromIndexNum(indexNums.get(idxChoice));
@@ -305,6 +307,7 @@ public class Student implements Serializable {
 		}
 		System.out.println("Not within access period!");
 		System.out.println("Please log in during your access period!");
+		System.out.println("Today is " + Calendar.getInstance().getTime());
 		System.out.println("Your access period is " + getStartTime().getTime() + " to " + getEndTime().getTime());
 		System.out.println();
 		return false;
@@ -333,13 +336,14 @@ public class Student implements Serializable {
 					if (lessonDetails[0] == newLessonDetails[0]) {
 						if (!newStartTime1.after(endTime.getTime()) && !newEndTime1.before(startTime.getTime())) {
 							System.out.printf("\nnew index: %s,\t", newIndex.getIndexNo());
-							System.out.print(newStartTime.getTime());
+							SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
+							System.out.print("start time:\t" + formatter.format(newStartTime1));
 							System.out.print('\t');
-							System.out.print(newEndTime.getTime());
+							System.out.print("end time:\t" + formatter.format(newEndTime1));
 							System.out.printf("\nold index: %s,\t", i1.getIndexNo());
-							System.out.print(startTime.getTime());
+							System.out.print("start time:\t" + formatter.format(startTime.getTime()));
 							System.out.print('\t');
-							System.out.print(endTime.getTime());
+							System.out.print("end time:\t" + formatter.format(endTime.getTime()));
 							throw new Exception("\nOverlapping Schedule!");
 						}
 					}
@@ -351,7 +355,7 @@ public class Student implements Serializable {
 	public boolean promptToJoinWaitList(Index indexToAdd){
 		if (indexToAdd.getVacancy() == 0) {
 			System.out.println("No vacancies! Add to waitlist? Y/N");
-			char waitlistChoice = sc.next().charAt(0);
+			char waitlistChoice = sc.nextLine().charAt(0);
 			boolean quit = false;
 
 			while (!quit){
@@ -368,7 +372,7 @@ public class Student implements Serializable {
 						break;
 					default:
 						System.out.println("Invalid choice! Enter Y/N");
-						waitlistChoice = sc.next().charAt(0);
+						waitlistChoice = sc.nextLine().charAt(0);
 						break;
 				}
 			}

@@ -1,6 +1,3 @@
-// package project2.starsApp;
-
-
 import java.io.Serializable;
 
 public abstract class Course implements Serializable {

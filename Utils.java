@@ -1,5 +1,3 @@
-// package project2;
-
 import java.io.IOException;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -42,7 +40,7 @@ public class Utils implements Serializable
 				indexNums.add(i.getIndexNo());
 			}
 		}
-		if (indexNums.isEmpty()){
+		if (indexNums.equals(new ArrayList<String>())){
 			throw new Exception(String.format("\nCourse %s does not exist!\n", courseCode));
 		}
 		return indexNums;
@@ -66,7 +64,7 @@ public class Utils implements Serializable
 	}
 
 	public static Student getStudentFromStuID(String studentID){
-		while (!checkExistingStudent(studentID)) {
+		while (!checkExistingStudent(studentID, true)) {
 			System.out.println("Please enter valid student ID!: ");
 			String temp = sc.nextLine();
 			studentID = temp;
@@ -112,34 +110,34 @@ public class Utils implements Serializable
 		
 	}
 
-	public static boolean checkExistingStudent(String studentID) {
+	public static boolean checkExistingStudent(String studentID, boolean printError) {
 		ArrayList<Student> stuList = Utils.getStuList();
 		for (Student student : stuList){
 			if (student.getStudentID().equals(studentID)){
 				return true; 
 			}
 		}
-		System.out.println("Invalid StudentID");
+		if (printError) System.out.println("Invalid StudentID");
 		return false;
 	}
-	public static boolean checkExistingIndex(String indexNo) {
+	public static boolean checkExistingIndex(String indexNo, boolean print) {
 		ArrayList<Index> indexList = Utils.getIndexList();
 		for (Index index : indexList){
 			if (index.getIndexNo().equals(indexNo)){
 				return true; 
 			}
 		}
-		System.out.println("No existing index");
+		if (print) System.out.println("No existing index");
 		return false;
 	}
 
-	public static boolean checkExistingCourse(String course) {
+	public static boolean checkExistingCourse(String course, boolean print) {
 		for (String c : getAllCourseCodes()){
 			if (c.equals (course)){
 				return true; 
 			}
 		}
-		System.out.println("no existing course");
+		if (print) System.out.println("No existing course");
 		return false;
 	}
 
