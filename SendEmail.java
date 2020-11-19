@@ -38,7 +38,7 @@ public static void SendSchEmail(String index, String courseCode, String studentN
 
         Transport.send(message);
 
-        System.out.println("Email sent to %s", studentName);
+        System.out.println(String.format("Email sent to %s", studentName));
 
     } catch (MessagingException e) {
         throw new RuntimeException(e);
