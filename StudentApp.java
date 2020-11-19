@@ -1,4 +1,3 @@
-//package project3;
 import java.util.Scanner;
 
 public class StudentApp {
@@ -47,7 +46,7 @@ public class StudentApp {
 			}
 			Utils.save("index");
 			Utils.save("student");
-			Utils.prettyPrint();
+			//Utils.prettyPrint();
 		} while (choice < 8);
 	System.out.println("Logging out of student");
 	}

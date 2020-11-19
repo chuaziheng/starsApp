@@ -1,6 +1,3 @@
-// package project2;
-
-
 import java.util.*;
 
 import java.io.Console;

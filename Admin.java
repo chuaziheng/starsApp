@@ -1,5 +1,3 @@
-// package project2.starsApp;
-
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.InputMismatchException;
@@ -40,7 +38,7 @@ public class Admin implements Serializable {
 		System.out.println("Enter the new student's ID: ");
 		String studentID = sc.nextLine();
 
-		if (!Utils.checkExistingStudent(studentID)){
+		if (!Utils.checkExistingStudent(studentID, false)){
 			System.out.println("Enter the new student's password: ");
 			String passwordHash = sc.nextLine();
 			//passwordHash = PasswordHashController.hash(passwordHash);
@@ -56,7 +54,7 @@ public class Admin implements Serializable {
 
 			System.out.println("Enter the new student's gender (M/F): ");
 			char gender = ErrorHandling.checkGender(Character.toLowerCase(sc.nextLine().charAt(0)));
-			
+			//char temp = Character.toLowerCase(sc.nextLine().charAt(0));
 
 			System.out.println("Enter the new student's school (eg. SCSE): ");
 			String schoolName = sc.nextLine(); //.toLowerCase();
@@ -126,10 +124,13 @@ public class Admin implements Serializable {
 	public static void addModule() {
 			
 		System.out.println("Course code: "); 
-		String temp1 = sc.nextLine(); 
-		   while (Utils.checkExistingCourse(temp1)) {
+		String courseCode = sc.nextLine(); 
+		courseCode = courseCode.toUpperCase();
+
+		   while (Utils.checkExistingCourse(courseCode, false)) {
 		    System.out.println("Please enter a new course code!"); 
-		    temp1 = sc.nextLine();
+		    courseCode = sc.nextLine();
+			courseCode = courseCode.toUpperCase();
 		   } 
 		
 		System.out.println("School (eg. SCSE): "); 
@@ -141,19 +142,18 @@ public class Admin implements Serializable {
     	int acadUnit = ErrorHandling.checkInteger(sc.nextLine());
     	
 		System.out.print("Number of indices: ");
-		int noOfIndices = sc.nextInt(); 
+		int noOfIndices = ErrorHandling.checkInteger(sc.nextLine());
 		
 		// updating this shld update DB list
 		ArrayList<Index> indexList = Utils.getIndexList();
 		for (int i=0; i<noOfIndices; i++) {
 
 		    System.out.printf("Vacancy for Index %d: ", (i+1)); 
-		    int vacancy = sc.nextInt(); 
-		    sc.nextLine();
+			int vacancy = ErrorHandling.checkInteger(sc.nextLine());
 		    
 		    System.out.printf("Index number %d: ", (i+1)); 
 		    String temp2 = sc.nextLine(); 
-		    while (Utils.checkExistingIndex(temp2)){
+		    while (Utils.checkExistingIndex(temp2, false)){
 		     System.out.println("Index exists. Please enter a new index number!"); 
 		     temp2 = sc.nextLine();
 		    }
@@ -195,7 +195,7 @@ public class Admin implements Serializable {
 			   System.out.println("Enter index number to be deleted: ");
 			   String temp4 = sc.nextLine(); 
 			   
-			   while(!Utils.checkExistingIndex(temp4)) {
+			   while(!Utils.checkExistingIndex(temp4, true)) {
 			    System.out.println("Please enter valid index number!"); 
 			    temp4 = sc.nextLine(); 
 			   }
@@ -243,7 +243,7 @@ public class Admin implements Serializable {
 		}
 		System.out.printf("Enter index number to be added to course %s: \n", courseCode);
 		String temp3 = sc.nextLine(); 
-	    while (Utils.checkExistingIndex(temp3)){
+	    while (Utils.checkExistingIndex(temp3, true)){
 	     System.out.println("Please enter a new index number!"); 
 	     temp3 = sc.nextLine();
 	    }
@@ -361,6 +361,7 @@ public class Admin implements Serializable {
 			case "course":
 				System.out.println("Enter courseCode to see which students in this course: ");
 				String courseCode = sc.nextLine();
+				courseCode = courseCode.toUpperCase();
 				System.out.printf("Students in course %s:\n", courseCode);
 				for (Index index : Utils.getIndexList()) {
 					if (index.getCourseCode().equals(courseCode)){
