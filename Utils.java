@@ -70,14 +70,14 @@ public class Utils implements Serializable
 			studentID = temp;
 		}
 		for (Student s: getStuList()) {
-			if (s.getStudentID().equals(studentID)) {
+			if (s.getUsername().equals(studentID)) {
 				return s;
 			}
 		} return null; // will never be executed
 	}
 	public static Admin getAdminFromAdminID(String adminID) throws Exception{
 		for(Admin a: getAdminList()) {
-			if(a.getAdminID().equals(adminID)){
+			if(a.getUsername().equals(adminID)){
 				return a;
 			}
 		}
@@ -113,7 +113,7 @@ public class Utils implements Serializable
 	public static boolean checkExistingStudent(String studentID, boolean printError) {
 		ArrayList<Student> stuList = Utils.getStuList();
 		for (Student student : stuList){
-			if (student.getStudentID().equals(studentID)){
+			if (student.getUsername().equals(studentID)){
 				return true; 
 			}
 		}
@@ -386,7 +386,7 @@ public class Utils implements Serializable
 		
 		//NOTE: 6 students taking mod 3
 		
-		Student s1 = new Student("aa01", PasswordHashController.hash("aa01"), "Adam", "U1823498E", "Singaporean", 'M', "SCSE", modA, "12:30", "23:30", "18/11/2020");
+		Student s1 = new Student("aa01", PasswordHashController.hash("aa01"), "Adam", "U1823498E", "Singaporean", 'M', "SCSE", modA, "12:30", "23:30", "24/11/2020");
 		Student s2 = new Student("bb01", PasswordHashController.hash("b01"), "Benny", "U1827392Y", "Malaysian", 'M', "SPMS", modB, "14:30", "16:30", "20/11/2020"); 
 		Student s3 = new Student("cc01", PasswordHashController.hash("cc01"), "Cindy", "U1928372F", "Malaysian", 'F', "SPMS", modC, "14:30", "16:30", "20/11/2020");
 		Student s4 = new Student("dd01", PasswordHashController.hash("dd01"), "David", "U1720394B", "Singaporean", 'M',"SCSE", modD, "14:30", "16:30", "20/11/2020");
@@ -440,7 +440,7 @@ public class Utils implements Serializable
 		for (Student stud: getStuList()) {
 			for (String[] mod: stud.getModules()) {
 				Index ii = Utils.getIndexFromIndexNum(mod[1]);
-				ii.appendToStuList(stud.getStudentID());
+				ii.appendToStuList(stud.getUsername());
 				}
 		}
 

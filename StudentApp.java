@@ -1,3 +1,5 @@
+// package project2;
+
 import java.util.Scanner;
 
 public class StudentApp {
@@ -15,7 +17,8 @@ public class StudentApp {
 			System.out.println("5. Check vacancy");
 			System.out.println("6. Print enrolled courses");
 			System.out.println("7. Print timetable");
-			System.out.println("8. Log out");
+			System.out.println("8. Reset Password");
+			System.out.println("9. Log out");
 			System.out.println("Enter choice: ");
 				
 			choice = sc.nextInt();
@@ -43,11 +46,14 @@ public class StudentApp {
 				case 7: 
 					me.printTimetable(); 
 					break;
+				case 8: 
+					me.resetPassword(); 
+					break;
 			}
 			Utils.save("index");
 			Utils.save("student");
-			//Utils.prettyPrint();
-		} while (choice < 8);
+			Utils.prettyPrint();
+		} while (choice < 9);
 	System.out.println("Logging out of student");
 	}
 }

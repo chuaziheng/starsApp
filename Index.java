@@ -61,7 +61,7 @@ public class Index extends Course { // Serializable inherited from Course
 			// System.out.printf("vacancy after popWaitListedStud: %d, adding... \n", VACANCY);
 			cindy.doAddModule(this);
 			System.out.printf("Student added to index %s successfully\n", this.indexNo);
-			SendEmail.SendSchEmail(this.indexNo, getCourseCode(), cindy.getName());
+			// SendEmail.SendSchEmail(this.indexNo, getCourseCode(), cindy.getName());
 		}
 	}
 	//getters and setters//

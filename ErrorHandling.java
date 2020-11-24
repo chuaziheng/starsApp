@@ -259,6 +259,7 @@ public class ErrorHandling {
 				break; 
 		}
 		return classDay; 
+	}
 	public static int convertToInt(String idxChoice) throws Exception{
 		if (!idxChoice.matches("[0-9]+")){
 			throw new Exception("Please enter a number!");

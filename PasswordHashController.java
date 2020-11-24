@@ -1,7 +1,10 @@
+// package project2;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class PasswordHashController {
+
 	public static String hash(String stringToEncrypt) {
 		try {
 			MessageDigest md = MessageDigest.getInstance("SHA-256");
@@ -24,13 +27,20 @@ public class PasswordHashController {
 	
 	public static boolean checkUsernameAndPassword(String id, String type, String passHash) throws Exception{
 	    if (type.equals("student")){
-	      Student s = Utils.getStudentFromStuID(id);
-	      if (s.getPasswordHash().equals(passHash)) return true;
+		  Student s = Utils.getStudentFromStuID(id);
+		  System.out.println(s.getPassword());
+		  if (s.getPassword().equals(passHash)) {
+			return true;
+		  }
+		  
 	    }
 	    else if (type.equals("admin")){
-	      Admin a = Utils.getAdminFromAdminID(id);
-	      if (a.getAdminPassword().equals(passHash)) return true;
+		  Admin a = Utils.getAdminFromAdminID(id);
+		  System.out.println("in" + a.getPassword());
+	      if (a.getPassword().equals(passHash)) {
+			return true;
 	    }
-	    return false;
 	  }
+	  return false;
+	}
 }

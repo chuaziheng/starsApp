@@ -1,37 +1,21 @@
 import java.io.Serializable;
-import java.util.Calendar;
-import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.Set;
 
-public class Admin implements Serializable {
+public class Admin extends Account implements Serializable {
 	
 	final static long serialVersionUID = 123; 
 	transient static Scanner sc = new Scanner(System.in);
-	private String adminID;
-	private String adminPasswordHash;
-	//private static ArrayList<Object[]> modules = new ArrayList <Object[]>(); 
-	//private static ArrayList<Integer> indexGroupList = new ArrayList<Integer>();
 	private static String courseCode;
 	
 	// constructors
 	public Admin() {}
 	
 	public Admin(String adminID, String adminPasswordHash) {
-		this.adminID = adminID;
-		this.adminPasswordHash = adminPasswordHash;
+		super(adminID,adminPasswordHash);
 	}
-	
-	public String getAdminID() {
-		return adminID;
-	}
-	public void setAdminID(String adminID) {
-		this.adminID = adminID;
-	}
-	public String getAdminPassword() {
-		return adminPasswordHash;
-	}
+
 	
 	// ********************************************************case 1**********************************************************
 	public static void addStudent() {
@@ -195,9 +179,9 @@ public class Admin implements Serializable {
 			   System.out.println("Enter index number to be deleted: ");
 			   String temp4 = sc.nextLine(); 
 			   
-			   while(!Utils.checkExistingIndex(temp4, true)) {
-			    System.out.println("Please enter valid index number!"); 
-			    temp4 = sc.nextLine(); 
+			   while(!Utils.checkExistingIndex(temp4, false)) {
+				   System.out.println("Please enter valid index number!");
+					temp4 = sc.nextLine(); 
 			   }
 			   
 			   Index removeIndex = Utils.getIndexFromIndexNum(temp4);
@@ -388,5 +372,9 @@ public class Admin implements Serializable {
 				}
 				break;
 		}
+		
 	}
+
+	
+
 }

@@ -1,3 +1,5 @@
+// package project2;
+
 import java.util.Scanner;
 
 public class AdminApp {
@@ -8,7 +10,7 @@ public class AdminApp {
 		Scanner sc = new Scanner(System.in);
 		
 		do {
-			System.out.println("\nWelcome, Admin " + admin.getAdminID());
+			System.out.println("\nWelcome, Admin " + admin.getUsername());
 			System.out.println("1: Add a new student");
 			System.out.println("2: Delete student");
 			System.out.println("3: Add a new course");
@@ -21,7 +23,8 @@ public class AdminApp {
 			System.out.println("10: Print list of all students");
 			System.out.println("11: Print list of students by course");
 			System.out.println("12: Print list of students by index group number");
-			System.out.println("13: Logout");
+			System.out.println("13: Change Password");
+			System.out.println("14: Logout");
 			System.out.println("Please choose one of the options above.");
 			
 			choice = sc.nextInt();
@@ -33,7 +36,6 @@ public class AdminApp {
 					break;
 				case 2:
 					Admin.deleteStudent();
-					Admin.printStuList("all");
 					break;
 				case 3:
 					Admin.addModule();
@@ -70,6 +72,9 @@ public class AdminApp {
 				case 12:
 					Admin.printStuList("index");
 					break;
+				case 13:
+					admin.resetPassword();
+					break;
 				default:
 					System.out.println("Please choose a proper option");
 					break;
@@ -77,6 +82,6 @@ public class AdminApp {
 			Utils.save("index");
 			Utils.save("student");
 //			Utils.prettyPrint();
-		} while (choice > 0 && choice < 13);
+		} while (choice > 0 && choice < 14);
 	}
 }
