@@ -29,27 +29,27 @@ public class AdminApp {
 			
 			switch (choice) {
 				case 1:
-					Admin.addStudent();
-					Admin.printStuList("all");
+					admin.addStudent();
+					admin.printStuList("all");
 					break;
 				case 2:
-					Admin.deleteStudent();
+					admin.deleteStudent();
 					break;
 				case 3:
-					Admin.addModule();
-					Admin.printCourseIndexList();
+					admin.addModule();
+					admin.printCourseIndexList();
 					break;
 				case 4:
-					Admin.deleteIndexOrCourse(false);
+					admin.deleteIndexOrCourse(false);
 					break;
 				case 5:
-					Admin.addIndex();
+					admin.addIndex();
 					break;
 				case 6:
-					Admin.deleteIndexOrCourse(true);
+					admin.deleteIndexOrCourse(true);
 					break;
 				case 7:
-					Admin.printCourseIndexList();
+					admin.printCourseIndexList();
 					break;
 				case 8: 
 					ErrorHandling.checkVacancy();
@@ -59,16 +59,16 @@ public class AdminApp {
 					System.out.println("Enter username of student: ");
 					String username = sc.nextLine();
 					Student student1 = DataBase.getStudentFromStuID(username);
-					Admin.studentAccessPeriod(student1);
+					admin.studentAccessPeriod(student1);
 					break;
 				case 10:
-					Admin.printStuList("all");
+					admin.printStuList("all");
 					break;
 				case 11:
-					Admin.printStuList("course");
+					admin.printStuList("course");
 					break;
 				case 12:
-					Admin.printStuList("index");
+					admin.printStuList("index");
 					break;
 				case 13:
 					admin.resetPassword();

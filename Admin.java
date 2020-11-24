@@ -3,7 +3,7 @@ import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.Set;
 
-public class Admin extends Account implements Serializable {
+public class Admin extends User implements Serializable, AdminCourseManagement, AdminStudentManagement{
 	
 	final static long serialVersionUID = 123; 
 	transient static Scanner sc = new Scanner(System.in);
@@ -16,7 +16,7 @@ public class Admin extends Account implements Serializable {
 	}
 
 	// ********************************************************case 1**********************************************************
-	public static void addStudent() {
+	public void addStudent() {
 		System.out.println("Enter the new student's ID: ");
 		String studentID = sc.nextLine();
 
@@ -84,7 +84,7 @@ public class Admin extends Account implements Serializable {
 	}
 	
 	// ********************************************************case 2**********************************************************
-	public static void deleteStudent() throws Exception {
+	public void deleteStudent() throws Exception {
 		System.out.println("Enter the ID of the student to be deleted: ");
 		String studentID = sc.next();
 		Student student = DataBase.getStudentFromStuID(studentID);
@@ -98,7 +98,7 @@ public class Admin extends Account implements Serializable {
 	}
 	
 	// ********************************************************case 3**********************************************************
-	public static void addModule() {
+	public void addModule() {
 			
 		System.out.println("Course code: "); 
 		String courseCode = sc.nextLine(); 
@@ -141,8 +141,7 @@ public class Admin extends Account implements Serializable {
 		}
 	
 	// ********************************************************case 4 or 6**********************************************************
-	public static void deleteIndexOrCourse(boolean byIndex) throws Exception {
-		
+	public void deleteIndexOrCourse(boolean byIndex) throws Exception{
 		// !byIndex means remove all index in this courseCode
 		// otherwise remove specific one
 		if (!byIndex){
@@ -193,7 +192,7 @@ public class Admin extends Account implements Serializable {
 	}
 	
 	// ********************************************************case 5**********************************************************
-	public static void addIndex() throws Exception {
+	public void addIndex() throws Exception {
 		System.out.println("Enter option of existing course: ");
 		int counter = 1;
 		Set<String> courseCodes = DataBase.getAllCourseCodes();
@@ -235,7 +234,7 @@ public class Admin extends Account implements Serializable {
 		DataBase.getIndexList().add(newIndex);
 	}
 	// ********************************************************case 7**********************************************************
-	public static ArrayList<Lesson> addLesson() { 
+	public ArrayList<Lesson> addLesson() { 
 		System.out.print("Number of Lessons for this index: ");
 		  int noOfLessons = sc.nextInt(); 
 		  sc.nextLine();
@@ -277,7 +276,7 @@ public class Admin extends Account implements Serializable {
 		 }
 	
 	// ********************************************************case 9**********************************************************
-	public static void studentAccessPeriod(Student s) {
+	public void studentAccessPeriod(Student s) {
 		
 		System.out.print("Date in format DD/MM/YYYY: ");
 		String date = ErrorHandling.checkDateFormat(sc.nextLine()); 
@@ -302,7 +301,7 @@ public class Admin extends Account implements Serializable {
 		s.setDate(date);
 	}
 	// ********************************************************case 7, 10, 11, 12**********************************************************
-	public static void printCourseIndexList() {
+	public void printCourseIndexList() {
 		System.out.println("-----------------------------------------------------------------------------");
 	    System.out.printf("%-20s %-15s", "COURSE", "INDEX");
 	    System.out.println();
@@ -314,7 +313,7 @@ public class Admin extends Account implements Serializable {
 	    }
 	    System.out.println("-----------------------------------------------------------------------------");
 	}
-	public static void printStuList(String byWhat) throws Exception{
+	public void printStuList(String byWhat) throws Exception{
 		switch (byWhat) {
 			case "all":
 				System.out.println("List of all current students: ");
@@ -355,7 +354,4 @@ public class Admin extends Account implements Serializable {
 		}
 		
 	}
-
-	
-
 }

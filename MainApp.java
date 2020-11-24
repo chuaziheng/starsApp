@@ -62,10 +62,8 @@ public class MainApp implements Serializable{
 						char[] adminPassword = cons.readPassword("Please enter your password: ");
 						String adminPasswordStr = String.valueOf(adminPassword);
 						String adminPasswordHash = PasswordHashController.hash(adminPasswordStr);
-						System.out.println("HERE 1" + adminPasswordHash);
 
 						if (PasswordHashController.checkUsernameAndPassword(adminID,"admin", adminPasswordHash)) {
-							System.out.println("HERE 2");
 							for (Admin a: DataBase.getAdminList()) {
 								if (a.getUsername().equals(adminID)) {
 									admin = a;
