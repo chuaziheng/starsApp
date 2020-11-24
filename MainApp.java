@@ -55,6 +55,9 @@ public class MainApp implements Serializable{
 						break;
 						
 					case 2:
+						if(cons == null) {
+							System.out.println("console is null");
+						}
 						System.out.println("Enter adminID: ");
 						String adminID = sc.next();
 						
