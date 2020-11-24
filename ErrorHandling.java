@@ -252,4 +252,51 @@ public class ErrorHandling {
 		}
 		else return Integer.parseInt(idxChoice);
 	}
+	public static void checkVacancy() {
+		System.out.println("Enter course code to view its vacancies: ");
+		String courseCode = sc.nextLine();
+		courseCode = courseCode.toUpperCase();
+
+		if (checkExistingCourse(courseCode, true)){
+			ArrayList<String> indexNums = DataBase.getIndexNumsFromCourseCode(courseCode);
+
+			int totalVacancy = 0;
+			for (String indexNum: indexNums){
+				totalVacancy += DataBase.getIndexFromIndexNum(indexNum).getVacancy();
+			}
+			
+			System.out.printf("Total vacancies in course with course code %s: %d\n", courseCode, totalVacancy);
+		}
+	}
+
+	public static boolean checkExistingStudent(String studentID, boolean printError) {
+		ArrayList<Student> stuList = DataBase.getStuList();
+		for (Student student : stuList){
+			if (student.getUsername().equals(studentID)){
+				return true; 
+			}
+		}
+		if (printError) System.out.println("Invalid StudentID");
+		return false;
+	}
+	public static boolean checkExistingIndex(String indexNo, boolean print) {
+		ArrayList<Index> indexList = DataBase.getIndexList();
+		for (Index index : indexList){
+			if (index.getIndexNo().equals(indexNo)){
+				return true; 
+			}
+		}
+		if (print) System.out.println("No existing index");
+		return false;
+	}
+
+	public static boolean checkExistingCourse(String course, boolean print) {
+		for (String c : DataBase.getAllCourseCodes()){
+			if (c.equals (course)){
+				return true; 
+			}
+		}
+		if (print) System.out.println("No existing course");
+		return false;
+	}
 }
