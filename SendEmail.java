@@ -7,11 +7,10 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 public class SendEmail {
-// public static void main(String[] args) {
 public static void SendSchEmail(String index, String courseCode, String studentName) {
 
-    final String username = "oodpemail"; // to be added
-    final String password = "00dpemail*"; // to be added
+    final String username = "oodpemail";
+    final String password = "00dpemail*";
 
     Properties props = new Properties();
     props.put("mail.smtp.auth", "true");
@@ -32,7 +31,7 @@ public static void SendSchEmail(String index, String courseCode, String studentN
         Message message = new MimeMessage(session);
         message.setFrom(new InternetAddress("oodpemail@gmail.com"));
         message.setRecipients(Message.RecipientType.TO,
-            InternetAddress.parse("oodprecipient@gmail.com")); // to be added an email addr
+            InternetAddress.parse("oodprecipient@gmail.com"));
         message.setSubject("Successful Addition of Course " + courseCode);
         message.setText(String.format("Dear Student %s, \n\nCourse %s with index %s has been successfully added!", studentName, courseCode, index));
 

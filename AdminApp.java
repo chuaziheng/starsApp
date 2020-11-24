@@ -1,5 +1,3 @@
-// package project2;
-
 import java.util.Scanner;
 
 public class AdminApp {
@@ -54,13 +52,13 @@ public class AdminApp {
 					Admin.printCourseIndexList();
 					break;
 				case 8: 
-					Utils.checkVacancy();
+					ErrorHandling.checkVacancy();
 					break;
 				case 9:
 					sc.nextLine();
 					System.out.println("Enter username of student: ");
 					String username = sc.nextLine();
-					Student student1 = Utils.getStudentFromStuID(username);
+					Student student1 = DataBase.getStudentFromStuID(username);
 					Admin.studentAccessPeriod(student1);
 					break;
 				case 10:
@@ -79,9 +77,8 @@ public class AdminApp {
 					System.out.println("Please choose a proper option");
 					break;
 			}
-			Utils.save("index");
-			Utils.save("student");
-//			Utils.prettyPrint();
+			DataBase.save("index");
+			DataBase.save("student");
 		} while (choice > 0 && choice < 14);
 	}
 }

@@ -12,15 +12,13 @@ import java.util.HashSet;
 import java.util.Scanner;
 import java.io.Serializable;
 
-public class Utils implements Serializable
+public class DataBase implements Serializable
 {
-	// Initialize arrayLists that acts as the database for the app
 	final static long serialVersionUID = 123; 
 	private static Scanner sc = new Scanner(System.in);
 	private static ArrayList<Student> stuList = new ArrayList<Student>();
 	private static ArrayList<Admin> adminList = new ArrayList<Admin>();
 	private static ArrayList<Index> indexList = new ArrayList<Index>();
-	//call these arrayList getters to retrieve/change information from DB
 	public static ArrayList<Student> getStuList() {
 		return stuList;
 	}
@@ -31,10 +29,9 @@ public class Utils implements Serializable
 		return adminList;
 	}
 
-	// special getters ---------------------------------------
 	public static ArrayList<String> getIndexNumsFromCourseCode(String courseCode) {
 		courseCode.toUpperCase();
-		if (checkExistingCourse(courseCode, false)){
+		if (ErrorHandling.checkExistingCourse(courseCode, false)){
 			ArrayList<String> indexNums = new ArrayList<String>();
 			for (Index i: indexList){
 				if (i.getCourseCode().equals(courseCode)){
@@ -64,7 +61,7 @@ public class Utils implements Serializable
 	}
 
 	public static Student getStudentFromStuID(String studentID){
-		while (!checkExistingStudent(studentID, false)) {
+		while (!ErrorHandling.checkExistingStudent(studentID, false)) {
 			System.out.println("Please enter valid student ID!: ");
 			studentID = sc.nextLine();
 		}
@@ -72,7 +69,7 @@ public class Utils implements Serializable
 			if (s.getUsername().equals(studentID)) {
 				return s;
 			}
-		} return null; // will never be executed
+		} return null;
 	}
 	public static Admin getAdminFromAdminID(String adminID) {
 		for(Admin a: getAdminList()) {
@@ -83,95 +80,8 @@ public class Utils implements Serializable
 		return null;
 	}
 
-	// utility methods --------------------------------------------------------------
-	public static void checkVacancy() {
-		System.out.println("Enter course code to view its vacancies: ");
-		String courseCode = sc.nextLine();
-		courseCode = courseCode.toUpperCase();
-
-		if (checkExistingCourse(courseCode, true)){
-			ArrayList<String> indexNums = getIndexNumsFromCourseCode(courseCode);
-
-			int totalVacancy = 0;
-			for (String indexNum: indexNums){
-				totalVacancy += Utils.getIndexFromIndexNum(indexNum).getVacancy();
-			}
-			
-			System.out.printf("Total vacancies in course with course code %s: %d\n", courseCode, totalVacancy);
-		}
-	}
-
-	public static boolean checkExistingStudent(String studentID, boolean printError) {
-		ArrayList<Student> stuList = Utils.getStuList();
-		for (Student student : stuList){
-			if (student.getUsername().equals(studentID)){
-				return true; 
-			}
-		}
-		if (printError) System.out.println("Invalid StudentID");
-		return false;
-	}
-	public static boolean checkExistingIndex(String indexNo, boolean print) {
-		ArrayList<Index> indexList = Utils.getIndexList();
-		for (Index index : indexList){
-			if (index.getIndexNo().equals(indexNo)){
-				return true; 
-			}
-		}
-		if (print) System.out.println("No existing index");
-		return false;
-	}
-
-	public static boolean checkExistingCourse(String course, boolean print) {
-		for (String c : getAllCourseCodes()){
-			if (c.equals (course)){
-				return true; 
-			}
-		}
-		if (print) System.out.println("No existing course");
-		return false;
-	}
-
-
-	// pretty print DB ---------------------------------------
-	// public static void prettyPrint() throws Exception{
-	// 	// courses -----------
-	// 	System.out.println("\n\nUtils.prettyPrint()------------");
-	// 	for (String courseCode: getAllCourseCodes()){
-	// 		ArrayList<String> indexNums = getIndexNumsFromCourseCode(courseCode);
-	// 		System.out.printf("coursecode: %s\ttotalVacancy: %d\n", courseCode, getTotalVacancyForACourse(courseCode));
-	// 		for (String indexNum: indexNums){
-	// 			Index index = getIndexFromIndexNum(indexNum);
-	// 			System.out.printf("\tindex: %s\tvacancy: %d\t", index.getIndexNo(), index.getVacancy());
-	// 			if (index.getVacancy() == 0) {
-	// 				System.out.print("waitlisted: ");
-	// 				for (String sid: index.getWaitList()){
-	// 					System.out.print(sid + " ");
-	// 				}
-	// 			}
-	// 			System.out.println();
-	// 		}
-	// 	}
-	// 	for (Student s: stuList){
-	// 		System.out.printf("student name: %s\n", s.getName());
-	// 		for (String[] mod: s.getModules()){
-	// 			Index index = getIndexFromIndexNum(mod[1]);
-	// 			System.out.printf("\tcoursecode: %s\ttotalVacancy: %d", index.getCourseCode(), getTotalVacancyForACourse(index.getCourseCode()));
-	// 			System.out.printf("\tindex: %s\tvacancy: %d\n", index.getIndexNo(), index.getVacancy());
-	// 			if (index.getVacancy() == 0) {
-	// 				System.out.print("waitlisted: ");
-	// 				for (String sid: index.getWaitList()){
-	// 					System.out.print(sid + " ");
-	// 				}
-	// 			}
-	// 		}
-	// 		System.out.println();
-	// 	}
-	// 	System.out.println("-----------------------------");
-	// }
 	@SuppressWarnings("unchecked")
 	public static void load(String choice) throws Exception{
-
 		FileInputStream fis = null;
 		ObjectInputStream in = null;
 		choice += ".dat";
@@ -197,8 +107,6 @@ public class Utils implements Serializable
 			}
 			fis.close();
 			in.close();
-			//System.out.println("after loading " + choice);
-			//System.out.println();
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		} catch (ClassNotFoundException ex) {
@@ -207,9 +115,7 @@ public class Utils implements Serializable
 	}
 	public static void save(String choice){
 		try {
-			// write to file
 			choice += ".dat";
-			//System.out.println("before saving " + choice);
 			FileOutputStream fos = new FileOutputStream(choice);
 			ObjectOutputStream out = new ObjectOutputStream(fos);
 
@@ -230,8 +136,6 @@ public class Utils implements Serializable
 			}
 			out.close();
 			fos.close();
-			//System.out.println("after saving " + choice);
-			//System.out.println();
 		}  catch (IOException ex) {
 			ex.printStackTrace();
 		}
@@ -251,7 +155,6 @@ public class Utils implements Serializable
 		}
 		return dateTime;
 	}
-	// use this to generate some input
 	public static void populate() throws Exception {
 		int defaultAU = 0;
 		Lesson l1 = new Lesson("HWLAB1", "10:30", "11:59", "Monday", "LAB"); // i1 
@@ -406,7 +309,7 @@ public class Utils implements Serializable
 		indexList.add(i6);
 		indexList.add(i7);
 		indexList.add(i8);
-		// sav in DB
+
 		save("index");
 		load("index");
 		stuList.add(s1);
@@ -426,21 +329,13 @@ public class Utils implements Serializable
 		stuList.add(s15);
 
 		adminList.add(a1);
-		// call by reference from DB
-		// shld update indexList
 		for (Student stud: getStuList()) {
 			for (String[] mod: stud.getModules()) {
-				Index ii = Utils.getIndexFromIndexNum(mod[1]);
+				Index ii = getIndexFromIndexNum(mod[1]);
 				ii.appendToStuList(stud.getUsername());
 				}
 		}
 
-		
-		
-		
-
-		// save both to DB again
-		// we save("index") to update the file
 		save("student");
 		load("student");
 		save("index");

@@ -1,5 +1,3 @@
-// package project2;
-
 import java.util.Scanner;
 
 public class StudentApp {
@@ -38,7 +36,7 @@ public class StudentApp {
 					me.changeIndex();
 					break;
 				case 5:
-					Utils.checkVacancy();
+					ErrorHandling.checkVacancy();
 					break;
 				case 6:
 					me.printModules();
@@ -50,9 +48,8 @@ public class StudentApp {
 					me.resetPassword(); 
 					break;
 			}
-			Utils.save("index");
-			Utils.save("student");
-			// Utils.prettyPrint();
+			DataBase.save("index");
+			DataBase.save("student");
 		} while (choice < 9);
 	System.out.println("Logging out of student");
 	}

@@ -1,5 +1,3 @@
-// package project2;
-
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -27,7 +25,7 @@ public class PasswordHashController {
 	
 	public static boolean checkUsernameAndPassword(String id, String type, String passHash) throws Exception{
 	    if (type.equals("student")){
-		  Student s = Utils.getStudentFromStuID(id);
+		  Student s = DataBase.getStudentFromStuID(id);
 		  System.out.println(s.getPassword());
 		  if (s.getPassword().equals(passHash)) {
 			return true;
@@ -35,7 +33,7 @@ public class PasswordHashController {
 		  
 	    }
 	    else if (type.equals("admin")){
-		  Admin a = Utils.getAdminFromAdminID(id);
+		  Admin a = DataBase.getAdminFromAdminID(id);
 		  System.out.println("in" + a.getPassword());
 	      if (a.getPassword().equals(passHash)) {
 			return true;

@@ -23,7 +23,6 @@ public abstract class Account implements Serializable {
         return accountPasswordHash;
     }
 
-    
     public void resetPassword(){
         boolean flag = false;
         do {
@@ -48,7 +47,7 @@ public abstract class Account implements Serializable {
                     break;
                 
                     }
-            } while(!flag);
+		} while(!flag);
     }    
     
 }
