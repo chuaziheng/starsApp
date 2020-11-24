@@ -32,27 +32,27 @@ public class Utils implements Serializable
 	}
 
 	// special getters ---------------------------------------
-	public static ArrayList<String> getIndexNumsFromCourseCode(String courseCode) {
+	public static ArrayList<String> getIndexNumsFromCourseCode(String courseCode) throws Exception{
 		courseCode.toUpperCase();
-		if (checkExistingCourse(courseCode, false)){
-			ArrayList<String> indexNums = new ArrayList<String>();
-			for (Index i: indexList){
-				if (i.getCourseCode().equals(courseCode)){
-					indexNums.add(i.getIndexNo());
-				}
+		ArrayList<String> indexNums = new ArrayList<String>();
+		for (Index i: indexList){
+			if (i.getCourseCode().equals(courseCode)){
+				indexNums.add(i.getIndexNo());
 			}
-			return indexNums;
 		}
-		else return null;
+		if (indexNums.equals(new ArrayList<String>())){
+			throw new Exception(String.format("\nCourse %s does not exist!\n", courseCode));
+		}
+		return indexNums;
 	}
 
-	public static Index getIndexFromIndexNum(String indexNum) {
+	public static Index getIndexFromIndexNum(String indexNum) throws Exception{
 		for (Index index: indexList){
 			if (index.getIndexNo().equals(indexNum)){
 				return index;
 			}
 		}
-		return null;
+		throw new Exception(String.format("\nNo index with index number: " + indexNum));
 	}
 
 	public static Set<String> getAllCourseCodes(){
@@ -64,47 +64,56 @@ public class Utils implements Serializable
 	}
 
 	public static Student getStudentFromStuID(String studentID){
-		while (!checkExistingStudent(studentID, false)) {
+		while (!checkExistingStudent(studentID, true)) {
 			System.out.println("Please enter valid student ID!: ");
-			studentID = sc.nextLine();
+			String temp = sc.nextLine();
+			studentID = temp;
 		}
 		for (Student s: getStuList()) {
-			if (s.getUsername().equals(studentID)) {
+			if (s.getStudentID().equals(studentID)) {
 				return s;
 			}
 		} return null; // will never be executed
 	}
-	public static Admin getAdminFromAdminID(String adminID) {
+	public static Admin getAdminFromAdminID(String adminID) throws Exception{
 		for(Admin a: getAdminList()) {
-			if(a.getUsername().equals(adminID)){
+			if(a.getAdminID().equals(adminID)){
 				return a;
 			}
 		}
-		return null;
+		System.out.printf("\nUtils.getAdminFromAdminID(String adminID):\n\tadminID: %s not found\n", adminID);
+		throw new Exception("no admin with that id");
+	}
+
+	public static int getTotalVacancyForACourse(String courseCode) throws Exception{
+		ArrayList<String> indexNums = getIndexNumsFromCourseCode(courseCode);
+
+		int totalVacancy = 0;
+		for (String indexNum: indexNums){
+			totalVacancy += Utils.getIndexFromIndexNum(indexNum).getVacancy();
+		}
+		return totalVacancy;
 	}
 
 	// utility methods --------------------------------------------------------------
 	public static void checkVacancy() {
 		System.out.println("Enter course code to view its vacancies: ");
-		String courseCode = sc.nextLine();
+		String courseCode = sc.next();
 		courseCode = courseCode.toUpperCase();
-
-		if (checkExistingCourse(courseCode, true)){
-			ArrayList<String> indexNums = getIndexNumsFromCourseCode(courseCode);
-
-			int totalVacancy = 0;
-			for (String indexNum: indexNums){
-				totalVacancy += Utils.getIndexFromIndexNum(indexNum).getVacancy();
-			}
-			
+		try {
+			int totalVacancy = Utils.getTotalVacancyForACourse(courseCode);
 			System.out.printf("Total vacancies in course with course code %s: %d\n", courseCode, totalVacancy);
+		} 
+		catch (Exception e) {
+			System.out.printf("Course %s does not exist!", courseCode.toUpperCase());
 		}
+		
 	}
 
 	public static boolean checkExistingStudent(String studentID, boolean printError) {
 		ArrayList<Student> stuList = Utils.getStuList();
 		for (Student student : stuList){
-			if (student.getUsername().equals(studentID)){
+			if (student.getStudentID().equals(studentID)){
 				return true; 
 			}
 		}
@@ -133,42 +142,42 @@ public class Utils implements Serializable
 	}
 
 
-	// pretty print DB ---------------------------------------
-	public static void prettyPrint() throws Exception{
-		// courses -----------
-		System.out.println("\n\nUtils.prettyPrint()------------");
-		for (String courseCode: getAllCourseCodes()){
-			ArrayList<String> indexNums = getIndexNumsFromCourseCode(courseCode);
-			System.out.printf("coursecode: %s\ttotalVacancy: %d\n", courseCode, getTotalVacancyForACourse(courseCode));
-			for (String indexNum: indexNums){
-				Index index = getIndexFromIndexNum(indexNum);
-				System.out.printf("\tindex: %s\tvacancy: %d\t", index.getIndexNo(), index.getVacancy());
-				if (index.getVacancy() == 0) {
-					System.out.print("waitlisted: ");
-					for (String sid: index.getWaitList()){
-						System.out.print(sid + " ");
-					}
-				}
-				System.out.println();
-			}
-		}
-		for (Student s: stuList){
-			System.out.printf("student name: %s\n", s.getName());
-			for (String[] mod: s.getModules()){
-				Index index = getIndexFromIndexNum(mod[1]);
-				System.out.printf("\tcoursecode: %s\ttotalVacancy: %d", index.getCourseCode(), getTotalVacancyForACourse(index.getCourseCode()));
-				System.out.printf("\tindex: %s\tvacancy: %d\n", index.getIndexNo(), index.getVacancy());
-				if (index.getVacancy() == 0) {
-					System.out.print("waitlisted: ");
-					for (String sid: index.getWaitList()){
-						System.out.print(sid + " ");
-					}
-				}
-			}
-			System.out.println();
-		}
-		System.out.println("-----------------------------");
-	}
+	// // pretty print DB ---------------------------------------
+	// public static void prettyPrint() throws Exception{
+	// 	// courses -----------
+	// 	System.out.println("\n\nUtils.prettyPrint()------------");
+	// 	for (String courseCode: getAllCourseCodes()){
+	// 		ArrayList<String> indexNums = getIndexNumsFromCourseCode(courseCode);
+	// 		System.out.printf("coursecode: %s\ttotalVacancy: %d\n", courseCode, getTotalVacancyForACourse(courseCode));
+	// 		for (String indexNum: indexNums){
+	// 			Index index = getIndexFromIndexNum(indexNum);
+	// 			System.out.printf("\tindex: %s\tvacancy: %d\t", index.getIndexNo(), index.getVacancy());
+	// 			if (index.getVacancy() == 0) {
+	// 				System.out.print("waitlisted: ");
+	// 				for (String sid: index.getWaitList()){
+	// 					System.out.print(sid + " ");
+	// 				}
+	// 			}
+	// 			System.out.println();
+	// 		}
+	// 	}
+	// 	for (Student s: stuList){
+	// 		System.out.printf("student name: %s\n", s.getName());
+	// 		for (String[] mod: s.getModules()){
+	// 			Index index = getIndexFromIndexNum(mod[1]);
+	// 			System.out.printf("\tcoursecode: %s\ttotalVacancy: %d", index.getCourseCode(), getTotalVacancyForACourse(index.getCourseCode()));
+	// 			System.out.printf("\tindex: %s\tvacancy: %d\n", index.getIndexNo(), index.getVacancy());
+	// 			if (index.getVacancy() == 0) {
+	// 				System.out.print("waitlisted: ");
+	// 				for (String sid: index.getWaitList()){
+	// 					System.out.print(sid + " ");
+	// 				}
+	// 			}
+	// 		}
+	// 		System.out.println();
+	// 	}
+	// 	System.out.println("-----------------------------");
+	// }
 	@SuppressWarnings("unchecked")
 	public static void load(String choice) throws Exception{
 
@@ -377,9 +386,9 @@ public class Utils implements Serializable
 		
 		//NOTE: 6 students taking mod 3
 		
-		Student s1 = new Student("aa01", PasswordHashController.hash("aa01"), "Adam", "U1823498E", "Singaporean", 'M', "SCSE", modA, "12:30", "23:30", "24/11/2020");
+		Student s1 = new Student("aa01", PasswordHashController.hash("aa01"), "Adam", "U1823498E", "Singaporean", 'M', "SCSE", modA, "12:30", "23:30", "19/11/2020");
 		Student s2 = new Student("bb01", PasswordHashController.hash("b01"), "Benny", "U1827392Y", "Malaysian", 'M', "SPMS", modB, "14:30", "16:30", "20/11/2020"); 
-		Student s3 = new Student("cc01", PasswordHashController.hash("cc01"), "Cindy", "U1928372F", "Malaysian", 'F', "SPMS", modC, "14:30", "16:30", "20/11/2020");
+		Student s3 = new Student("cc01", PasswordHashController.hash("cc01"), "Cindy", "U1928372F", "Malaysian", 'F', "SPMS", modC, "14:30", "23:30", "19/11/2020");
 		Student s4 = new Student("dd01", PasswordHashController.hash("dd01"), "David", "U1720394B", "Singaporean", 'M',"SCSE", modD, "14:30", "16:30", "20/11/2020");
 		Student s5 = new Student("ee01", PasswordHashController.hash("ee01"), "Evelyn", "U1817294C", "American", 'F'," EEE", modE, "10:00", "12:00", "19/11/2020");
 		Student s6 = new Student("ff01", PasswordHashController.hash("ff01"), "Frankie", "U1790390L", "Singaporean", 'M', "SCBE", modF, "12:30", "14:30", "22/11/2020");
@@ -431,7 +440,7 @@ public class Utils implements Serializable
 		for (Student stud: getStuList()) {
 			for (String[] mod: stud.getModules()) {
 				Index ii = Utils.getIndexFromIndexNum(mod[1]);
-				ii.appendToStuList(stud.getUsername());
+				ii.appendToStuList(stud.getStudentID());
 				}
 		}
 
