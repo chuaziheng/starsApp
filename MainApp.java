@@ -4,19 +4,18 @@ import java.io.Console;
 import java.io.Serializable;
 
 public class MainApp implements Serializable{
-	
+
 	final static long serialVersionUID = 123;
 	public static void main(String[] args) throws Exception{
-		
+
 		int choice = 1;
-		
+
 		Console cons = System.console();
 		Admin admin = new Admin();
 		Student student = new Student();
-		
-		//Load all the dat files into the respective arrayLists
-		Utils.populate();
-		
+
+		DataBase.populate();
+
 		Scanner sc = new Scanner(System.in);
 		do {
 			try{
@@ -26,45 +25,49 @@ public class MainApp implements Serializable{
 				System.out.println("2: Admin");
 				System.out.println("3: Exit");
 				System.out.println("Enter choice: ");
-				
+
 				choice = sc.nextInt();
 				sc.nextLine();
-				
+
 				switch (choice){
 					case 1:
 						if(cons == null) {
 							System.out.println("console is null");
 						}
-						System.out.println("Enter studentID: ");										//user will enter both username and password during login
+						System.out.println("Enter studentID: ");
 						String studentID = sc.next();
-						student = Utils.getStudentFromStuID(studentID);
-						
-							char[] studentPassword = cons.readPassword("Please enter your password: ");
-							String studentPasswordStr = String.valueOf(studentPassword);
-							String studentPasswordHash = PasswordHashController.hash(studentPasswordStr);
-							
-						// returns a boolean ie. checks if the username and password matches
-						if (PasswordHashController.checkUsernameAndPassword(student.getStudentID(),"student", studentPasswordHash)) {
+						student = DataBase.getStudentFromStuID(studentID);
+
+						char[] studentPassword = cons.readPassword("Please enter your password: ");
+						String studentPasswordStr = String.valueOf(studentPassword);
+						String studentPasswordHash = PasswordHashController.hash(studentPasswordStr);
+
+						if (PasswordHashController.checkUsernameAndPassword(student.getUsername(),"student", studentPasswordHash)) {
 							if (student.checkAccessTime()) {
 								StudentApp.StudentMenu(student);
 							}
-						
+
 						} else {
-								System.out.println("\nInvalid password!\n");
-							}
+							System.out.println("\nInvalid password!\n");
+						}
 						break;
-						
+
 					case 2:
+						if(cons == null) {
+							System.out.println("console is null");
+						}
 						System.out.println("Enter adminID: ");
 						String adminID = sc.next();
-						
+
 						char[] adminPassword = cons.readPassword("Please enter your password: ");
 						String adminPasswordStr = String.valueOf(adminPassword);
 						String adminPasswordHash = PasswordHashController.hash(adminPasswordStr);
-						
+						System.out.println("HERE 1" + adminPasswordHash);
+
 						if (PasswordHashController.checkUsernameAndPassword(adminID,"admin", adminPasswordHash)) {
-							for (Admin a: Utils.getAdminList()) {
-								if (a.getAdminID().equals(adminID)) {
+							System.out.println("HERE 2");
+							for (Admin a: DataBase.getAdminList()) {
+								if (a.getUsername().equals(adminID)) {
 									admin = a;
 									break;
 								}

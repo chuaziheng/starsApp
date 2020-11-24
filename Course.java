@@ -6,7 +6,6 @@ public abstract class Course implements Serializable {
 	protected String courseCode;
 	protected String school;
 
-	// getters -------------------------------------------------------
 	protected String getCourseCode() {
 		return courseCode;
 	}
@@ -16,7 +15,6 @@ public abstract class Course implements Serializable {
 	protected int getAcadUnit() {
 		return acadUnit;
 	}
-	// setters ------------------------------------------------
 	protected void setCourseCode(String courseCode) {
 		this.courseCode = courseCode;
 	}

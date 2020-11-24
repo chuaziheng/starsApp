@@ -152,7 +152,15 @@ public class ErrorHandling {
 	public static void checkStuExistingMod(ArrayList<String[]> modules, Index indexToAdd) throws Exception{
 		for (String[] mod : modules) {
 			if (mod[0].equals(indexToAdd.getCourseCode())){
-				throw new Exception("Sorry, you are already registered for this index");
+				throw new Exception("Sorry, you are already registered for this course!");
+			}
+		}
+	}
+
+	public static void checkStuExistingCourse(Student s, String courseCode) throws Exception{
+		for (String[] mod : s.getModules()) {
+			if (mod[0].equals(courseCode)){
+				throw new Exception("You are already registered for this index");
 			}
 		}
 	}
@@ -166,10 +174,129 @@ public class ErrorHandling {
 			throw new Exception("Student has same index as you, cannot swap");
 		}
 	}
+
+	public static String checkClassType(String classType) {
+
+		String temp = classType.toLowerCase();
+		boolean x = false; 
+		do{
+			switch(temp){
+				case "lec":
+				case "lecture":
+					classType = "LEC";
+					x = true; 
+					break;
+				case "tut":
+				case "tutorial":
+					classType = "TUT";
+					x = true; 
+					break;
+				case "sem":
+				case "seminar":
+					classType = "SEM";
+					x = true; 
+					break;
+				case "lab":
+					classType = "LAB"; 
+					x = true; 
+					break;
+				default: 
+					System.out.println("Invalid input! Please type LEC/TUT/SEM/LAB only: ");
+					temp = sc.next();
+					break;
+			}
+		} while (!x);
+		return classType;
+	}
+
+	public static String checkClassDay(String classDay) {
+	
+		String temp = classDay.toLowerCase();
+		boolean x = false; 
+		switch(temp){
+			case "mon":
+			case "monday":
+				classDay = "Monday"; 
+				x = true; 
+				break; 
+			case "tue":
+			case "tuesday":
+				classDay = "Tuesday"; 
+				x = true; 
+				break; 
+			case "wed":
+			case "wednesday":
+				classDay = "Wednesday"; 
+				x = true; 
+				break;
+			case "thu":
+			case "thursday":
+				classDay = "Thursday"; 
+				x = true; 
+				break;
+			case "fri":
+			case "friday":
+				classDay = "Friday"; 
+				x = true; 
+				break; 
+			default: 
+				System.out.println("Invalid input! Please type MON/TUE/WED/THU/FRI: ");
+				temp = sc.next();
+				break; 
+		}
+		return classDay; 
+	}
 	public static int convertToInt(String idxChoice) throws Exception{
 		if (!idxChoice.matches("[0-9]+")){
 			throw new Exception("Please enter a number!");
 		}
 		else return Integer.parseInt(idxChoice);
+	}
+	public static void checkVacancy() {
+		System.out.println("Enter course code to view its vacancies: ");
+		String courseCode = sc.nextLine();
+		courseCode = courseCode.toUpperCase();
+
+		if (checkExistingCourse(courseCode, true)){
+			ArrayList<String> indexNums = DataBase.getIndexNumsFromCourseCode(courseCode);
+
+			int totalVacancy = 0;
+			for (String indexNum: indexNums){
+				totalVacancy += DataBase.getIndexFromIndexNum(indexNum).getVacancy();
+			}
+			
+			System.out.printf("Total vacancies in course with course code %s: %d\n", courseCode, totalVacancy);
+		}
+	}
+
+	public static boolean checkExistingStudent(String studentID, boolean printError) {
+		ArrayList<Student> stuList = DataBase.getStuList();
+		for (Student student : stuList){
+			if (student.getUsername().equals(studentID)){
+				return true; 
+			}
+		}
+		if (printError) System.out.println("Invalid StudentID");
+		return false;
+	}
+	public static boolean checkExistingIndex(String indexNo, boolean print) {
+		ArrayList<Index> indexList = DataBase.getIndexList();
+		for (Index index : indexList){
+			if (index.getIndexNo().equals(indexNo)){
+				return true; 
+			}
+		}
+		if (print) System.out.println("No existing index");
+		return false;
+	}
+
+	public static boolean checkExistingCourse(String course, boolean print) {
+		for (String c : DataBase.getAllCourseCodes()){
+			if (c.equals (course)){
+				return true; 
+			}
+		}
+		if (print) System.out.println("No existing course");
+		return false;
 	}
 }
