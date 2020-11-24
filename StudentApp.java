@@ -52,7 +52,7 @@ public class StudentApp {
 			}
 			Utils.save("index");
 			Utils.save("student");
-			Utils.prettyPrint();
+			// Utils.prettyPrint();
 		} while (choice < 9);
 	System.out.println("Logging out of student");
 	}

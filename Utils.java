@@ -134,41 +134,41 @@ public class Utils implements Serializable
 
 
 	// pretty print DB ---------------------------------------
-	public static void prettyPrint() throws Exception{
-		// courses -----------
-		System.out.println("\n\nUtils.prettyPrint()------------");
-		for (String courseCode: getAllCourseCodes()){
-			ArrayList<String> indexNums = getIndexNumsFromCourseCode(courseCode);
-			System.out.printf("coursecode: %s\ttotalVacancy: %d\n", courseCode, getTotalVacancyForACourse(courseCode));
-			for (String indexNum: indexNums){
-				Index index = getIndexFromIndexNum(indexNum);
-				System.out.printf("\tindex: %s\tvacancy: %d\t", index.getIndexNo(), index.getVacancy());
-				if (index.getVacancy() == 0) {
-					System.out.print("waitlisted: ");
-					for (String sid: index.getWaitList()){
-						System.out.print(sid + " ");
-					}
-				}
-				System.out.println();
-			}
-		}
-		for (Student s: stuList){
-			System.out.printf("student name: %s\n", s.getName());
-			for (String[] mod: s.getModules()){
-				Index index = getIndexFromIndexNum(mod[1]);
-				System.out.printf("\tcoursecode: %s\ttotalVacancy: %d", index.getCourseCode(), getTotalVacancyForACourse(index.getCourseCode()));
-				System.out.printf("\tindex: %s\tvacancy: %d\n", index.getIndexNo(), index.getVacancy());
-				if (index.getVacancy() == 0) {
-					System.out.print("waitlisted: ");
-					for (String sid: index.getWaitList()){
-						System.out.print(sid + " ");
-					}
-				}
-			}
-			System.out.println();
-		}
-		System.out.println("-----------------------------");
-	}
+	// public static void prettyPrint() throws Exception{
+	// 	// courses -----------
+	// 	System.out.println("\n\nUtils.prettyPrint()------------");
+	// 	for (String courseCode: getAllCourseCodes()){
+	// 		ArrayList<String> indexNums = getIndexNumsFromCourseCode(courseCode);
+	// 		System.out.printf("coursecode: %s\ttotalVacancy: %d\n", courseCode, getTotalVacancyForACourse(courseCode));
+	// 		for (String indexNum: indexNums){
+	// 			Index index = getIndexFromIndexNum(indexNum);
+	// 			System.out.printf("\tindex: %s\tvacancy: %d\t", index.getIndexNo(), index.getVacancy());
+	// 			if (index.getVacancy() == 0) {
+	// 				System.out.print("waitlisted: ");
+	// 				for (String sid: index.getWaitList()){
+	// 					System.out.print(sid + " ");
+	// 				}
+	// 			}
+	// 			System.out.println();
+	// 		}
+	// 	}
+	// 	for (Student s: stuList){
+	// 		System.out.printf("student name: %s\n", s.getName());
+	// 		for (String[] mod: s.getModules()){
+	// 			Index index = getIndexFromIndexNum(mod[1]);
+	// 			System.out.printf("\tcoursecode: %s\ttotalVacancy: %d", index.getCourseCode(), getTotalVacancyForACourse(index.getCourseCode()));
+	// 			System.out.printf("\tindex: %s\tvacancy: %d\n", index.getIndexNo(), index.getVacancy());
+	// 			if (index.getVacancy() == 0) {
+	// 				System.out.print("waitlisted: ");
+	// 				for (String sid: index.getWaitList()){
+	// 					System.out.print(sid + " ");
+	// 				}
+	// 			}
+	// 		}
+	// 		System.out.println();
+	// 	}
+	// 	System.out.println("-----------------------------");
+	// }
 	@SuppressWarnings("unchecked")
 	public static void load(String choice) throws Exception{
 
