@@ -1,7 +1,7 @@
 import java.util.*;
 import java.io.Serializable;
 
-public class Student extends Account implements Serializable {
+public class Student extends User implements Serializable {
 	final static long serialVersionUID = 123;
 	private String name;
 	private String matricNum;
