@@ -1,3 +1,13 @@
+/**
+* <h2>Logic for AdminCourseManagement</h2>
+* Interface containing the abstract methods of the admin's functions 
+* that are related to managing the courses. 
+* @author  Mun Kei Wuai
+* @version 1.0
+* @since   2020-11-20
+*/
+package stars;
+
 import java.util.ArrayList;
 
 public interface AdminCourseManagement{
