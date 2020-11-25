@@ -1,5 +1,3 @@
-package project2.starsApp;
-
 import java.util.Scanner;
 /**
 * <h2>Boundary: Application for student functions</h2>
