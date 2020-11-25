@@ -1,5 +1,11 @@
 import java.io.Serializable;
 
+/**
+ * Abstract class Course to provide essential attributes and methods that each child Index requires
+ * @author  Zi Heng
+ * @version 1.0
+ * @since   2020-11-20
+ * */
 public abstract class Course implements Serializable {
 	final static long serialVersionUID = 123;
 	protected int acadUnit;
