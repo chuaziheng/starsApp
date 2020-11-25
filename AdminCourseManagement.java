@@ -1,5 +1,3 @@
-package project2.starsApp;
-
 import java.util.ArrayList;
 /**
 * <h2>Control: Admin Interface for Course related methods</h2>
