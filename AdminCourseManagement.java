@@ -1,4 +1,3 @@
-package project2.starsApp;
 import java.util.ArrayList;
 /**
 * <h2>Logic for AdminCourseManagement</h2>

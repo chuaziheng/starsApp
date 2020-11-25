@@ -1,4 +1,3 @@
- package project2.starsApp;
 import java.util.ArrayList;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -166,7 +165,7 @@ public class ErrorHandling {
 	 *  and disallows student from adding the course again */
     public static void checkStuExistingCourse(ArrayList<String[]> modules, String courseCode) throws Exception{
         for (String[] mod : modules){
-            if (mod[1].equals(courseCode)){
+            if (mod[0].equals(courseCode)){
 				throw new Exception("\nYou are already registered for this course!");
 			}
 		}
@@ -224,11 +223,12 @@ public class ErrorHandling {
 		if (checkExistingCourse(courseCode, true)){
 			ArrayList<String> indexNums = DataBase.getIndexNumsFromCourseCode(courseCode);
 
-			int totalVacancy = 0;
-			for (String indexNum: indexNums){
-				totalVacancy += DataBase.getIndexFromIndexNum(indexNum).getVacancy();
+			int counter = 1;
+			for (String indexNum: indexNums){ // Prints list of indices and vacancies
+				Index index = DataBase.getIndexFromIndexNum(indexNum);
+				System.out.printf("(%d) index number: %s vacancy: %d\n", counter, index.getIndexNo(), index.getVacancy());
+				counter++;
 			}
-			System.out.printf("Total vacancies in course with course code %s: %d\n", courseCode, totalVacancy);
 		}
 		else 
 			System.out.printf("Course code does not exist!"); 
@@ -268,7 +268,7 @@ public class ErrorHandling {
 				return true; 
 			}
 		}
-		if (print) System.out.println("No existing course");
+		if (print) System.out.println("No existing course " + courseCode);
 		return false;
 	}
 

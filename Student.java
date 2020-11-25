@@ -1,6 +1,7 @@
 import java.util.*;
 import java.io.Serializable;
 import java.io.Console;
+
 /**
  * <h2>Logic for studentApp</h2>
  * Contains methods for the various student-based implementations
@@ -11,6 +12,7 @@ import java.io.Console;
  * @version 1.0
  * @since   2020-11-20
  */
+
 public class Student extends User implements Serializable {
 	final static long serialVersionUID = 123;
 	private String name;
@@ -30,19 +32,31 @@ public class Student extends User implements Serializable {
 	 */
 	public Student(){}
 	/** 
-	 * Full constructor.
+	 * Full constructor with access time
 	 */
-	public Student(String studentID, String passwordHash, String name, String matricNum, String nationality, char gender, String schoolName) {
+	public Student(String studentID, String passwordHash, String name, String matricNum, String nationality, char gender, String schoolName, String startTime, String endTime, String date) {
 		super(studentID,passwordHash);
 		this.name = name;
 		this.matricNum = matricNum;
 		this.nationality = nationality;
 		this.gender = gender;
 		this.schoolName = schoolName;
+		this.startTime = startTime;
+		this.endTime = endTime;
+		this.date = date;
 		this.modules = new ArrayList <String[]>();
 	}
-	/** 
-	 * Full constructor with access time.
+	//public Student(String studentID, String passwordHash, String name, String matricNum, String nationality, char gender, String schoolName) {
+	//super(studentID,passwordHash);
+	//this.name = name;
+	//this.matricNum = matricNum;
+	//this.nationality = nationality;
+	//this.gender = gender;
+	//this.schoolName = schoolName;
+	//this.modules = new ArrayList <String[]>();
+	//}
+	/**
+	 * constructor for generating of .dat files
 	 */
 	public Student(String studentID, String passwordHash, String name, String matricNum, String nationality, char gender, String schoolName, ArrayList<String[]> modules, String startTime, String endTime, String date) {
 		super(studentID,passwordHash);
@@ -56,7 +70,7 @@ public class Student extends User implements Serializable {
 		this.endTime = endTime;
 		this.date = date;
 	}
-	/** 
+	/**
 	 *Compares the student username string with that of the current student object.
 	 *@param s	Student object to check
 	 *@return 	<code>true</code> if they are the same, otherwise false
@@ -89,8 +103,18 @@ public class Student extends User implements Serializable {
 			ErrorHandling.checkStuExistingCourse(this.getModules(), courseCode);
 
 			indexNums = DataBase.getIndexNumsFromCourseCode(courseCode);
+			if (!ErrorHandling.checkExistingCourse(courseCode, true)) throw new Exception("Please enter a correct coursecode!");
 
 			ErrorHandling.checkAcadUnit(this, DataBase.getIndexFromIndexNum(indexNums.get(0)));
+
+			for (String indexNum : indexNums) {
+				Index idx = DataBase.getIndexFromIndexNum(indexNum);
+				for (String sid : idx.getWaitList()) {
+					if (sid.equals(this.accountID)){
+						throw new Exception("You are already waitlisted for " + idx.getCourseCode() + ", " + idx.getIndexNo());
+					}
+				}
+			}
 
 			System.out.printf("Avaliable indices for course code %s are: \n", courseCode);
 
@@ -298,8 +322,6 @@ public class Student extends User implements Serializable {
 
 			Index indexToAdd = DataBase.getIndexFromIndexNum(indexNums.get(idxChoice));
 
-			ErrorHandling.checkStuExistingMod(this.modules, indexToAdd);
-
 			this.isOverlappingSchedule(indexToAdd);
 
 			if (promptToJoinWaitList(indexToAdd)) {}
@@ -354,7 +376,7 @@ public class Student extends User implements Serializable {
 		Date x = now.getTime();
 
 		if (x.after(fixedStart.getTime()) && x.before(fixedEnd.getTime())) {
-			System.out.println("\nWelcome, " + this.getUsername() + "!");
+			System.out.println("\nWelcome, " + this.getName().toUpperCase() + "!");
 			return true;
 		}
 		System.out.println("Not within access period!");
@@ -391,11 +413,11 @@ public class Student extends User implements Serializable {
 					Date newEndTime1 = newEndTime.getTime();
 					if (lessonDetails[0] == newLessonDetails[0]) {
 						if (!newStartTime1.after(endTime.getTime()) && !newEndTime1.before(startTime.getTime())) {
-							System.out.printf("\nnew index: %s,\t", newIndex.getIndexNo());
+							System.out.printf("\nCourse %s to be added:\n\tindex: %s,\t", newIndex.getCourseCode(), newIndex.getIndexNo());
 							System.out.print(newStartTime.getTime());
 							System.out.print('\t');
 							System.out.print(newEndTime.getTime());
-							System.out.printf("\nold index: %s,\t", i1.getIndexNo());
+							System.out.printf("\nbut clashes with Course %s:\n\tindex: %s,\t", i1.getCourseCode(), i1.getIndexNo());
 							System.out.print(startTime.getTime());
 							System.out.print('\t');
 							System.out.print(endTime.getTime());
@@ -415,11 +437,6 @@ public class Student extends User implements Serializable {
 	 */
 	public boolean promptToJoinWaitList(Index indexToAdd)throws Exception{
 		if (indexToAdd.getVacancy() == 0) {
-			for (String sid: indexToAdd.getWaitList()){
-				if (this.accountID.equals(sid)){
-					throw new Exception("\nYou are already waitlisted for this course!");
-				}
-			}
 			System.out.println("No vacancies! Add to waitlist? Y/N");
 			char waitlistChoice = sc.nextLine().charAt(0);
 			boolean quit = false;
@@ -446,21 +463,46 @@ public class Student extends User implements Serializable {
 		}
 		return false;
 	}
+	public ArrayList<String[]> checkWaitlistStatus(){
+		ArrayList<String[]> stuWaitList = new ArrayList<>();
+		for (Index i : DataBase.getIndexList()){
+			for (String s: i.getWaitList()){
+				if (accountID.equals(s)){
+					String[] mod = {i.getCourseCode(), i.getIndexNo()};
+					stuWaitList.add(mod);
+				}
+			}
+		}
+		return stuWaitList;
+	}
 	/** 
 	 *Prints timetable which includes lesson details of the indices that the user is taking.
 	 */
 	public void printTimetable() throws Exception {
 		try{
 			ErrorHandling.isEmpty(this.modules);
-			for (String[] m: getModules()) {
-				System.out.println("--------------------------TIMETABLE--------------------------"); 
-				System.out.printf("%-8s %-8s %-8s %-8s %-10s", "COURSE", "INDEX", "CLASS", "DAY", "TIME");
-				System.out.println(); 
-
-
+			System.out.println("--------------------------TIMETABLE--------------------------"); 
+			System.out.printf("%-8s %-8s %-8s %-8s %-10s", "COURSE", "INDEX", "CLASS", "DAY", "TIME");
+			System.out.println();
+			ArrayList<String[]> stuWaitList = checkWaitlistStatus();
+			for (String[] m: getModules()) {  
 				for (Lesson l: DataBase.getIndexFromIndexNum(m[1]).getLesson()) {
 					String timing = l.getStartTime() + " - "  + l.getEndTime();
 					System.out.format("%-8s %-8s %-8s %-8s %-10s", m[0], m[1], l.getClassType(), l.getDay(), timing); 
+					System.out.println(); 
+				}
+				System.out.println(); 
+			}
+			if (!stuWaitList.isEmpty()){
+				System.out.println("--------------------------WAITLIST--------------------------"); 
+				System.out.printf("%-8s %-8s %-8s %-8s %-10s", "COURSE", "INDEX", "CLASS", "DAY", "TIME");
+				for (String[] m: stuWaitList) {
+					System.out.println(); 
+					for (Lesson l: DataBase.getIndexFromIndexNum(m[1]).getLesson()) {
+						String timing = l.getStartTime() + " - "  + l.getEndTime();
+						System.out.format("%-8s %-8s %-8s %-8s %-10s", m[0], m[1], l.getClassType(), l.getDay(), timing); 
+						System.out.println(); 
+					}
 					System.out.println(); 
 				}
 			}

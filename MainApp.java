@@ -1,4 +1,3 @@
- package project2.starsApp;
 import java.util.*;
 import java.io.Console;
 import java.io.Serializable;
