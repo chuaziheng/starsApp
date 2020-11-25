@@ -166,6 +166,7 @@ public class Admin extends User implements Serializable, AdminCourseManagement, 
 	/** 
 	 * This method is used to delete a course or index from the course database.
 	 *  @param byIndex  If true, delete the course, including all the index; if false, delete index from course 
+	 *  @throws Exception
 	 * */
 	public void deleteIndexOrCourse(boolean byIndex) throws Exception{
 		// !byIndex means remove all index in this courseCode
@@ -220,6 +221,7 @@ public class Admin extends User implements Serializable, AdminCourseManagement, 
 	// ********************************************************case 5**********************************************************
 	/** 
 	 * This method is used to add an index to the course database.
+	 *  @throws Exception
 	 */
 	public void addIndex() throws Exception {
 		System.out.println("Enter option of existing course: ");
@@ -356,6 +358,7 @@ public class Admin extends User implements Serializable, AdminCourseManagement, 
 	/**
 	 * This method prints a list of students from the database.
 	 * @param byWhat  takes values "all","course" and "index"
+	 * @throws Exception
 	 */
 	public void printStuList(String byWhat) throws Exception{
 		switch (byWhat) {
