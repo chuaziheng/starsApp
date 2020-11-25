@@ -1,4 +1,4 @@
-package project2.starsApp;
+ package project2.starsApp;
 import java.io.Serializable;
 import java.util.Calendar;
 
@@ -12,7 +12,7 @@ import java.util.Calendar;
 * <b>Note:</b> Giving proper comments in your program makes it more
 * user friendly and it is assumed as a high quality code.
 *
-* @author  Zi Heng
+* @author  Tan Wen Xiu
 * @version 1.0
 * @since   2020-11-20
 */

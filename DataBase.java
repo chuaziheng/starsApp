@@ -1,12 +1,9 @@
-package project2.starsApp;
+ package project2.starsApp;
 import java.io.IOException;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.HashSet;
@@ -22,7 +19,7 @@ import java.io.Serializable;
  *  <li>fetching specific Indices, Students, Admins, based on a given index number, student id, admin id</li>
  *  <li>generate the starting .dat files</li>
  
- * @author  Zi Heng
+ * @author  Goh Nicholas, Tan Wen Xiu, Pooja Nag
  * @version 1.0
  * @since   2020-11-20
  * */

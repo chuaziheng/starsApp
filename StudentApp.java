@@ -2,11 +2,11 @@ package project2.starsApp;
 
 import java.util.Scanner;
 /**
-* <h2>Boundary: Application for student functions</h2>
+* <h2>Application for student functions</h2>
 * Interface that allows users to choose from the various functionalities on the student menu.
 * <p>
 * 
-* @author  xxx
+* @author  Pooja Nag, Chua Zi Heng
 * @version 1.0
 * @since   2020-11-20
 */

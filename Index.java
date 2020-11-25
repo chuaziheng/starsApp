@@ -13,7 +13,7 @@ import java.util.*;
 * <b>Note:</b> Giving proper comments in your program makes it more
 * user friendly and it is assumed as a high quality code.
 *
-* @author  Zi Heng
+* @author  Chua Zi Heng, Pooja Nag
 * @version 1.0
 * @since   2020-11-20
 */

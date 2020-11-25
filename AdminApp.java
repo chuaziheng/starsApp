@@ -1,4 +1,5 @@
 package project2.starsApp;
+import java.util.Scanner;
 /**
 * <h2>Logic for AdminApp</h2>
 * Contains the menu for the admin to pick the function
@@ -8,9 +9,6 @@ package project2.starsApp;
 * @version 1.0
 * @since   2020-11-20
 */
-
-
-import java.util.Scanner;
 
 public class AdminApp {
 	/**

@@ -1,13 +1,12 @@
+package project2.starsApp;
 import java.util.Scanner;
 
 import java.io.Serializable;
 /** Parent class for Admin and Student 
-* @author  Zi Heng
+* @author  Chua Zi Heng, Goh Nicholas
 * @version 1.0
 * @since   2020-11-20
 */
-
-
 public abstract class User implements Serializable {
 
     protected String accountID;

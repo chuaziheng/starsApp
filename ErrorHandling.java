@@ -1,4 +1,4 @@
-package project2.starsApp;
+ package project2.starsApp;
 import java.util.ArrayList;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -17,7 +17,7 @@ import java.util.Scanner;
 * <b>Note:</b> Giving proper comments in your program makes it more
 * user friendly and it is assumed as a high quality code.
 *
-* @author  Zi Heng
+* @author  Pooja Nag, Goh Nicholas
 * @version 1.0
 * @since   2020-11-20
 */
@@ -120,7 +120,13 @@ public class ErrorHandling {
 		} while(!x);	
 		return temp; 
 	}
-
+	public static void checkStuExistingMod(ArrayList<String[]> modules, Index indexToAdd) throws Exception{
+		for (String[] mod : modules) {
+		 if (mod[0].equals(indexToAdd.getCourseCode())){
+		  throw new Exception("Sorry, you are already registered for this course!");
+		 }
+		}
+	   }
 	/** method to check whether user has entered date in required format */
 	public static String checkDateFormat(String date) {
 

@@ -1,4 +1,8 @@
 package project2.starsApp;
+import java.io.Serializable;
+import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.Set;
 
 /**
 * <h2>Logic for Admin</h2>
@@ -11,11 +15,6 @@ package project2.starsApp;
 * @version 1.0
 * @since   2020-11-20
 */
-
-import java.io.Serializable;
-import java.util.Scanner;
-import java.util.ArrayList;
-import java.util.Set;
 
 public class Admin extends User implements Serializable, AdminCourseManagement, AdminStudentManagement{
 	

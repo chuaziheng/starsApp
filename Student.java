@@ -2,12 +2,12 @@ package project2.starsApp;
 import java.util.*;
 import java.io.Serializable;
 /**
-* <h2>Control: Logic for studentApp</h2>
+* <h2>Logic for studentApp</h2>
 * Contains methods for the various student-based implementations
 * such as adding, dropping and swapping modules.
 * <p>
 * 
-* @author  xxx
+* @author  Pooja Nag, Goh Nicholas
 * @version 1.0
 * @since   2020-11-20
 */
