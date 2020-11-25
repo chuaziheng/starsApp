@@ -1,5 +1,3 @@
-package project2.starsApp;
-
 /**
 * <h2>Control: Admin Interface for Student related methods</h2>
 * Interface containing the abstract methods of the admin's functions 
