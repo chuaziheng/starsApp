@@ -1,6 +1,19 @@
-import java.util.Scanner;
 
+import java.util.Scanner;
+/**
+* <h2>Application for student functions</h2>
+* Interface that allows users to choose from the various functionalities on the student menu.
+* <p>
+* 
+* @author  Pooja Nag, Chua Zi Heng
+* @version 1.0
+* @since   2020-11-20
+*/
 public class StudentApp {
+	/** 
+	* Student Menu containing switch statement to choose function.
+	* @param me 	Student object, determined from main app
+	*/
 	public static void StudentMenu(Student me) throws Exception {
 
 		int choice = 0;
