@@ -300,7 +300,7 @@ public class ErrorHandling {
 					break;
 				default: 
 					System.out.println("Invalid input! Please type LEC/TUT/SEM/LAB only: ");
-					temp = sc.next();
+					temp = sc.nextLine();
 					break;
 			}
 		} while (!x);
@@ -340,7 +340,7 @@ public class ErrorHandling {
 				break; 
 			default: 
 				System.out.println("Invalid input! Please type MON/TUE/WED/THU/FRI: ");
-				temp = sc.next();
+				temp = sc.nextLine();
 				break; 
 		}
 		return classDay; 

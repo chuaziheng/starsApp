@@ -40,7 +40,7 @@ public class MainApp implements Serializable{
 							System.out.println("console is null");
 						}
 						System.out.println("Enter studentID: ");
-						String studentID = sc.next();
+						String studentID = sc.nextLine();
 						student = DataBase.getStudentFromStuID(studentID);
 
 						char[] studentPassword = cons.readPassword("Please enter your password: ");
@@ -62,7 +62,7 @@ public class MainApp implements Serializable{
 							System.out.println("console is null");
 						}
 						System.out.println("Enter adminID: ");
-						String adminID = sc.next();
+						String adminID = sc.nextLine();
 
 						char[] adminPassword = cons.readPassword("Please enter your password: ");
 						String adminPasswordStr = String.valueOf(adminPassword);
