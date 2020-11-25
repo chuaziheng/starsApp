@@ -1,3 +1,16 @@
+/**
+* <h2>Logic for Admin</h2>
+* Contains methods that allow the various implementations
+* of an administrator such as creating and deleting a 
+* a course or student, updating the student access time,
+* and printing details of students and indices.
+*
+* @author  Mun Kei Wuai, Tan Wen Xiu, Goh Nicholas
+* @version 1.0
+* @since   2020-11-20
+*/
+
+package stars;
 import java.io.Serializable;
 import java.util.Scanner;
 import java.util.ArrayList;
@@ -16,6 +29,9 @@ public class Admin extends User implements Serializable, AdminCourseManagement, 
 	}
 
 	// ********************************************************case 1**********************************************************
+	/** 
+	 * This method is used to create a new student and add it to the database
+	 **/
 	public void addStudent() {
 		System.out.println("Enter the new student's ID: ");
 		String studentID = sc.nextLine();
@@ -84,6 +100,9 @@ public class Admin extends User implements Serializable, AdminCourseManagement, 
 	}
 	
 	// ********************************************************case 2**********************************************************
+	/** 
+	 * This method is used to delete a student from the database.
+	 **/
 	public void deleteStudent() throws Exception {
 		System.out.println("Enter the ID of the student to be deleted: ");
 		String studentID = sc.next();
@@ -98,6 +117,9 @@ public class Admin extends User implements Serializable, AdminCourseManagement, 
 	}
 	
 	// ********************************************************case 3**********************************************************
+	/** 
+	 * This method is used to add a new module to the course database for students to add or drop.
+	 **/
 	public void addModule() {
 			
 		System.out.println("Course code: "); 
@@ -141,6 +163,10 @@ public class Admin extends User implements Serializable, AdminCourseManagement, 
 		}
 	
 	// ********************************************************case 4 or 6**********************************************************
+	/** 
+	 * This method is used to delete a course or index from the course database.
+	 *  @param byIndex  If true, delete the course, including all the index; if false, delete index from course 
+	 * */
 	public void deleteIndexOrCourse(boolean byIndex) throws Exception{
 		// !byIndex means remove all index in this courseCode
 		// otherwise remove specific one
@@ -192,6 +218,9 @@ public class Admin extends User implements Serializable, AdminCourseManagement, 
 	}
 	
 	// ********************************************************case 5**********************************************************
+	/** 
+	 * This method is used to add an index to the course database.
+	 */
 	public void addIndex() throws Exception {
 		System.out.println("Enter option of existing course: ");
 		int counter = 1;
@@ -234,6 +263,10 @@ public class Admin extends User implements Serializable, AdminCourseManagement, 
 		DataBase.getIndexList().add(newIndex);
 	}
 	// ********************************************************case 7**********************************************************
+	/**
+	 * This method is used to add lessons, of an index to the course database.
+	 * @return the ArrayList of Lessons for the index selected.
+	 */
 	public ArrayList<Lesson> addLesson() { 
 		System.out.print("Number of Lessons for this index: ");
 		  int noOfLessons = sc.nextInt(); 
@@ -276,6 +309,10 @@ public class Admin extends User implements Serializable, AdminCourseManagement, 
 		 }
 	
 	// ********************************************************case 9**********************************************************
+	/**
+	 * This method accepts input of the access start and end time to save to the student.
+	 * @param s This is the Student object whose access time is to be updated.
+	 */
 	public void studentAccessPeriod(Student s) {
 		
 		System.out.print("Date in format DD/MM/YYYY: ");
@@ -301,6 +338,9 @@ public class Admin extends User implements Serializable, AdminCourseManagement, 
 		s.setDate(date);
 	}
 	// ********************************************************case 7, 10, 11, 12**********************************************************
+	/**
+	 * This method prints all the courses and their respective indices.
+	 */
 	public void printCourseIndexList() {
 		System.out.println("-----------------------------------------------------------------------------");
 	    System.out.printf("%-20s %-15s", "COURSE", "INDEX");
@@ -313,6 +353,10 @@ public class Admin extends User implements Serializable, AdminCourseManagement, 
 	    }
 	    System.out.println("-----------------------------------------------------------------------------");
 	}
+	/**
+	 * This method prints a list of students from the database.
+	 * @param byWhat  takes values "all","course" and "index"
+	 */
 	public void printStuList(String byWhat) throws Exception{
 		switch (byWhat) {
 			case "all":
