@@ -39,6 +39,7 @@ public class AdminApp {
 			System.out.println("Please choose one of the options above.");
 			
 			choice = sc.nextInt();
+			sc.nextLine();
 			
 			switch (choice) {
 				case 1:
@@ -47,6 +48,7 @@ public class AdminApp {
 					break;
 				case 2:
 					admin.deleteStudent();
+					admin.printStuList("all");
 					break;
 				case 3:
 					admin.addModule();
@@ -68,7 +70,6 @@ public class AdminApp {
 					ErrorHandling.checkVacancy();
 					break;
 				case 9:
-					sc.nextLine();
 					System.out.println("Enter username of student: ");
 					String username = sc.nextLine();
 					Student student1 = DataBase.getStudentFromStuID(username);

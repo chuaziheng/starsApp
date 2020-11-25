@@ -73,7 +73,7 @@ public class Admin extends User implements Serializable, AdminCourseManagement, 
 				endTime = ErrorHandling.checkTimeFormat(sc.nextLine());
 			}
 			System.out.println("Confirm to add student " + name + " (Y/N): ");
-			char option = sc.next().charAt(0);
+			char option = sc.nextLine().charAt(0);
 
 			boolean quit = false;
 			while (!quit){
@@ -92,7 +92,7 @@ public class Admin extends User implements Serializable, AdminCourseManagement, 
 						break;
 					default:
 						System.out.println("Invalid choice! Enter Y/N");
-						option = sc.next().charAt(0);
+						option = sc.nextLine().charAt(0);
 				}
 			}
 		}
@@ -105,7 +105,7 @@ public class Admin extends User implements Serializable, AdminCourseManagement, 
 	 **/
 	public void deleteStudent() throws Exception {
 		System.out.println("Enter the ID of the student to be deleted: ");
-		String studentID = sc.next();
+		String studentID = sc.nextLine();
 		Student student = DataBase.getStudentFromStuID(studentID);
 
 		for (String[] mod : student.getModules()) {
@@ -232,8 +232,8 @@ public class Admin extends User implements Serializable, AdminCourseManagement, 
 			System.out.printf("\t(%d) %s\n", counter, courseCode);
 			counter++;
 		}
-		int option = sc.nextInt();
-		sc.nextLine();
+		String temp = sc.nextLine();
+		int option = ErrorHandling.convertToInt(temp);
 		option--;
 		int i = 0;
 		for (String cc : courseCodes) {
@@ -282,6 +282,8 @@ public class Admin extends User implements Serializable, AdminCourseManagement, 
 			System.out.printf("Class type (eg LEC, TUT, SEM, LAB): "); 
 			String classType = sc.nextLine(); 
 
+			classType = ErrorHandling.checkClassType(classType);
+
 			System.out.printf("Class location: "); 
 			String location = sc.nextLine(); 
 
@@ -302,8 +304,9 @@ public class Admin extends User implements Serializable, AdminCourseManagement, 
 			}
 
 			System.out.println("Enter 1 day of the week: ");
-			String day = sc.next();
-			sc.nextLine();
+			String day = sc.nextLine();
+
+			day = ErrorHandling.checkClassDay(day);
 
 			Lesson newlesson = new Lesson(location, startTime, endTime, day, classType); 
 			lessons.add(newlesson);
