@@ -69,7 +69,7 @@ public class Student extends User implements Serializable {
 			courseCode = sc.next();
 			courseCode = courseCode.toUpperCase();
 
-			ErrorHandling.checkIfStudentHasExistingCourse(courseCode,this.getModules());
+			ErrorHandling.checkStuExistingCourse(this.getModules(), courseCode);
 
 			indexNums = DataBase.getIndexNumsFromCourseCode(courseCode);
 
@@ -96,7 +96,7 @@ public class Student extends User implements Serializable {
 
 			Index indexToAdd = DataBase.getIndexFromIndexNum(indexNums.get(idxChoice));
 
-			ErrorHandling.checkStuExistingMod(this.modules, indexToAdd);
+			ErrorHandling.checkStuExistingIndex(this.modules, indexToAdd);
 
 			isOverlappingSchedule(indexToAdd);
 
