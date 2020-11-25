@@ -1,5 +1,3 @@
-package project2.starsApp;
-
 import java.util.ArrayList;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
