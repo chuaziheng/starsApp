@@ -1,18 +1,17 @@
+package project2.starsApp;
+
 import java.io.Serializable;
 import java.util.Calendar;
 
 /**
-* <h2>Logic for Lesson</h2>
+* <h2>Entity: Logic for Lesson</h2>
 *  Contains attributes for Lesson object such as the location, 
-		lesson timing and class type 
-	Contains methods that allow students to be added or dropped from 
-		index and waitlist 
-* <p>
-* <b>Note:</b> Giving proper comments in your program makes it more
-* user friendly and it is assumed as a high quality code.
+*		lesson timing and class type 
+*	Contains methods that allow students to be added or dropped from 
+*		index and waitlist 
 *
 * @author  Tan Wen Xiu
-* @version 1.0
+* @version 2.2
 * @since   2020-11-20
 */
 

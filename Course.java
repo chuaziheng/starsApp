@@ -1,9 +1,12 @@
+package project2.starsApp;
+
 import java.io.Serializable;
 
 /**
- * Abstract class Course to provide essential attributes and methods that each child Index requires
+ * <h2>Entity: Abstract class Course</h2>
+ * To provide essential attributes and methods that each child Index requires
  * @author  Chua Zi Heng ,  Pooja Nag
- * @version 1.0
+ * @version 2.2
  * @since   2020-11-20
  * */
 public abstract class Course implements Serializable {

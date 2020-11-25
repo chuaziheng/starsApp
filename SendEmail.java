@@ -1,3 +1,5 @@
+package project2.starsApp;
+
 import java.util.Properties; 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -8,6 +10,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 /**
+ * <h2>Control: Logic for Sending Emails</h2>
  * Sends email. Taken from NTU materials
 * @author  Tan Wen Xiu, Mun Kei Wuai
 * @version 1.0

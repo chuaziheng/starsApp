@@ -1,18 +1,20 @@
+package project2.starsApp;
+
 import java.io.Serializable;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.Set;
 
 /**
- * <h2>Logic for Admin</h2>
+ * <h2>Entity: Logic for Admin</h2>
  * Contains methods that allow the various implementations
  * of an administrator such as creating and deleting a 
  * a course or student, updating the student access time,
  * and printing details of students and indices.
  *
  * @author  Mun Kei Wuai, Tan Wen Xiu, Goh Nicholas
- * @version 1.0
- * @since   2020-11-20
+ * @version 2.3
+ * @since   2020-11-23
  */
 
 public class Admin extends User implements Serializable, AdminCourseManagement, AdminStudentManagement{
@@ -20,9 +22,9 @@ public class Admin extends User implements Serializable, AdminCourseManagement, 
 	final static long serialVersionUID = 123; 
 	transient static Scanner sc = new Scanner(System.in);
 	private static String courseCode;
-
+	/** Empty Admin constructor */
 	public Admin() {}
-
+	/** Full Admin constructor */
 	public Admin(String adminID, String adminPasswordHash) {
 		super(adminID,adminPasswordHash);
 	}

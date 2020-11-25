@@ -1,7 +1,10 @@
+package project2.starsApp;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 /**
+ * <h2>Control: Logic for Hashing of Passwords</h2>
  * Methods that deal with comparing and encrypting passwords
  * @author  Mun Kei Wuai, Tan Wen Xiu
  * @version 1.0
@@ -12,7 +15,7 @@ public class PasswordHashController {
 	/**
 	* Encrypts password string to a password hash
 	* @param stringToEncrypt
-	* @return
+	* @return encrypted password string
 	 */
 	public static String hash(String stringToEncrypt) {
 		try {

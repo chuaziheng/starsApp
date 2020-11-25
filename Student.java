@@ -1,12 +1,12 @@
+package project2.starsApp;
 import java.util.*;
 import java.io.Serializable;
 import java.io.Console;
 
 /**
- * <h2>Logic for studentApp</h2>
+ * <h2>Entity: Logic for Student</h2>
  * Contains methods for the various student-based implementations
  * such as adding, dropping and swapping modules.
- * <p>
  * 
  * @author  Pooja Nag, Goh Nicholas
  * @version 1.0
@@ -26,13 +26,10 @@ public class Student extends User implements Serializable {
 	private int acadUnit;
 	transient static Scanner sc = new Scanner(System.in);
 	private ArrayList<String[]> modules;
-	/** 
-	 * Empty constructor.
-	 * @param
-	 */
+	/** Empty Student constructor */
 	public Student(){}
 	/** 
-	 * Full constructor with access time
+	 * Full Student constructor with access time
 	 */
 	public Student(String studentID, String passwordHash, String name, String matricNum, String nationality, char gender, String schoolName, String startTime, String endTime, String date) {
 		super(studentID,passwordHash);
@@ -46,17 +43,9 @@ public class Student extends User implements Serializable {
 		this.date = date;
 		this.modules = new ArrayList <String[]>();
 	}
-	//public Student(String studentID, String passwordHash, String name, String matricNum, String nationality, char gender, String schoolName) {
-	//super(studentID,passwordHash);
-	//this.name = name;
-	//this.matricNum = matricNum;
-	//this.nationality = nationality;
-	//this.gender = gender;
-	//this.schoolName = schoolName;
-	//this.modules = new ArrayList <String[]>();
-	//}
+
 	/**
-	 * constructor for generating of .dat files
+	 *Student constructor for generating of .dat files
 	 */
 	public Student(String studentID, String passwordHash, String name, String matricNum, String nationality, char gender, String schoolName, ArrayList<String[]> modules, String startTime, String endTime, String date) {
 		super(studentID,passwordHash);
@@ -175,7 +164,7 @@ public class Student extends User implements Serializable {
 	 *
 	 *@param drop	<code>true</code> to drop module, <code>false</code> to swap module
 	 *@return mod	Array of Strings that contain the module's courseCode and index
-	 *@exception	e	Prompts user for valid integer input when choosing desired index
+	 *@throws Exception Prompts user for valid integer input when choosing desired index
 	 */
 	public String[] askDropModule(boolean drop) throws Exception{
 		try{
@@ -389,7 +378,7 @@ public class Student extends User implements Serializable {
 	 *Checks the lesson timings of this index against the other lesson timings of existing indices
 
 	 *@param newIndex	check if this index clashes with the existing indices in the schedule
-	 *@exception			If clashes with other lesson timings, print error message.
+	 *@throws Exception	If clashes with other lesson timings, print error message.
 	 */
 	public void isOverlappingSchedule(Index newIndex) throws Exception{
 		for (String[] mod: modules) {

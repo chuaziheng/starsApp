@@ -1,3 +1,5 @@
+package project2.starsApp;
+
 import java.util.ArrayList;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -6,25 +8,25 @@ import java.util.Calendar;
 import java.util.Scanner;
 
 /**
-* <h2>Logic for ErrorHandling</h2>
-* Contains various methods to handle errors due to user input.  
-* Some methods allow for user to try again with a valid input, 
+* <h2>Control: Logic for ErrorHandling</h2>
+* Contains various Methods to handle errors due to user input.  
+* Some Methods allow for user to try again with a valid input, 
 *	 such as incorrect date/time formats, string or integer inputs. 
-* Other methods check whether user has entered options within existing range, 
+* Other Methods check whether user has entered options within existing range, 
 	such as whether the student or module exists. If they do not exist, exception is thrown. 
 * <p>
 * <b>Note:</b> Giving proper comments in your program makes it more
 * user friendly and it is assumed as a high quality code.
 *
 * @author  Pooja Nag, Goh Nicholas
-* @version 1.0
+* @version 2.2
 * @since   2020-11-20
 */
 
 public class ErrorHandling {
 	transient static Scanner sc = new Scanner(System.in);
 	
-	/** method to check whether user has entered either of the 2 options for gender */
+	/** Method to check whether user has entered either of the 2 options for gender */
 	public static char checkGender(char gender) {
 		boolean done = false;
 		do {
@@ -39,7 +41,7 @@ public class ErrorHandling {
 		return gender;
 	}
 
-	/** method to check whether user input is a valid integer
+	/** Method to check whether user input is a valid integer
 	 * 	returns int */
 	public static int checkInteger(String string) {
 		int i = 0;
@@ -58,7 +60,7 @@ public class ErrorHandling {
 		return i;
 	}
 
-	/** method to check whether user input is a valid integer
+	/** Method to check whether user input is a valid integer
 	 * 	returns boolean */
 	public static boolean isNumeric(String strNum) {
 	    if (strNum == null) {
@@ -74,7 +76,7 @@ public class ErrorHandling {
 	    return true;
 	}
 
-	/** method to check whether user has entered a choice within the valid choices */
+	/** Method to check whether user has entered a choice within the valid choices */
 	public static boolean isReasonableChoice(int listSize, int indexChoice) throws Exception{
 		if (indexChoice >= listSize || indexChoice < 0){
 			System.out.println("Chosen option does not exist!");
@@ -83,7 +85,7 @@ public class ErrorHandling {
 		return true;
 	}
 
-	/** method to check whether user has entered time in required format */
+	/** Method to check whether user has entered time in required format */
 	public static String checkTimeFormat(String time) {
 		String temp = time; 
 		boolean x = false; 
@@ -126,7 +128,7 @@ public class ErrorHandling {
 		 }
 		}
 	   }
-	/** method to check whether user has entered date in required format */
+	/** Method to check whether user has entered date in required format */
 	public static String checkDateFormat(String date) {
 
         boolean x = false;
@@ -142,7 +144,7 @@ public class ErrorHandling {
         return date; 
 	}
 	
-	/** method to check whether user has entered valid time period 
+	/** Method to check whether user has entered valid time period 
 	 * 	such that startTime is before endTime */
 	public static boolean checkTimePeriod(String startTime, String endTime, String date) {
 	
@@ -161,7 +163,7 @@ public class ErrorHandling {
 		return true; 
 	}
 	
-	/** method to check whether student already has the existing course
+	/** Method to check whether student already has the existing course
 	 *  and disallows student from adding the course again */
     public static void checkStuExistingCourse(ArrayList<String[]> modules, String courseCode) throws Exception{
         for (String[] mod : modules){
@@ -171,7 +173,7 @@ public class ErrorHandling {
 		}
 	}
 
-	/** method to check whether user is already registered for existing index
+	/** Method to check whether user is already registered for existing index
 	 *  and disallows student from adding index */
 	public static void checkStuExistingIndex(ArrayList<String[]> modules, Index indexToAdd) throws Exception{
 		for (String[] mod : modules) {
@@ -181,7 +183,7 @@ public class ErrorHandling {
 		}
 	}
 
-	/** method to check whether student already has maximum academic units
+	/** Method to check whether student already has maximum academic units
 	 *  and disallows student from adding course */
 	public static void checkAcadUnit(Student s) throws Exception{
 		if (s.getAcadUnit() >= 21) {
@@ -189,7 +191,7 @@ public class ErrorHandling {
 		}
 	}
 
-	/** method to check whether student has exceeded maximum academic units 
+	/** Method to check whether student has exceeded maximum academic units 
 	 * 	after attempting to add a new course
 	 *  and disallows student from adding course */
 	public static void checkAcadUnit(Student s, Index i) throws Exception{
@@ -198,7 +200,7 @@ public class ErrorHandling {
 		}
 	}
 
-	/** method to check whether student has modules before performing action that 
+	/** Method to check whether student has modules before performing action that 
 	 *  requires student to have existing modules */
 	public static void isEmpty(ArrayList<String[]> modules) throws Exception{
 		if (modules.isEmpty()){
@@ -206,7 +208,7 @@ public class ErrorHandling {
 		}
 	}
 
-	/** method to check whether student has modules before performing action that 
+	/** Method to check whether student has modules before performing action that 
 	 *  requires student to have existing modules */
 	public static void sameIndexCannotSwap(Index myIndex, Index sIndex) throws Exception{
 		if (myIndex.getIndexNo().equals(sIndex.getIndexNo())){
@@ -214,7 +216,7 @@ public class ErrorHandling {
 		}
 	}
 
-	/** method to check whether course code exists before printing total vacancy of course */
+	/** Method to check whether course code exists before printing total vacancy of course */
 	public static void checkVacancy(){
 		System.out.println("Enter course code to view its vacancies: ");
 		String courseCode = sc.nextLine();
@@ -234,7 +236,7 @@ public class ErrorHandling {
 			System.out.printf("Course code does not exist!"); 
 	}
 
-	/** method to check whether student is an existing student in database 
+	/** Method to check whether student is an existing student in database 
 	 *  via checking the unique student ID */
 	public static boolean checkExistingStudent(String studentID, boolean printError) {
 		ArrayList<Student> stuList = DataBase.getStuList();
@@ -247,7 +249,7 @@ public class ErrorHandling {
 		return false;
 	}
 
-	/** method to check whether index input is an existing index in database 
+	/** Method to check whether index input is an existing index in database 
 	 *  via checking the unique index number */
 	public static boolean checkExistingIndex(String indexNo, boolean print) {
 		ArrayList<Index> indexList = DataBase.getIndexList();
@@ -260,7 +262,7 @@ public class ErrorHandling {
 		return false;
 	}
 
-	/** method to check whether course input is an existing course in database 
+	/** Method to check whether course input is an existing course in database 
 	 *  via checking the unique course code */
 	public static boolean checkExistingCourse(String courseCode, boolean print) {
 		for (String c : DataBase.getAllCourseCodes()){
@@ -272,7 +274,7 @@ public class ErrorHandling {
 		return false;
 	}
 
-	/** method to check whether input is a valid class type
+	/** Method to check whether input is a valid class type
 	 *  and changes input to a suitable format to be saved */
 	public static String checkClassType(String classType) {
 		String temp = classType.toLowerCase();
@@ -307,7 +309,7 @@ public class ErrorHandling {
 		return classType;
 	}
 
-	/** method to check whether input is a valid day
+	/** Method to check whether input is a valid day
 	 *  and changes input to a suitable format to be saved */
 	public static String checkClassDay(String classDay) {
 		String temp = classDay.toLowerCase();

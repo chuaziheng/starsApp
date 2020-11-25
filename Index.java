@@ -1,15 +1,14 @@
+package project2.starsApp;
+
 import java.util.*;
 
 /**
-* <h2>Logic for Index</h2>
+* <h2>Entity: Logic for Index</h2>
 * Inherited from Course class 
 * 	Contains attributes for index object such as the student list, 
-		waitlist and lesson schedules 
-	Contains methods that allow students to be added or dropped from 
-		index and waitlist 
-* <p>
-* <b>Note:</b> Giving proper comments in your program makes it more
-* user friendly and it is assumed as a high quality code.
+*	waitlist and lesson schedules 
+*	Contains methods that allow students to be added or dropped from 
+*	index and waitlist 
 *
 * @author  Chua Zi Heng, Pooja Nag
 * @version 1.0

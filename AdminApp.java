@@ -1,12 +1,14 @@
+package project2.starsApp;
+
 import java.util.Scanner;
 /**
-* <h2>Logic for AdminApp</h2>
+* <h2>Boundary: Application for student functions</h2>
 * Contains the menu for the admin to pick the function
 * they wish to execute, and calls the respective functions
 * that the admin chooses.
 * @author  Mun Kei Wuai, Tan Wen Xiu
-* @version 1.0
-* @since   2020-11-20
+* @version 2.3
+* @since   2020-11-24
 */
 
 public class AdminApp {

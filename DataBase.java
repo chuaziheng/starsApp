@@ -1,3 +1,5 @@
+package project2.starsApp;
+
 import java.io.IOException;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -10,16 +12,16 @@ import java.util.Scanner;
 import java.io.Serializable;
 
 /**
- * <h2>Logic for DataBase</h2>
+ * <h2>Entity: Logic for DataBase</h2>
  * Contains methods that:
  * <ul>
  *	<li>save and load instances of Index, Student, Admin</li>
  *  <li>fetch all Indices, Students, Admins</li>
  *  <li>fetching specific Indices, Students, Admins, based on a given index number, student id, admin id</li>
  *  <li>generate the starting .dat files</li>
- 
+ * </ul>
  * @author  Goh Nicholas, Tan Wen Xiu, Pooja Nag
- * @version 1.0
+ * @version 2.1
  * @since   2020-11-20
  * */
 public class DataBase implements Serializable

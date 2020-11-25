@@ -1,7 +1,9 @@
+package project2.starsApp;
 import java.util.Scanner;
 
 import java.io.Serializable;
-/** Parent class for Admin and Student 
+/** <h2>Entity: Parent class for Admin and Student </h2>
+ * Contains basic user attributes and logic for resetting of user password.
 * @author  Chua Zi Heng, Goh Nicholas
 * @version 1.0
 * @since   2020-11-20
@@ -13,9 +15,9 @@ public abstract class User implements Serializable {
     final static long serialVersionUID = 123; 
 
     transient static Scanner sc = new Scanner(System.in);
-    
+    /** User constructor */
     public User(){};
-
+    /** User full constructor */
     public User(String accountID, String accountPasswordHash){
         this.accountID = accountID;
         this.accountPasswordHash = accountPasswordHash;
@@ -28,7 +30,7 @@ public abstract class User implements Serializable {
         return accountPasswordHash;
     }
     
-    /** for user to change their password,
+    /** For user to change their password,
      *  first ask user to key in their password which will be unmasked
      *  then ask them to confirm if they want to change
      */
