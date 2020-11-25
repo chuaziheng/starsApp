@@ -361,7 +361,7 @@ public class Student extends User implements Serializable {
 		Date x = now.getTime();
 
 		if (x.after(fixedStart.getTime()) && x.before(fixedEnd.getTime())) {
-			System.out.println("\nWelcome, " + this.getUsername() + "!");
+			System.out.println("\nWelcome, " + this.getName().toUpperCase() + "!");
 			return true;
 		}
 		System.out.println("Not within access period!");
