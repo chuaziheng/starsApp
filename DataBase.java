@@ -334,7 +334,7 @@ public class DataBase implements Serializable
 		Student s13 = new Student("mm01", PasswordHashController.hash("mm01"), "Mandy Mok", "U1827263Y", "Malaysian", 'F', "ADM", modM, "11:00", "13:00", "21/11/2020"); 
 		Student s14 = new Student("nn01", PasswordHashController.hash("nn01"), "Nigel Ng", "U1822113N", "Singaporean", 'M',"MAE", modN, "09:00", "11:30", "13/11/2020");
 		Student s15 = new Student("oo01", PasswordHashController.hash("oo01"), "Oscar Owen Blackburn", "U1899773D", "American", 'M'," SCSE", modO, "14:30", "16:30", "20/11/2020");
-		Admin a1 = new Admin("Professor Tan Bock Meng", PasswordHashController.hash("admin"));
+		Admin a1 = new Admin("admin", PasswordHashController.hash("admin"));
 
 		indexList = new ArrayList<Index>();
 		stuList = new ArrayList<Student>();
