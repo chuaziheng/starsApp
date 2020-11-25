@@ -13,12 +13,34 @@ import java.util.HashSet;
 import java.util.Scanner;
 import java.io.Serializable;
 
+/**
+ * <h2>Logic for DataBase</h2>
+ * Contains methods that:
+ * <ul>
+ *	<li>save and load instances of Index, Student, Admin</li>
+ *  <li>fetch all Indices, Students, Admins</li>
+ *  <li>fetching specific Indices, Students, Admins, based on a given index number, student id, admin id</li>
+ *  <li>generate the starting .dat files</li>
+ 
+ * @author  Zi Heng
+ * @version 1.0
+ * @since   2020-11-20
+ * */
 public class DataBase implements Serializable
 {
 	final static long serialVersionUID = 123; 
 	private static Scanner sc = new Scanner(System.in);
+	/** 
+	 * Stores list of students in memory for quicker access
+	 * */
 	private static ArrayList<Student> stuList = new ArrayList<Student>();
+	/** 
+	 * Stores list of admin in memory for quicker access
+	 * */
 	private static ArrayList<Admin> adminList = new ArrayList<Admin>();
+	/** 
+	 * Stores list of index in memory for quicker access
+	 * */
 	private static ArrayList<Index> indexList = new ArrayList<Index>();
 	public static ArrayList<Student> getStuList() {
 		return stuList;
@@ -30,20 +52,29 @@ public class DataBase implements Serializable
 		return adminList;
 	}
 
+	/**
+	* Fetches ArrayList of Index objects with the given courseCode
+	* @param courseCode course code of index object(s) to be retrieved
+	* @return list of indices with that courseCode
+	 */
 	public static ArrayList<String> getIndexNumsFromCourseCode(String courseCode) {
 		courseCode.toUpperCase();
+		ArrayList<String> indexNums = new ArrayList<String>();
 		if (ErrorHandling.checkExistingCourse(courseCode, false)){
-			ArrayList<String> indexNums = new ArrayList<String>();
 			for (Index i: indexList){
 				if (i.getCourseCode().equals(courseCode)){
 					indexNums.add(i.getIndexNo());
 				}
 			}
-			return indexNums;
 		}
-		else return null;
+		return indexNums;
 	}
 
+	/**
+	* Fetches a specific Index object with the given indexNum
+	* @param indexNum index number of the Index object to be retrieved
+	* @return index object with the specified indexNum
+	 */
 	public static Index getIndexFromIndexNum(String indexNum) {
 		for (Index index: indexList){
 			if (index.getIndexNo().equals(indexNum)){
@@ -53,6 +84,9 @@ public class DataBase implements Serializable
 		return null;
 	}
 
+	/**
+	* Fetches a set of all current courseCodes
+	 */
 	public static Set<String> getAllCourseCodes(){
 		Set<String> courseCodes = new HashSet<String>();
 		for (Index index: indexList){
@@ -61,6 +95,10 @@ public class DataBase implements Serializable
 		return courseCodes;
 	}
 
+	/**
+	* Fetches a specific student fromt the given studentID
+	* @param studentID student id of the student object to be retrieved
+	*/
 	public static Student getStudentFromStuID(String studentID){
 		while (!ErrorHandling.checkExistingStudent(studentID, false)) {
 			System.out.println("Please enter valid student ID!: ");
@@ -72,6 +110,9 @@ public class DataBase implements Serializable
 			}
 		} return null;
 	}
+	/**
+	* Fetches specific admin from the given admin id
+	 */
 	public static Admin getAdminFromAdminID(String adminID) {
 		for(Admin a: getAdminList()) {
 			if(a.getUsername().equals(adminID)){
@@ -81,6 +122,11 @@ public class DataBase implements Serializable
 		return null;
 	}
 
+	/**
+	* load a .dat file containing ArrayList of the specified object into the respective attributes
+	* @param choice one of "student", "admin", "index"
+	* @throws Exception if file not found
+	 */
 	@SuppressWarnings("unchecked")
 	public static void load(String choice) throws Exception{
 		FileInputStream fis = null;
@@ -114,6 +160,10 @@ public class DataBase implements Serializable
 			ex.printStackTrace();
 		}
 	}
+	/**
+	* saves into a .dat file the ArrayList of a specified object
+	* @param choice one of "student", "admin", "index"
+	 */
 	public static void save(String choice){
 		try {
 			choice += ".dat";
@@ -144,18 +194,9 @@ public class DataBase implements Serializable
 			System.out.println( "Exception >> " + e.getMessage() );
 		}
 	}
-	public static LocalDateTime convertDate  (String s) {
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-		LocalDateTime dateTime = null;
-		try {
-			dateTime = LocalDateTime.parse(s,formatter);
-		}
-		catch (DateTimeParseException  e) {
-			e.printStackTrace();
-			return null;
-		}
-		return dateTime;
-	}
+	/**
+	* Helper method for generating starting .dat files
+	 */
 	public static void populate() throws Exception {
 		int defaultAU = 0;
 		Lesson l1 = new Lesson("HWLAB1", "10:30", "11:59", "Monday", "LAB"); // i1 
@@ -281,8 +322,8 @@ public class DataBase implements Serializable
 		
 		//NOTE: 6 students taking mod 3
 		
-		Student s1 = new Student("aa01", PasswordHashController.hash("aa01"), "Adam", "U1823498E", "Singaporean", 'M', "SCSE", modA, "12:30", "23:30", "24/11/2020");
-		Student s2 = new Student("bb01", PasswordHashController.hash("b01"), "Benny", "U1827392Y", "Malaysian", 'M', "SPMS", modB, "14:30", "16:30", "20/11/2020"); 
+		Student s1 = new Student("aa01", PasswordHashController.hash("aa01"), "Adam", "U1823498E", "Singaporean", 'M', "SCSE", modA, "12:30", "23:30", "25/11/2020");
+		Student s2 = new Student("bb01", PasswordHashController.hash("bb01"), "Benny", "U1827392Y", "Malaysian", 'M', "SPMS", modB, "12:30", "23:30", "25/11/2020"); 
 		Student s3 = new Student("cc01", PasswordHashController.hash("cc01"), "Cindy", "U1928372F", "Malaysian", 'F', "SPMS", modC, "14:30", "16:30", "20/11/2020");
 		Student s4 = new Student("dd01", PasswordHashController.hash("dd01"), "David", "U1720394B", "Singaporean", 'M',"SCSE", modD, "14:30", "16:30", "20/11/2020");
 		Student s5 = new Student("ee01", PasswordHashController.hash("ee01"), "Evelyn", "U1817294C", "American", 'F'," EEE", modE, "10:00", "12:00", "19/11/2020");

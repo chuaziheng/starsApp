@@ -2,8 +2,19 @@ package project2.starsApp;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+/**
+ * Methods that deal with comparing and encrypting passwords
+ * @author  Zi Heng
+ * @version 1.0
+ * @since   2020-11-20
+ * */
 public class PasswordHashController {
 
+	/**
+	* Encrypts password string to a password hash
+	* @param stringToEncrypt
+	* @return
+	 */
 	public static String hash(String stringToEncrypt) {
 		try {
 			MessageDigest md = MessageDigest.getInstance("SHA-256");
@@ -24,6 +35,14 @@ public class PasswordHashController {
 		return stringToEncrypt;
 	}
 	
+	/**
+	* Verifies username and password matches a record in the database
+	* @param id admin or student id
+	* @param type one of "admin" or "student"
+	* @param passHash encrypted input password by user
+	* @return success or failure
+	* @throws Exception no admin or student with that id in database records
+	 */
 	public static boolean checkUsernameAndPassword(String id, String type, String passHash) throws Exception{
 	    if (type.equals("student")){
 		  Student s = DataBase.getStudentFromStuID(id);

@@ -7,6 +7,10 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+
+/**
+ * Sends email. Taken from NTU materials
+ * */
 public class SendEmail {
 public static void SendSchEmail(String index, String courseCode, String studentName) {
 

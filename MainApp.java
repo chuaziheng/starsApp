@@ -4,6 +4,12 @@ import java.util.*;
 import java.io.Console;
 import java.io.Serializable;
 
+/**
+ * Allows for login as student or admin
+ * @author  Zi Heng
+ * @version 1.0
+ * @since   2020-11-20
+ * */
 public class MainApp implements Serializable{
 
 	final static long serialVersionUID = 123;
