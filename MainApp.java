@@ -1,11 +1,11 @@
+ package project2.starsApp;
 import java.util.*;
-
 import java.io.Console;
 import java.io.Serializable;
 
 /**
  * Allows for login as student or admin
- * @author  Zi Heng
+ * @author  Mun Kei Wuai, Tan Wen Xiu
  * @version 1.0
  * @since   2020-11-20
  * */

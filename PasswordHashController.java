@@ -1,9 +1,10 @@
+ package project2.starsApp;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 /**
  * Methods that deal with comparing and encrypting passwords
- * @author  Zi Heng
+ * @author  Mun Kei Wuai, Tan Wen Xiu
  * @version 1.0
  * @since   2020-11-20
  * */

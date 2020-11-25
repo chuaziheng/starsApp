@@ -1,7 +1,21 @@
+package project2.starsApp;
 import java.util.Scanner;
+/**
+* <h2>Logic for AdminApp</h2>
+* Contains the menu for the admin to pick the function
+* they wish to execute, and calls the respective functions
+* that the admin chooses.
+* @author  Mun Kei Wuai, Tan Wen Xiu
+* @version 1.0
+* @since   2020-11-20
+*/
 
 public class AdminApp {
-	
+	/**
+	 * This method executes the menu that an admin login will see.
+	 * @param admin
+	 * @throws Exception
+	 */
 	public static void AdminMenu(Admin admin) throws Exception {
 		
 		int choice;

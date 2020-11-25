@@ -1,3 +1,4 @@
+package project2.starsApp;
 import java.util.Properties; 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -9,7 +10,10 @@ import javax.mail.internet.MimeMessage;
 
 /**
  * Sends email. Taken from NTU materials
- * */
+* @author  Tan Wen Xiu, Mun Kei Wuai
+* @version 1.0
+* @since   2020-11-20
+*/
 public class SendEmail {
 public static void SendSchEmail(String index, String courseCode, String studentName) {
 

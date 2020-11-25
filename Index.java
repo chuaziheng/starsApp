@@ -1,4 +1,22 @@
+
+package project2.starsApp;
 import java.util.*;
+
+/**
+* <h2>Logic for Index</h2>
+* Inherited from Course class 
+* 	Contains attributes for index object such as the student list, 
+		waitlist and lesson schedules 
+	Contains methods that allow students to be added or dropped from 
+		index and waitlist 
+* <p>
+* <b>Note:</b> Giving proper comments in your program makes it more
+* user friendly and it is assumed as a high quality code.
+*
+* @author  Chua Zi Heng, Pooja Nag
+* @version 1.0
+* @since   2020-11-20
+*/
 
 public class Index extends Course {
 	final static long serialVersionUID = 123;
@@ -7,7 +25,8 @@ public class Index extends Course {
 	private ArrayList<String> stuList = new ArrayList<String>();
 	private ArrayList<String> waitList = new ArrayList<String>();
 	private ArrayList<Lesson> lessons = new ArrayList<Lesson>();
-
+ 
+	/** Index constructors */
 	public Index() {}
 	public Index(String courseCode, String school, int acadUnit, String indexNo, ArrayList<Lesson> lessons,int VACANCY) {
 		this.courseCode = courseCode;
@@ -17,18 +36,26 @@ public class Index extends Course {
 		this.lessons = lessons;
 		this.VACANCY = VACANCY;
 	}
+
+	/** method to add student to student list of index */
 	public void appendToStuList(String studentID) {
 		stuList.add(studentID);
-		if (VACANCY == 0) System.out.println("appendToStuList trying to make VACANCY == -1");
 		VACANCY--;
 	}
+
+	/** method to add student to waitlist of index */
 	public void appendToWaitList(String studentID) {
 		waitList.add(studentID);
 	}
+
+	/** method to drop student from index */
 	public void dropStud(String studentID) {
 		stuList.remove(studentID);
 		VACANCY++;
 	}
+
+	/** method to print student's name, gender and nationality 
+	 *  if they are registered for this index */
 	public void printStuListInfo() throws Exception {
 		System.out.println("Printing Student List in Index " + indexNo);
 		System.out.println("-----------------------------------------------------------------------------");
@@ -41,6 +68,8 @@ public class Index extends Course {
 			System.out.println();
 		}
 	}
+
+	/** method to add first student on waitlist if vacancy for the index is more than 0 */
 	public void popWaitListedStud() {
 		if (VACANCY>0 && waitList.size()>0) {
 			String sid = waitList.get(0);
@@ -49,30 +78,36 @@ public class Index extends Course {
 			waitList.remove(0);
 			cindy.doAddModule(this);
 			System.out.printf("Student added to index %s successfully\n", this.indexNo);
+			SendEmail.SendSchEmail(getIndexNo(),getCourseCode(),cindy.getName());
 		}
 	}
-	public ArrayList<String> getWaitList(){
-		return waitList;
-	}
-	public ArrayList<String> getStudList(){
-		return stuList;
-	}
+
+	// setters and getters // 
 	public ArrayList<Lesson> getLesson (){
 		return lessons;
 	}
 	public String getIndexNo() {
 		return indexNo;
 	}
-	public void setIndexNo(String indexNo) {
-		this.indexNo = indexNo;
-	}
+	
 	public int getVacancy() {
 		return VACANCY;
 	}
-	public void vacancyMinusMinus() {
-		this.VACANCY--;
-	}
+
 	public String getCourseCode() {
 		return courseCode;
+	}
+
+	//unused setters and getters // 
+	public ArrayList<String> getStudList(){
+		return stuList;
+	}
+
+	public ArrayList<String> getWaitList(){
+		return waitList;
+	}
+
+	public void setIndexNo(String indexNo) {
+		this.indexNo = indexNo;
 	}
 }

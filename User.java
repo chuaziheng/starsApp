@@ -1,6 +1,12 @@
+package project2.starsApp;
 import java.util.Scanner;
-import java.io.Serializable;
 
+import java.io.Serializable;
+/** Parent class for Admin and Student 
+* @author  Chua Zi Heng, Goh Nicholas
+* @version 1.0
+* @since   2020-11-20
+*/
 public abstract class User implements Serializable {
 
     protected String accountID;
@@ -8,7 +14,7 @@ public abstract class User implements Serializable {
     final static long serialVersionUID = 123; 
 
     transient static Scanner sc = new Scanner(System.in);
-
+    
     public User(){};
 
     public User(String accountID, String accountPasswordHash){
@@ -22,7 +28,11 @@ public abstract class User implements Serializable {
     public String getPassword(){
         return accountPasswordHash;
     }
-
+    
+    /** for user to change their password,
+     *  first ask user to key in their password which will be unmasked
+     *  then ask them to confirm if they want to change
+     */
     public void resetPassword(){
         boolean flag = false;
         do {

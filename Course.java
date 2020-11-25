@@ -1,8 +1,9 @@
+ package project2.starsApp;
 import java.io.Serializable;
 
 /**
  * Abstract class Course to provide essential attributes and methods that each child Index requires
- * @author  Zi Heng
+ * @author  Chua Zi Heng ,  Pooja Nag
  * @version 1.0
  * @since   2020-11-20
  * */
