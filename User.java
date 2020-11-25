@@ -1,4 +1,3 @@
-package project2.starsApp;
 import java.util.Scanner;
 
 import java.io.Serializable;
@@ -40,8 +39,6 @@ public abstract class User implements Serializable {
             String newPassword = sc.nextLine();
             System.out.println("Confirm password change? (y/n)");
             char choice = sc.nextLine().charAt(0);
-            System.out.println(accountPasswordHash);
-            System.out.println(PasswordHashController.hash(newPassword));
             switch (choice){
                 case'Y':case'y': 
                     if (!accountPasswordHash.equals(PasswordHashController.hash(newPassword))){

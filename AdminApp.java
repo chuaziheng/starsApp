@@ -1,4 +1,3 @@
-package project2.starsApp;
 import java.util.Scanner;
 /**
 * <h2>Logic for AdminApp</h2>

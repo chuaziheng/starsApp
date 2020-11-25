@@ -1,4 +1,3 @@
-package project2.starsApp;
 /**
  * Interface for Admin that manages Student related methods
  * @author  Chua Zi Heng

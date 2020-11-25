@@ -1,5 +1,3 @@
-
-package project2.starsApp;
 import java.util.*;
 
 /**
@@ -77,7 +75,6 @@ public class Index extends Course {
 			stuList.add(sid);
 			waitList.remove(0);
 			cindy.doAddModule(this);
-			System.out.printf("Student added to index %s successfully\n", this.indexNo);
 			SendEmail.SendSchEmail(getIndexNo(),getCourseCode(),cindy.getName());
 		}
 	}

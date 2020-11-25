@@ -1,4 +1,3 @@
-package project2.starsApp;
 import java.util.Properties; 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -44,8 +43,6 @@ public static void SendSchEmail(String index, String courseCode, String studentN
         message.setText(String.format("Dear Student %s, \n\nCourse %s with index %s has been successfully added!", studentName, courseCode, index));
 
         Transport.send(message);
-
-        System.out.println(String.format("Email sent to %s", studentName));
 
     } catch (MessagingException e) {
         throw new RuntimeException(e);
