@@ -16,6 +16,7 @@ public class AdminApp {
 	/**
 	 * This method executes the menu that an admin login will see.
 	 * @param admin
+	 * @throws Exception
 	 */
 	public static void AdminMenu(Admin admin) throws Exception {
 		
