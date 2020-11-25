@@ -1,3 +1,4 @@
+package project2.starsApp;
 import java.io.Serializable;
 import java.util.Scanner;
 import java.util.ArrayList;
@@ -15,7 +16,9 @@ public class Admin extends User implements Serializable, AdminCourseManagement, 
 		super(adminID,adminPasswordHash);
 	}
 
+
 	// ********************************************************case 1**********************************************************
+	
 	public void addStudent() {
 		System.out.println("Enter the new student's ID: ");
 		String studentID = sc.nextLine();
@@ -192,7 +195,7 @@ public class Admin extends User implements Serializable, AdminCourseManagement, 
 	}
 	
 	// ********************************************************case 5**********************************************************
-	public void addIndex() throws Exception {
+	public void addIndex() throws Exception { 
 		System.out.println("Enter option of existing course: ");
 		int counter = 1;
 		Set<String> courseCodes = DataBase.getAllCourseCodes();

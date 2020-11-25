@@ -1,3 +1,5 @@
+
+package project2.starsApp;
 import java.util.*;
 
 public class Index extends Course {
@@ -49,6 +51,7 @@ public class Index extends Course {
 			waitList.remove(0);
 			cindy.doAddModule(this);
 			System.out.printf("Student added to index %s successfully\n", this.indexNo);
+			SendEmail.SendSchEmail(getIndexNo(),getCourseCode(),cindy.getName());
 		}
 	}
 	public ArrayList<String> getWaitList(){

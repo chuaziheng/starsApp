@@ -1,6 +1,20 @@
-import java.util.Scanner;
+package project2.starsApp;
 
+import java.util.Scanner;
+/**
+* <h2>Boundary: Application for student functions</h2>
+* Interface that allows users to choose from the various functionalities on the student menu.
+* <p>
+* 
+* @author  xxx
+* @version 1.0
+* @since   2020-11-20
+*/
 public class StudentApp {
+	/** 
+	* Student Menu containing switch statement to choose function.
+	* @param me 	Student object, determined from main app
+	*/
 	public static void StudentMenu(Student me) throws Exception {
 
 		int choice = 0;

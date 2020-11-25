@@ -1,6 +1,16 @@
+package project2.starsApp;
 import java.util.*;
 import java.io.Serializable;
-
+/**
+* <h2>Control: Logic for studentApp</h2>
+* Contains methods for the various student-based implementations
+* such as adding, dropping and swapping modules.
+* <p>
+* 
+* @author  xxx
+* @version 1.0
+* @since   2020-11-20
+*/
 public class Student extends User implements Serializable {
 	final static long serialVersionUID = 123;
 	private String name;
@@ -14,21 +24,26 @@ public class Student extends User implements Serializable {
 	private int acadUnit;
 	transient static Scanner sc = new Scanner(System.in);
 	private ArrayList<String[]> modules;
-
+	/** 
+	* Empty constructor.
+	* @param
+	*/
 	public Student(){}
-	public Student(String studentID, String passwordHash, String name, String matricNum, String nationality, char gender, String schoolName, String startTime, String endTime, String date) {
-		super(studentID,passwordHash);
-		this.name = name;
-		this.matricNum = matricNum;
-		this.nationality = nationality;
-		this.gender = gender;
-		this.schoolName = schoolName;
-		this.startTime = startTime;
-		this.endTime = endTime;
-		this.date = date;
-		this.modules = new ArrayList <String[]>();
-	}
-
+//	public Student(String studentID, String passwordHash, String name, String matricNum, String nationality, char gender, String schoolName, String startTime, String endTime, String date) {
+//		super(studentID,passwordHash);
+//		this.name = name;
+//		this.matricNum = matricNum;
+//		this.nationality = nationality;
+//		this.gender = gender;
+//		this.schoolName = schoolName;
+//		this.startTime = startTime;
+//		this.endTime = endTime;
+//		this.date = date;
+//		this.modules = new ArrayList <String[]>();
+//	}
+	/** 
+	* Full constructor.
+	*/
 	public Student(String studentID, String passwordHash, String name, String matricNum, String nationality, char gender, String schoolName) {
 		super(studentID,passwordHash);
 		this.name = name;
@@ -38,7 +53,9 @@ public class Student extends User implements Serializable {
 		this.schoolName = schoolName;
 		this.modules = new ArrayList <String[]>();
 	}
-
+	/** 
+	* Full constructor with access time.
+	*/
 	public Student(String studentID, String passwordHash, String name, String matricNum, String nationality, char gender, String schoolName, ArrayList<String[]> modules, String startTime, String endTime, String date) {
 		super(studentID,passwordHash);
 		this.name = name;
@@ -51,13 +68,25 @@ public class Student extends User implements Serializable {
 		this.endTime = endTime;
 		this.date = date;
 	}
-
+	/** 
+	*Compares the student username string with that of the current student object.
+	*@param s	Student object to check
+	*@return 	<code>true</code> if they are the same, otherwise false
+	*/
 	public boolean equals(Student s){
 		if (s.getUsername().equals(getUsername())) return true;
 		return false;
 	}
-
+	
 	// case 1 --------------------------------------------------------------------------------------------------------
+	/** 
+	*Conducts all the checks and considerations before actually adding the module. 
+	*Prompts user to input the desired course code ,and subsequently list out the currently available indices and their respective vacancies.
+	*Then, this method retrieves the chosen Index object from the database, and considers the various exceptions and scenarios like 
+	*overlapping of timetable schedule, adding of existing index etc. If index has no vacancy, student is added into the waitlist.
+	*Otherwise, student is able to successfully add module.
+	*
+	*/
 	public void askAddModule(){
 		try{
 			String courseCode;
@@ -69,7 +98,7 @@ public class Student extends User implements Serializable {
 			courseCode = sc.next();
 			courseCode = courseCode.toUpperCase();
 
-			ErrorHandling.checkIfStudentHasExistingCourse(courseCode,this.getModules());
+			ErrorHandling.checkIfStudentHasExistingCourse(courseCode,this.getModules()); //Check if student is already taking this module
 
 			indexNums = DataBase.getIndexNumsFromCourseCode(courseCode);
 
@@ -78,7 +107,7 @@ public class Student extends User implements Serializable {
 			System.out.printf("Avaliable indices for course code %s are: \n", courseCode);
 
 			int counter = 1;
-			for (String indexNum: indexNums){
+			for (String indexNum: indexNums){ // Prints list of indices and vacancies
 				Index index = DataBase.getIndexFromIndexNum(indexNum);
 				System.out.printf("(%d) index number: %s vacancy: %d\n", counter, index.getIndexNo(), index.getVacancy());
 				counter++;
@@ -96,7 +125,7 @@ public class Student extends User implements Serializable {
 
 			Index indexToAdd = DataBase.getIndexFromIndexNum(indexNums.get(idxChoice));
 
-			ErrorHandling.checkStuExistingMod(this.modules, indexToAdd);
+			ErrorHandling.checkStuExistingMod(this.modules, indexToAdd); //check if student already has existing index
 
 			isOverlappingSchedule(indexToAdd);
 
@@ -110,6 +139,11 @@ public class Student extends User implements Serializable {
 			return;
 		}
 	}
+	/** 
+	*Executes the adding of module. Adds the new module to the student's module list,
+	*and at the same time, adds student into the respective Index's student list.
+	*@param indexToAdd		Desired index to be added
+	*/
 	public void doAddModule(Index indexToAdd){
 		String[] mod = {indexToAdd.getCourseCode(), indexToAdd.getIndexNo()};
 		this.modules.add(mod);
@@ -118,6 +152,19 @@ public class Student extends User implements Serializable {
 	// case 1 --------------------------------------------------------------------------------------------------------
 
 	// case 2 --------------------------------------------------------------------------------------------------------
+	/** 
+	*Conducts all the checks and considerations before dropping the module. 
+	*Prints all existing courses that student is taking, prompts user to input choice.
+	*For the dropping of module, the implementation method doDropModule() is called.
+	*Otherwise, the desired module is not dropped but returned.
+	*
+	*<b>Note:</b> 
+	*This method fulfills 2 actions: (1) Drop module and a part of (2) Swap module
+	*
+	*@param drop	<code>true</code> to drop module, <code>false</code> to swap module
+	*@return mod	Array of Strings that contain the module's courseCode and index
+	*@exception	e	Prompts user for valid integer input when choosing desired index
+	*/
 	public String[] askDropModule(boolean drop) throws Exception{
 		try{
 			ErrorHandling.isEmpty(this.modules);
@@ -149,6 +196,12 @@ public class Student extends User implements Serializable {
 			return new String[]{"", ""};
 		}
 	}
+	/** 
+	*Executes the dropping of module. Removes the dropped module from the student's module list,
+	*and at the same time, removes student from the respective Index's student list.
+	*If there is a non-empty waitlist for that index, the first element will be popped and added into the index.
+	*@param removeChoice		Integer that represents the array index of the student's module list of the module to be dropped
+	*/
 	public String[] doDropModule(int removeChoice) throws Exception{
 		String[] mod = new String[2];
 		mod = modules.remove(removeChoice);
@@ -161,6 +214,12 @@ public class Student extends User implements Serializable {
 	// case 2 --------------------------------------------------------------------------------------------------------
 
 	// case 3 ---------------------------------------------------------------------------------------------------------
+	/** 
+	*Executes the swapping of index with another student. Prompts user to choose which module
+	*to be dropped, and the username of the other student.
+	*Performs swapping of students in the respective indices student lists.
+	*/
+	
 	public void swapIndex(){
 		try{
 			ErrorHandling.isEmpty(this.modules);
@@ -201,6 +260,13 @@ public class Student extends User implements Serializable {
 	// case 3 ---------------------------------------------------------------------------------------------------------
 
 	// case 4 --------------------------------------------------------------------------------------------------------
+	/** 
+	*Executes the changing of index with another index of the same module. 
+	*Prints all existing courses that student is taking, prompts user to input choice.
+	*Performs error handling to ensure that it is a valid change, and updates the student lists
+	*of the relevant indices.
+	*
+	*/
 	public void changeIndex() {
 		try{
 			ErrorHandling.isEmpty(this.modules);
@@ -257,7 +323,9 @@ public class Student extends User implements Serializable {
 		}
 	}
 	// case 4 --------------------------------------------------------------------------------------------------------
-
+	/** 
+	*Prints all the course codes and indices taken by the student in a table format.
+	*/
 	public void printModules(){
 		System.out.println("Current enrolled modules and respective indices are: ");
 		int counter = 1;
@@ -266,7 +334,11 @@ public class Student extends User implements Serializable {
 			counter++;
 		}
 	}
+	/** 
+	*Removes module from student's module list based on the index number provided
 
+	*@param indexNum	index to be removed (string)
+	*/
 	public void removeMyModuleByIdxNum(String indexNum) {
 		int counter = -1;
 		for (String[] mod : modules) {
@@ -277,6 +349,11 @@ public class Student extends User implements Serializable {
 			}
 		}
 	}
+	/** 
+	*Checks if user is allowed access based on predetermined access times.
+
+	*@return	<code>true</code> if within access time, otherwise <code>false</code>.
+	*/
 	public boolean checkAccessTime() {
 		Calendar fixedStart = getStartTime();
 		Calendar fixedEnd = getEndTime();
@@ -293,7 +370,12 @@ public class Student extends User implements Serializable {
 		System.out.println();
 		return false;
 	}
+	/** 
+	*Checks the lesson timings of this index against the other lesson timings of existing indices
 
+	*@param newIndex	check if this index clashes with the existing indices in the schedule
+	*@exception			If clashes with other lesson timings, print error message.
+	*/
 	public void isOverlappingSchedule(Index newIndex) throws Exception{
 		for (String[] mod: modules) {
 			Index i1 = DataBase.getIndexFromIndexNum(mod[1]);
@@ -331,7 +413,13 @@ public class Student extends User implements Serializable {
 			}
 		}
 	}
+	/** 
+	*Checks if index vacancy is zero and prompts user to join waitlist if there is no vacancy in the desired index.
+	*If yes is chosen, append user to waitlist.
 
+	*@param indexToAdd	index to be added
+	*@return 			<code>true</code> if vacancy of desired index is 0, otherwise <code>false</code>
+	*/
 	public boolean promptToJoinWaitList(Index indexToAdd){
 		if (indexToAdd.getVacancy() == 0) {
 			System.out.println("No vacancies! Add to waitlist? Y/N");
@@ -360,6 +448,9 @@ public class Student extends User implements Serializable {
 		}
 		return false;
 	}
+	/** 
+	*Prints timetable which includes lesson details of the indices that the user is taking.
+	*/
 	public void printTimetable() throws Exception {
 		try{
 			ErrorHandling.isEmpty(this.modules);
@@ -387,6 +478,10 @@ public class Student extends User implements Serializable {
 	public String getNationality() { return nationality; }
 	public char getGender() { return gender; }
 	public String getSchoolName() { return schoolName; }
+	/** 
+	 * Calculates total academic units taken by the student.
+	 * @return	total academic units
+	*/
 	public int getAcadUnit() throws Exception {
 		acadUnit = 0;
 		for (String[] mod: modules){
@@ -395,6 +490,11 @@ public class Student extends User implements Serializable {
 		}
 		return acadUnit;
 	}
+	
+	/** 
+	 * Returns index from its respective course code in students module list.
+	 * @return	index object
+	*/
 	public Index getIndexFromCourseCode(String courseCode) throws Exception{
 		for (String[] mod: modules){
 			if (mod[0].equals(courseCode)){
@@ -406,6 +506,10 @@ public class Student extends User implements Serializable {
 	public ArrayList<String[]> getModules() {
 		return this.modules;
 	}
+	/** 
+	 * Returns start of student's access period
+	 * @return	calendar object for start time
+	*/
 	public Calendar getStartTime() {
 		String[] startList = startTime.split(":");
 		String[] dateList = date.split("/");
@@ -413,6 +517,10 @@ public class Student extends User implements Serializable {
 		start.set(Integer.parseInt(dateList[2]), (Integer.parseInt(dateList[1]))-1, Integer.parseInt(dateList[0]), Integer.parseInt(startList[0]), Integer.parseInt(startList[1]));
 		return start;
 	}
+	/** 
+	 * Returns end of student's access period
+	 * @return	calendar object for end time
+	*/
 	public Calendar getEndTime() {
 		String[] endList = endTime.split(":");
 		String[] dateList = date.split("/");

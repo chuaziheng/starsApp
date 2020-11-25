@@ -1,3 +1,4 @@
+package project2.starsApp;
 import java.util.Scanner;
 import java.io.Serializable;
 
